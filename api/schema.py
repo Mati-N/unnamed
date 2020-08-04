@@ -4,54 +4,95 @@ import graphql_jwt
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate
 from graphql_jwt.decorators import login_required
+import django_filters
+from graphene_django.filter import DjangoFilterConnectionField
+from django_filters import OrderingFilter
+
+
 
 from .models import *
 
-#fd
-
-class UserType(DjangoObjectType):
+class UserFilter(django_filters.FilterSet):
     class Meta:
         model = User
-        fields = ("username", "id", "is_staff")
+        fields = {'username': ['exact', 'icontains', 'istartswith']}
 
+    order_by = OrderingFilter(
+        fields=(
+            ('date_joined', 'date'), ('username', 'username')
+        )
+    )
+
+# The user model's type
+class UserNode(DjangoObjectType):
+    class Meta:
+        model = User
+        interfaces = (graphene.relay.Node,)
+
+
+# JSON Web token generator which stores the user object
 class ObtainJSONWebToken(graphql_jwt.JSONWebTokenMutation):
-    user = graphene.Field(UserType)
+    user = graphene.Field(UserNode)
 
     @classmethod
     def resolve(cls, root, info, **kwargs):
         return cls(user=info.context.user)
 
-class PostType(DjangoObjectType):
+class PostFilter(django_filters.FilterSet):
     class Meta:
         model = Post
+        fields = {'title': ['exact', 'icontains', 'istartswith'], 'text':['exact', 'icontains', 'istartswith'], 'user': ['exact']}
+    order_by = OrderingFilter(
+        fields=(
+            ('creation', 'likes'),
+        )
+    )
 
+# The post model's type
+class PostNode(DjangoObjectType):
+    class Meta:
+        model = Post
+        interfaces = (graphene.relay.Node,)
 
-class CommentType(DjangoObjectType):
+class CommentFilter(django_filters.FilterSet):
     class Meta:
         model = Comment
+        fields = {'content': ['exact', 'icontains', 'istartswith']}
 
+# The comment model's type
+class CommentNode(DjangoObjectType):
+    class Meta:
+        model = Comment
+        interfaces = (graphene.relay.Node,)
+
+
+# The like model's type
 class LikeType(DjangoObjectType):
     class Meta:
         model = Like
 
+# The input needed to work with the user model
 class UserInput(graphene.InputObjectType):
     username = graphene.String()
     password = graphene.String()
 
+# The input needed to work with the post model
 class PostInput(graphene.InputObjectType):
     title = graphene.String()
     text = graphene.String()
 
+# The input needed to work wiht the comment model
 class CommentInput(graphene.InputObjectType):
     post = graphene.Int()
     content = graphene.String()
 
+# The mutation which create a comment
 class CreateComment(graphene.Mutation):
     class Arguments:
         input = CommentInput(required=True)
 
     ok = graphene.Boolean()
-    comment = graphene.Field(CommentType)
+    comment = graphene.Field(CommentNode)
 
     @staticmethod
     @login_required
@@ -62,12 +103,13 @@ class CreateComment(graphene.Mutation):
 
         return CreateComment(ok=ok, comment=comment_instance)
 
+# The mustation which creates a post
 class CreatePost(graphene.Mutation):
     class Arguments:
         input = PostInput(required=True)
 
     ok = graphene.Boolean()
-    post = graphene.Field(PostType)
+    post = graphene.Field(PostNode)
 
     @staticmethod
     @login_required
@@ -78,12 +120,13 @@ class CreatePost(graphene.Mutation):
 
         return CreatePost(ok=ok, post=post_instance)
 
+# A mutation used to create a user
 class CreateUser(graphene.Mutation):
     class Arguments:
         input = UserInput(required=True)
 
     ok = graphene.Boolean()
-    user = graphene.Field(UserType)
+    user = graphene.Field(UserNode)
     message = graphene.String()
 
 
@@ -100,13 +143,14 @@ class CreateUser(graphene.Mutation):
 
         return CreateUser(ok=ok, user=user_instance)
 
+# A mutation used to update a user's properties
 class UpdateUser(graphene.Mutation):
     class Arguments:
         input = UserInput(required=True)
         newP = graphene.String()
 
     ok = graphene.Boolean()
-    user = graphene.Field(UserType)
+    user = graphene.Field(UserNode)
     message = graphene.String()
 
     @staticmethod
@@ -134,12 +178,15 @@ class UpdateUser(graphene.Mutation):
         return UpdateUser(ok=ok, user=user_instance, message="Successful")
 
 class Query(object):
-    users = graphene.List(UserType, id=graphene.Int(), username=graphene.String())
-    posts = graphene.List(PostType)
-    comment = graphene.Field(CommentType, id=graphene.Int(), content=graphene.String())
+    user = graphene.relay.Node.Field(UserNode)
+    users = DjangoFilterConnectionField(UserNode, filterset_class=UserFilter)
+    post = graphene.relay.Node.Field(PostNode)
+    posts = DjangoFilterConnectionField(PostNode, filterset_class=PostFilter)
+    comment = graphene.relay.Node.Field(CommentNode)
+    comments = DjangoFilterConnectionField(CommentNode, filterset_class=CommentFilter)
     likes = graphene.List(LikeType)
 
-    def resolve_users(self, info, **kwargs):
+    def resolve_users(self, info,  **kwargs):
         id = kwargs.get('id')
         username = kwargs.get('username')
 
@@ -150,7 +197,7 @@ class Query(object):
 
         return User.objects.all()
 
-    def resolve_posts(self, info, **kwargs):
+    def resolve_posts(self, info, order="creation", **kwargs):
         id = kwargs.get("id")
         text = kwargs.get("text")
         title = kwargs.get("title")
@@ -158,18 +205,16 @@ class Query(object):
         if id is not None:
             return Post.objects.get(pk=id)
         elif text is not None and title is not None:
-            return Post.objects.filter(text=text, title=title)
+            return Post.objects.filter(text=text, title=title, order_by=order)
         elif text is not None:
-            return Post.objects.filter(text=text)
+            return Post.objects.filter(text=text, order_by=order)
         elif title is not None:
-            return Post.objects.filter(title=title)
+            return Post.objects.filter(title=title, order_by=order)
 
-        return Post.objects.all()
+        return Post.objects.all().order_by(order, "likes")
 
-        return Post.objects.all()
-
-    def reslove_comments(self, info, **kwargs):
-        return Comment.objects.all()
+    def reslove_comments(self, info, order="creation", **kwargs):
+        return Comment.objects.all().order_by(order)
 
     def resolve_likes(self, info, **kwargs):
         return Like.objects.all()

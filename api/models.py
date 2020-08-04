@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 utc=pytz.UTC
     
+# Post model
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=200)
@@ -21,6 +22,7 @@ class Post(models.Model):
         d = str(utc.localize(datetime.now()) - self.creation)
         return changeTime(d)
 
+# Comment model
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -29,9 +31,15 @@ class Comment(models.Model):
     def __str__(self):
         return f"Comment {self.id} on Post"
 
+# Like model
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="like")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="like") 
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likers")
+
+# Following model
+class Following(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following") # The person who follows a person
+    user_f = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers") # The person who is being followed
 
 
 

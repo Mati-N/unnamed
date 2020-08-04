@@ -10,6 +10,7 @@ django = "*"
 graphene-django = "*"
 psycopg2 = "*"
 django-graphql-jwt = "*"
+graphene-django-extras = "*"
 
 [requires]
 python_version = "3.8"
