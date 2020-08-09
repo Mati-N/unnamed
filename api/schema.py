@@ -8,8 +8,6 @@ import django_filters
 from graphene_django.filter import DjangoFilterConnectionField
 from django_filters import OrderingFilter
 
-
-
 from .models import *
 
 class UserFilter(django_filters.FilterSet):
@@ -41,7 +39,8 @@ class ObtainJSONWebToken(graphql_jwt.JSONWebTokenMutation):
 class PostFilter(django_filters.FilterSet):
     class Meta:
         model = Post
-        fields = {'title': ['exact', 'icontains', 'istartswith'], 'text':['exact', 'icontains', 'istartswith'], 'user': ['exact']}
+        fields = {'title': ['exact', 'icontains', 'istartswith'], 'text': ['exact', 'icontains', 'istartswith'], 'user': ['exact']}
+        
     order_by = OrderingFilter(
         fields=(
             ('creation', 'likes'),
@@ -131,10 +130,13 @@ class CreateUser(graphene.Mutation):
 
 
     @staticmethod
-    def mutate(root, info, input=None):
+    def mutate(root, info, input):
         ok = False
         if info.context.user.is_authenticated:
-            CreateUser(ok=ok, user=None, message="Already logged in")
+            return CreateUser(ok=ok, user=info.context.user, message="Already logged in")
+
+        if User.objects.filter(username=input.username):
+            return CreateUser(ok=ok, user=None, message="Username is already in use")
 
         ok = True
         user_instance = User(username=input.username)
