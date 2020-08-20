@@ -1,11 +1,10 @@
 import React from "react";
-import Register from "./auth/Register";
-import Login from "./auth/Login";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
-import Home from "./pages/Home";
+import { HashRouter as Router } from "react-router-dom";
+import Routes from "./Routing/Routes";
+import Navbar from "./layout/Navbar";
+import Alert from "./layout/Alert";
 import AuthState from "../context/auth/AuthState";
-
+import AlertState from "../context/alert/AlertState";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -16,17 +15,17 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <AuthState>
-        <Router>
-          <div className="app">
-            <Switch>
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <PrivateRoute exact path="/home" component={Home} />
-            </Switch>
-          </div>
-        </Router>
-      </AuthState>
+      <AlertState>
+        <AuthState>
+          <Router>
+            <Navbar />
+            <div className="app">
+              <Alert />
+              <Routes />
+            </div>
+          </Router>
+        </AuthState>
+      </AlertState>
     </ApolloProvider>
   );
 }

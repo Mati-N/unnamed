@@ -9,9 +9,8 @@ utc=pytz.UTC
 # Post model
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    title = models.CharField(max_length=200)
-    text = models.CharField(max_length=1000)
-    likes = models.IntegerField(default=0)
+    title = models.CharField(max_length=260)
+    text = models.CharField(max_length=5500)
     commentCount = models.IntegerField(default=0)
     creation = models.DateTimeField(auto_now_add=True)
 

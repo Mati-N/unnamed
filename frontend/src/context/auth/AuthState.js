@@ -1,47 +1,79 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
-import { LOGIN } from "../types";
-import { useMutation } from "@apollo/client";
-import { ADD_USER, LOGIN_USER } from "../Queries";
+import { LOGIN, LOGOUT, SET_LOADING } from "../types";
+import { useMutation, useLazyQuery } from "@apollo/client";
+import {
+  ADD_USER,
+  LOGIN_USER,
+  IS_LOGGED_IN,
+  LOGOUT_USER,
+  VERIFY_TOKEN,
+  REFRESH_TOKEN,
+  REVOKE_TOKEN,
+} from "../../Queries";
+import AlertContext from "../alert/AlertContext";
 
 const AuthState = (props) => {
   const initialState = {
-    token: localStorage.getItem("TOKEN"),
     isAuthenticated: null,
+    loading: true,
+    logout: false,
+    token: localStorage.getItem("TOKEN"),
+    refreshToken: localStorage.getItem("REFRESH_TOKEN"),
+    user: localStorage.getItem("USER"),
   };
 
+  const { setAlert, removeAlert } = useContext(AlertContext);
   const [state, dispatch] = useReducer(AuthReducer, initialState);
-  const [addUser, { data }] = useMutation(ADD_USER);
+  const [addUser] = useMutation(ADD_USER);
   const [login] = useMutation(LOGIN_USER);
+  const [logout] = useMutation(LOGOUT_USER);
+  const [revoke] = useMutation(REVOKE_TOKEN);
+  const [verify] = useMutation(VERIFY_TOKEN);
+  const [refresh] = useMutation(REFRESH_TOKEN);
+
+  const loggedIn = () => {
+    if (localStorage.getItem("TOKEN") == "null") {
+      dispatch({ type: SET_LOADING });
+      dispatch({ type: LOGOUT });
+      return;
+    }
+    verify({ variables: { token: state.token } }).then(({ data }) => {
+      if (data.verifyToken != null) {
+        refresh({ variables: { token: state.refreshToken } }).then((d) => {
+          if (d.data.refreshToken !== null) {
+            localStorage.setItem("TOKEN", d.data.refreshToken.token);
+            localStorage.setItem(
+              "REFRESH_TOKEN",
+              d.data.refreshToken.refreshToken
+            );
+            dispatch({ type: LOGIN });
+          } else {
+            dispatch({ type: LOGOUT });
+          }
+        });
+      } else {
+        dispatch({ type: LOGOUT });
+      }
+    });
+    dispatch({ type: SET_LOADING });
+  };
+
+  /*useEffect(() => {
+    loggedIn();
+  }, []);*/
 
   const Login = (username, password) => {
     login({
       variables: { username: username, password: password },
-    }).then((d) => {
-      if (d.data.tokenAuth !== null) {
-        dispatch({
-          type: LOGIN,
-        });
-        localStorage.setItem("TOKEN", d.data.tokenAuth.token);
-      }
-    });
-  };
-
-  const Register = (username, password) => {
-    addUser({
-      variables: { username: username, password: password },
     })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => setAlert(error.message, "danger"))
       .then((d) => {
-        if (d.data.createUser.ok) {
-          login({
-            variables: { username: username, password: password },
-          }).then((d) => {
-            localStorage.setItem("TOKEN", d.data.tokenAuth.token);
-          });
+        if (d.data.tokenAuth !== null) {
+          localStorage.setItem("TOKEN", d.data.tokenAuth.token);
+          localStorage.setItem("REFRESH_TOKEN", d.data.tokenAuth.refreshToken);
+          localStorage.setItem("USER", d.data.tokenAuth.user.id);
           dispatch({
             type: LOGIN,
           });
@@ -49,13 +81,47 @@ const AuthState = (props) => {
       });
   };
 
+  const Register = (username, password) => {
+    removeAlert();
+    addUser({
+      variables: { username: username, password: password },
+    })
+      .catch((error) => `${error}`)
+      .then((d) => {
+        if (d.data.createUser.ok) {
+          login({
+            variables: { username: username, password: password },
+          });
+          dispatch({
+            type: LOGIN,
+          });
+          return true;
+        } else {
+          setAlert(d.data.createUser.message, "danger");
+          return false;
+        }
+      });
+  };
+
+  const Logout = () => {
+    revoke({ variables: { token: state.token } });
+    logout();
+    setAlert("Logged out!", "primary");
+    dispatch({
+      type: LOGOUT,
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated: state.isAuthenticated,
-        token: state.token,
+        loading: state.loading,
         Login,
         Register,
+        Logout,
+        loggedIn,
+        user: state.user,
       }}
     >
       {props.children}

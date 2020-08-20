@@ -7,6 +7,8 @@ from graphql_jwt.decorators import login_required
 import django_filters
 from graphene_django.filter import DjangoFilterConnectionField
 from django_filters import OrderingFilter
+from time import sleep
+from django.db.models import Count, IntegerField
 
 from .models import *
 
@@ -23,13 +25,15 @@ class UserFilter(django_filters.FilterSet):
 
 # The user model's type
 class UserNode(DjangoObjectType):
+    id = graphene.ID(source='pk', required=True)
+
     class Meta:
         model = User
         interfaces = (graphene.relay.Node,)
 
 
 # JSON Web token generator which stores the user object
-class ObtainJSONWebToken(graphql_jwt.JSONWebTokenMutation):
+class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
     user = graphene.Field(UserNode)
 
     @classmethod
@@ -43,12 +47,15 @@ class PostFilter(django_filters.FilterSet):
         
     order_by = OrderingFilter(
         fields=(
-            ('creation', 'likes'),
+            ('-creation', 'creation'), ("likes", "likes")
         )
     )
 
 # The post model's type
 class PostNode(DjangoObjectType):
+    id = graphene.ID(source='pk', required=True)
+    like_count = graphene.Int()
+    #liked = graphene.Boolean(source=Like.objects.filter(user=info.context.user, post=Post.objects.get(pk=id)))
     class Meta:
         model = Post
         interfaces = (graphene.relay.Node,)
@@ -69,6 +76,15 @@ class CommentNode(DjangoObjectType):
 class LikeType(DjangoObjectType):
     class Meta:
         model = Like
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = User
+
+class FollowNode(DjangoObjectType):
+    class Meta:
+        model = Following
+        interfaces = (graphene.relay.Node,)
 
 # The input needed to work with the user model
 class UserInput(graphene.InputObjectType):
@@ -118,6 +134,55 @@ class CreatePost(graphene.Mutation):
         post_instance.save()
 
         return CreatePost(ok=ok, post=post_instance)
+
+
+class Follow(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID()
+
+    ok = graphene.Boolean()
+    user = graphene.Field(UserNode)
+    message = graphene.String()
+
+    @staticmethod
+    @login_required
+    def mutate(root, info, id):
+        ok = True
+        user_instance = User.objects.get(id=id)
+        follow_instance = Following.objects.filter(user=info.context.user, user_f=user_instance)
+        if len(follow_instance) > 0:
+            follow_instance[0].delete()
+            return Follow(ok=ok, user=user_instance, message="Unfollowed")
+
+        follow_instance = Following(user=info.context.user, user_f=User.objects.get(id=id))
+        follow_instance.save()
+
+        return Follow(ok=ok, user=user_instance, message="Followed")
+
+
+class LikePost(graphene.Mutation):
+    class Arguments:
+        post_id = graphene.ID()
+
+    ok = graphene.Boolean()
+    like = graphene.Field(LikeType)
+    post = graphene.Field(PostNode)
+
+    @staticmethod
+    @login_required
+    def mutate(root, info, post_id):
+        ok = True
+        post_instance = Post.objects.get(pk=post_id)
+        like_instance = Like.objects.filter(user=info.context.user, post=post_instance)
+        if len(like_instance) > 0:
+            like_instance[0].delete()
+            return LikePost(ok=ok, post=post_instance, like=None)
+
+        like_instance = Like(user=info.context.user, post=post_instance)
+        like_instance.save()
+
+        return LikePost(ok=ok, post=post_instance,like=like_instance)
+
 
 # A mutation used to create a user
 class CreateUser(graphene.Mutation):
@@ -180,13 +245,17 @@ class UpdateUser(graphene.Mutation):
         return UpdateUser(ok=ok, user=user_instance, message="Successful")
 
 class Query(object):
-    user = graphene.relay.Node.Field(UserNode)
-    users = DjangoFilterConnectionField(UserNode, filterset_class=UserFilter)
-    post = graphene.relay.Node.Field(PostNode)
-    posts = DjangoFilterConnectionField(PostNode, filterset_class=PostFilter)
-    comment = graphene.relay.Node.Field(CommentNode)
+    users = DjangoFilterConnectionField(UserNode, filterset_class=UserFilter, id=graphene.ID(), user_name=graphene.String())
+    posts = DjangoFilterConnectionField(PostNode, filterset_class=PostFilter, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
+    following_posts = DjangoFilterConnectionField(PostNode, filterset_class=PostFilter, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
+    post = DjangoFilterConnectionField(PostNode, filterset_class=PostFilter, post_title=graphene.String(), post_text=graphene.String())
+    user_post = DjangoFilterConnectionField(PostNode, filterset_class=PostFilter, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
+    user = graphene.Field(UserType)
+    user_get = graphene.Field(UserType, id=graphene.ID())
     comments = DjangoFilterConnectionField(CommentNode, filterset_class=CommentFilter)
     likes = graphene.List(LikeType)
+    is_following = graphene.Boolean(id=graphene.ID())
+    liked = graphene.Boolean(id=graphene.ID())
 
     def resolve_users(self, info,  **kwargs):
         id = kwargs.get('id')
@@ -199,10 +268,28 @@ class Query(object):
 
         return User.objects.all()
 
-    def resolve_posts(self, info, order="creation", **kwargs):
-        id = kwargs.get("id")
-        text = kwargs.get("text")
-        title = kwargs.get("title")
+    def resolve_is_following(self, info, id, **kwargs):
+        return len(Following.objects.filter(user=info.context.user, user_f=User.objects.get(id=id))) > 0
+
+    def resolve_post(self, info, **kwargs):
+        return info.context.user.posts
+
+    def resolve_following_posts(self, info):
+        return Post.objects.filter(user__followers__user=info.context.user)
+
+    def resolve_user_post(self, info, id, **kwargs):
+        return Post.objects.filter(user=User.objects.get(id=id))
+
+    def resolve_user_get(self, info, id, **kwargs):
+        return User.objects.get(id=id)
+
+    def resolve_user(self, info, **kwargs):
+        return info.context.user
+
+    def resolve_posts(self, info, **kwargs):
+        id = kwargs.get('id')
+        title = kwargs.get('title')
+        text = kwargs.get('text')
 
         if id is not None:
             return Post.objects.get(pk=id)
@@ -213,7 +300,9 @@ class Query(object):
         elif title is not None:
             return Post.objects.filter(title=title, order_by=order)
 
-        return Post.objects.all().order_by(order, "likes")
+
+        # liked=(len(Like.objects.filter(user=info.context.user, post=Post)) > 0), 
+        return Post.objects.all().annotate(like_count=Count('likers')).order_by('-like_count')
 
     def reslove_comments(self, info, order="creation", **kwargs):
         return Comment.objects.all().order_by(order)
@@ -221,13 +310,22 @@ class Query(object):
     def resolve_likes(self, info, **kwargs):
         return Like.objects.all()
 
+    def resolve_logged_in(self, info, **kwargs):
+        return info.context.user.is_authenticated
+
+    def resolve_liked(self, info, id, **kwargs):
+        return len(Like.objects.filter(user=info.context.user, post=Post.objects.get(pk=id))) > 0
+
 class Mutation(object):
     create_user = CreateUser.Field()
-    delete_token_cookie = graphql_jwt.DeleteJSONWebTokenCookie.Field()
-    delete_refresh_token_cookie = graphql_jwt.DeleteRefreshTokenCookie.Field()
+    delete_token_cookie = graphql_jwt.relay.DeleteJSONWebTokenCookie.Field()
+    delete_refresh_token_cookie = graphql_jwt.relay.DeleteRefreshTokenCookie.Field()
     token_auth = ObtainJSONWebToken.Field()
-    verify_token = graphql_jwt.Verify.Field()
-    refresh_token = graphql_jwt.Refresh.Field()
+    revoke_token = graphql_jwt.relay.Revoke.Field()
+    verify_token = graphql_jwt.relay.Verify.Field()
+    refresh_token = graphql_jwt.relay.Refresh.Field()
     update_user = UpdateUser.Field()
     create_post = CreatePost.Field()
     create_comment = CreateComment.Field()
+    like_post = LikePost.Field()
+    followUser = Follow.Field()

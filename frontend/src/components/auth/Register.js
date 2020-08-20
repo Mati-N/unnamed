@@ -1,31 +1,56 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../../context/auth/AuthContext";
+import AlertContext from "../../context/alert/AlertContext";
 
 function Register() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [registerInfo, setRegisterInfo] = useState({
+    username: "",
+    password: "",
+  });
+  const [disabled, setDisabled] = useState(true);
   const Auth = useContext(AuthContext);
+  const { setAlert, removeAlert } = useContext(AlertContext);
+
+  useEffect(() => {
+    removeAlert();
+  }, []);
 
   const onChange = (e) => {
-    switch (e.target.name) {
-      case "username":
-        setUsername(e.target.value);
-      case "password":
-        setPassword(e.target.value);
-      default:
-        return;
-    }
+    let name = e.target.name;
+    setRegisterInfo({ ...registerInfo, [name]: e.target.value });
+    if (name === "username") {
+      if (e.target.value.length < 1) {
+        setAlert("Username too short", "warning");
+        setDisabled(true);
+      } else if (
+        registerInfo.password.length > 8 &&
+        e.target.value.length > 0
+      ) {
+        removeAlert();
+        setDisabled(false);
+      }
+    } else if (name === "password")
+      if (e.target.value.length < 8) {
+        setAlert("Password too short", "warning");
+        setDisabled(true);
+      } else if (
+        registerInfo.username.length > 0 &&
+        e.target.value.length > 8
+      ) {
+        removeAlert();
+        setDisabled(false);
+      }
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (username !== "") {
-      Auth.Register(username, password);
+    if (registerInfo.username !== "") {
+      Auth.Register(registerInfo.username, registerInfo.password);
     }
   };
 
   return (
-    <form className="form-auth" onSubmit={onSubmit}>
+    <form className="form-auth" method="post" onSubmit={onSubmit}>
       <p className="h2">Register</p>
       <div className="form-group">
         <input
@@ -34,6 +59,7 @@ function Register() {
           name="username"
           onChange={onChange}
           placeholder="Username"
+          value={registerInfo.username}
         />
       </div>
       <div className="form-group">
@@ -43,9 +69,10 @@ function Register() {
           name="password"
           onChange={onChange}
           placeholder="Password"
+          value={registerInfo.password}
         />
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-teal" disabled={disabled}>
         Register
       </button>
     </form>
