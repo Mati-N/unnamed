@@ -15,7 +15,6 @@ from datetime import timedelta
 import dj_database_url
 
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -91,8 +90,8 @@ AUTHENTICATION_BACKENDS = [
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-"""DATABASES = {
-    'default': {
+DATABASES = {
+    """'default': {
         'ENGINE': 'django.db.backends.postgresql', 
         'NAME': 'feel',
         'USER': 'postgres',
@@ -103,8 +102,11 @@ AUTHENTICATION_BACKENDS = [
     'default': {
      #   'ENGINE': 'djongo',
       #  'NAME': 'feel',
-    #}
-}"""
+    #}"""
+    }
+
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
 
 
 GRAPHQL_JWT = {
