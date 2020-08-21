@@ -89,12 +89,7 @@ const AuthState = (props) => {
       .catch((error) => `${error}`)
       .then((d) => {
         if (d.data.createUser.ok) {
-          login({
-            variables: { username: username, password: password },
-          });
-          dispatch({
-            type: LOGIN,
-          });
+          Login(username, password);
           return true;
         } else {
           setAlert(d.data.createUser.message, "danger");
@@ -104,7 +99,7 @@ const AuthState = (props) => {
   };
 
   const Logout = () => {
-    revoke({ variables: { token: state.token } });
+    revoke({ variables: { token: state.refreshToken } });
     logout();
     setAlert("Logged out!", "primary");
     dispatch({
