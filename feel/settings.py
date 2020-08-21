@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from datetime import timedelta
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -76,6 +78,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'feel.wsgi.application'
 
+STATIC_URL = '/static/'
+
+
 AUTHENTICATION_BACKENDS = [
     'graphql_jwt.backends.JSONWebTokenBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -84,7 +89,7 @@ AUTHENTICATION_BACKENDS = [
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql', 
         'NAME': 'feel',
@@ -92,12 +97,12 @@ DATABASES = {
         'PASSWORD': 'M4tHia5y',
         'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
         'PORT': '',
-    }
-    #"""'default': {
+    },
+    'default': {
      #   'ENGINE': 'djongo',
       #  'NAME': 'feel',
-    #}"""
-}
+    #}
+}"""
 
 GRAPHQL_JWT = {
     'JWT_VERIFY_EXPIRATION': True,
@@ -106,9 +111,9 @@ GRAPHQL_JWT = {
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=6),
 }
 
-DATABASE_OPTIONS = {
+"""DATABASE_OPTIONS = {
     'UNIX_SOCKET': 'TCP',
-}
+}"""
 
 
 # Password validation
