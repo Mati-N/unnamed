@@ -29,6 +29,7 @@ PyJWT = "==1.7.1"
 Rx = "==1.6.1"
 dj-database-url = "*"
 gunicorn = "*"
+django-heroku = "*"
 
 [requires]
 python_version = "3.8"
