@@ -34,9 +34,9 @@ const AuthState = (props) => {
   const [refresh] = useMutation(REFRESH_TOKEN);
 
   const loggedIn = () => {
-    if (!localStorage.getItem("TOKEN")) {
-      dispatch({ type: SET_LOADING });
+    if (localStorage.getItem("TOKEN") == null) {
       dispatch({ type: LOGOUT });
+      dispatch({ type: SET_LOADING });
       return;
     }
     verify({ variables: { token: state.token } }).then(({ data }) => {
@@ -60,9 +60,9 @@ const AuthState = (props) => {
     dispatch({ type: SET_LOADING });
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
     loggedIn();
-  }, []);*/
+  }, []);
 
   const Login = (username, password) => {
     login({
