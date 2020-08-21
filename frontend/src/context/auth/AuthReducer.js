@@ -8,9 +8,9 @@ export default (state, action) => {
         isAuthenticated: true,
       };
     case LOGOUT:
-      localStorage.setItem("TOKEN", "null");
-      localStorage.setItem("REFRESH_TOKEN", "null");
-      localStorage.setItem("USER", "null");
+      localStorage.removeItem("TOKEN");
+      localStorage.removeItem("REFRESH_TOKEN");
+      localStorage.removeItem("USER");
       return {
         ...state,
         isAuthenticated: false,

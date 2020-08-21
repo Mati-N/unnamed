@@ -34,10 +34,7 @@ const AuthState = (props) => {
   const [refresh] = useMutation(REFRESH_TOKEN);
 
   const loggedIn = () => {
-    if (
-      localStorage.getItem("TOKEN") === "null" ||
-      localStorage.getItem("TOKEN") == null
-    ) {
+    if (!localStorage.getItem("TOKEN")) {
       dispatch({ type: SET_LOADING });
       dispatch({ type: LOGOUT });
       return;
