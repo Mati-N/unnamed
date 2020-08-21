@@ -91,21 +91,8 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    """'default': {
-        'ENGINE': 'django.db.backends.postgresql', 
-        'NAME': 'feel',
-        'USER': 'postgres',
-        'PASSWORD': 'M4tHia5y',
-        'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
-        'PORT': '',
-    },
-    'default': {
-     #   'ENGINE': 'djongo',
-      #  'NAME': 'feel',
-    #}"""
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
-
-DATABASES.default = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 
