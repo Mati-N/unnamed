@@ -288,10 +288,13 @@ nav {
         text-decoration: none !important;
       }
     }
+    .fa {
+      display: none;
+    }
   }
 }
 
-@media only screen and (max-height: 600px) {
+@media only screen and (max-height: 800px) {
   nav {
     .navbar-brand {
       width: 70%;
@@ -302,6 +305,12 @@ nav {
       width: 100%;
       display: block;
       margin: 0.1em;
+      flex-direction: row;
+      height: 90vh;
+      width: 70%;
+    }
+    .fa {
+      display: block;
     }
   }
 }

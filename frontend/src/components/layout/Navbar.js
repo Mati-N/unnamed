@@ -98,6 +98,9 @@ function Navbar() {
           </>
         )}
       </ul>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i className="fa fa-bars">///</i>
+      </a>
     </nav>
   );
 }
