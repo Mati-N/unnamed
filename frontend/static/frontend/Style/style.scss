@@ -25,11 +25,11 @@ $light-color: rgb(238, 238, 238);
   width: 100vw;
   display: block;
   margin: auto;
+  margin-top: 12vh;
 }
 
 .container {
   width: 100vw;
-  padding: 4em;
   position: absolute;
   margin: auto;
 }
@@ -40,8 +40,9 @@ $light-color: rgb(238, 238, 238);
 }
 
 .app-alert {
-  font-size: 3em !important;
-  margin: 0.05em;
+  font-size: 1.5em !important;
+  margin: auto;
+  width: 70%;
   padding: 0.15em;
   border-radius: 0.1em;
   box-shadow: 0.007em 0 0.07em $light-color;
@@ -104,15 +105,17 @@ $light-color: rgb(238, 238, 238);
     }
   }
 
-  &-text {
+  .post-text {
     padding: 0.4em;
     margin: 0.1em;
     border-top: 0.06em solid rgb(159, 158, 158);
     border-bottom: 0.06em solid rgb(159, 158, 158);
-    border-radius: 0.1em;
     max-height: 32vh;
     overflow: hidden;
+    width: 100%;
     word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-all;
 
     .more {
       z-index: 1001;
@@ -244,7 +247,7 @@ nav {
   display: block;
   background-color: $teal-color;
   align-items: center;
-  margin-bottom: 10em;
+  margin-bottom: auto;
 
   .nav-top {
     .navbar-brand {
@@ -341,8 +344,7 @@ nav {
       height: 90vh;
       width: 70%;
       animation: navCome 0.2s ease-in;
-      animation-play-state: paused;
-      display: none;
+      //animation-play-state: paused;
 
       .right {
         right: 0;

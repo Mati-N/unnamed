@@ -4,7 +4,7 @@ import { LIKED, LIKE } from "../../Queries";
 import { Link } from "react-router-dom";
 import Liked from "../../../static/frontend/SVG/like.svg";
 import Heart from "../../../static/frontend/SVG/heart.svg";
-import { useSpring, animated, config } from "react-spring";
+import { useSpring, animated } from "react-spring";
 
 const PostItem = ({ text, title, username, id, likes, creation, user_id }) => {
   const initialState = {
@@ -36,7 +36,6 @@ const PostItem = ({ text, title, username, id, likes, creation, user_id }) => {
       maxHeight: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
       height: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
     },
-    config: config.gentle,
   });
 
   useEffect(() => {
@@ -44,7 +43,6 @@ const PostItem = ({ text, title, username, id, likes, creation, user_id }) => {
     setState({
       ...state,
       hasMore: self.current.scrollHeight > self.current.clientHeight,
-      height: self.current.scrollHeight / 8.27,
       loading: false,
     });
   }, []);
