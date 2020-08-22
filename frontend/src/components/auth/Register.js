@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
+import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
 function Register() {
   const [registerInfo, setRegisterInfo] = useState({
     username: "",
     password: "",
+    loading: false,
   });
   const [disabled, setDisabled] = useState(true);
   const Auth = useContext(AuthContext);
@@ -44,9 +46,11 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setRegisterInfo({ ...registerInfo, loading: true });
     if (registerInfo.username !== "") {
       Auth.Register(registerInfo.username, registerInfo.password);
     }
+    setRegisterInfo({ ...registerInfo, loading: false });
   };
 
   return (
@@ -72,9 +76,13 @@ function Register() {
           value={registerInfo.password}
         />
       </div>
-      <button type="submit" className="btn btn-teal" disabled={disabled}>
-        Register
-      </button>
+      {registerInfo.loading ? (
+        <Spinner size={40} />
+      ) : (
+        <button type="submit" className="btn btn-teal" disabled={disabled}>
+          Register
+        </button>
+      )}
     </form>
   );
 }
