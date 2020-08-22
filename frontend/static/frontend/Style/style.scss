@@ -110,7 +110,8 @@ $light-color: rgb(238, 238, 238);
     border-bottom: 0.06em solid rgb(159, 158, 158);
     border-radius: 0.1em;
     max-height: 32vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    word-wrap: break-word;
 
     .more {
       z-index: 1001;
