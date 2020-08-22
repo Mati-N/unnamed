@@ -231,6 +231,11 @@ $light-color: rgb(238, 238, 238);
   border-bottom: 0.1em solid rgba(82, 82, 82, 0.5);
 }
 
+.btn-teal {
+  background-color: $teal-color !important;
+  color: rgb(248, 248, 248) !important;
+}
+
 nav {
   z-index: 100000000;
   font-weight: 200;
@@ -286,7 +291,17 @@ nav {
   }
 }
 
-.btn-teal {
-  background-color: $teal-color !important;
-  color: rgb(248, 248, 248) !important;
+@media only screen and (max-height: 600px) {
+  nav {
+    .navbar-brand {
+      width: 70%;
+      display: block;
+    }
+
+    .navbar-items {
+      width: 100%;
+      display: block;
+      margin: 0.1em;
+    }
+  }
 }
