@@ -328,6 +328,9 @@ nav {
         display: flex;
         justify-content: space-around;
         flex-direction: column;
+        .nav-link {
+          height: 22.5vh;
+        }
       }
 
       .left {
