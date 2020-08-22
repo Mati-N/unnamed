@@ -27,10 +27,11 @@ $light-color: rgb(238, 238, 238);
 }
 
 .container {
-  width: 10%;
+  width: 90%;
   padding: 1em;
   min-width: 90vh;
   position: absolute;
+  margin: 0.4em;
 }
 
 .post-body {
@@ -313,6 +314,8 @@ nav {
     }
 
     .navbar-items {
+      right: 0;
+      background-color: $teal-color;
       width: 100%;
       display: none;
       margin: 0.1em;
