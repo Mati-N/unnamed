@@ -328,6 +328,7 @@ nav {
         display: flex;
         justify-content: space-around;
         flex-direction: column;
+        height: 46vh;
         .nav-link {
           height: 22.5vh;
         }
@@ -338,6 +339,10 @@ nav {
         display: flex;
         justify-content: space-around;
         flex-direction: column;
+        height: 46vh;
+        .nav-link {
+          height: 22.5vh;
+        }
       }
     }
   }
