@@ -239,7 +239,7 @@ $light-color: rgb(238, 238, 238);
 nav {
   z-index: 100000000;
   font-weight: 200;
-  height: 6vh;
+  height: 12vh;
   display: block;
   background-color: $teal-color;
   align-items: center;
@@ -294,7 +294,7 @@ nav {
   }
 }
 
-@media only screen and (max-height: 800px) {
+@media only screen and (max-height: 900px) {
   body {
     width: 100%;
   }
