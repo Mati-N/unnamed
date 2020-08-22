@@ -9,7 +9,7 @@ function Navbar() {
   if (loading || isAuthenticated == null) return "";
 
   const showMenu = () => {
-    navItems.current.focus.style.display = "block";
+    navItems.current.style.display = "block";
   };
 
   return (
