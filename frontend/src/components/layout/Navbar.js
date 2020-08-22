@@ -4,7 +4,7 @@ import AuthContext from "../../context/auth/AuthContext";
 
 function Navbar() {
   const { isAuthenticated, loading } = useContext(AuthContext);
-  const navItem = useRef();
+  const navItem = useRef(null);
 
   if (loading || isAuthenticated == null) return "";
 
