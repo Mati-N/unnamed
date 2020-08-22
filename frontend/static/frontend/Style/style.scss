@@ -327,9 +327,13 @@ nav {
         right: 0;
         display: flex;
         justify-content: space-around;
+        align-items: center;
         flex-direction: column;
         height: 46vh;
+        width: 100%;
         .nav-link {
+          width: 100%;
+          text-align: center;
           height: 22.5vh;
         }
       }
@@ -338,9 +342,13 @@ nav {
         left: 0;
         display: flex;
         justify-content: space-around;
+        align-items: center;
         flex-direction: column;
         height: 46vh;
+        width: 100%;
         .nav-link {
+          width: 100%;
+          text-align: center;
           height: 22.5vh;
         }
       }
