@@ -27,9 +27,8 @@ $light-color: rgb(238, 238, 238);
 }
 
 .container {
-  width: 90%;
+  width: 100%;
   padding: 1em;
-  min-width: 90vh;
   position: absolute;
   margin: 0.4em;
 }
@@ -245,13 +244,18 @@ nav {
   background-color: $teal-color;
   align-items: center;
 
-  .navbar-brand {
-    color: $light-color;
-    padding: 0.4em;
-    font-size: 1.9em !important;
-  }
-  .navbar-brand:hover {
-    color: $light-color;
+  .nav-top {
+    .navbar-brand {
+      color: $light-color;
+      padding: 0.4em;
+      font-size: 1.9em !important;
+    }
+    .navbar-brand:hover {
+      color: $light-color;
+    }
+    .fa {
+      display: none;
+    }
   }
 
   .navbar-items {
@@ -289,9 +293,6 @@ nav {
         text-decoration: none !important;
       }
     }
-    .fa {
-      display: none;
-    }
   }
 }
 
@@ -299,20 +300,26 @@ nav {
   body {
     width: 100%;
   }
+
+  .post,
+  .card {
+    width: 95%;
+  }
   nav {
-    animation: navCome 0.2s ease;
     .nav-top {
       display: block;
       width: 100%;
       height: 12vh;
       display: flex;
+      align-items: center;
       .navbar-brand {
         width: 70%;
         text-align: center;
         display: inline-block;
       }
       .fa {
-        display: inline;
+        width: 20%;
+        display: inline-block;
       }
     }
 
@@ -322,12 +329,14 @@ nav {
 
     .navbar-items {
       background-color: $teal-color;
-      width: 100%;
+      opacity: 0.9;
+      width: 100% !important;
       display: none;
       flex-direction: column;
       height: 90vh;
       width: 70%;
       transform: translate(100%);
+      transition: 0.3s all ease-in;
 
       .right {
         right: 0;
