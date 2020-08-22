@@ -26,7 +26,9 @@ function Navbar() {
           Geel
         </Link>
       </div>
-      <i className="fa fa-bars">///</i>
+      <button className="fa fa-bars" onClick={showMenu}>
+        ///
+      </button>
       <ul className="navbar-items" ref={navItems}>
         {!isAuthenticated && (
           <div className="right">
