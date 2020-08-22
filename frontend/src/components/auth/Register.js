@@ -47,6 +47,7 @@ function Register() {
   const onSubmit = (e) => {
     e.preventDefault();
     setRegisterInfo({ ...registerInfo, loading: true });
+    console.log("It should work");
     if (registerInfo.username !== "") {
       Auth.Register(registerInfo.username, registerInfo.password);
     }
