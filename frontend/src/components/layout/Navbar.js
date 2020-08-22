@@ -32,7 +32,12 @@ function Navbar() {
         </button>
       </div>
 
-      <ul className="navbar-items" ref={navItems}>
+      <ul
+        className={`navbar-items ${
+          state.displayed ? "navbar-items-active" : ""
+        }`}
+        ref={navItems}
+      >
         {!isAuthenticated && (
           <div className="right">
             <li className="navItem">

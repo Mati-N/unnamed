@@ -300,6 +300,7 @@ nav {
     width: 100%;
   }
   nav {
+    animation: navCome 0.2s ease;
     .nav-top {
       display: block;
       width: 100%;
@@ -315,6 +316,10 @@ nav {
       }
     }
 
+    .navbar-items-active {
+      transform: translate(0%) !important;
+    }
+
     .navbar-items {
       background-color: $teal-color;
       width: 100%;
@@ -322,6 +327,7 @@ nav {
       flex-direction: column;
       height: 90vh;
       width: 70%;
+      transform: translate(100%);
 
       .right {
         right: 0;
@@ -336,7 +342,6 @@ nav {
           line-height: 22.5vh;
           text-align: center;
           height: 22.5vh;
-          transform: translate(100%);
           transition: transform 2s;
         }
       }
@@ -357,5 +362,14 @@ nav {
         }
       }
     }
+  }
+}
+
+@keyframes navCome {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
   }
 }
