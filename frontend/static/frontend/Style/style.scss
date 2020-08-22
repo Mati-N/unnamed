@@ -308,6 +308,20 @@ nav {
       flex-direction: row;
       height: 90vh;
       width: 70%;
+
+      .right {
+        right: 0;
+        display: flex;
+        justify-content: space-around;
+        flex-direction: row;
+      }
+
+      .left {
+        left: 0;
+        display: flex;
+        justify-content: space-around;
+        flex-direction: row;
+      }
     }
     .fa {
       display: block;
