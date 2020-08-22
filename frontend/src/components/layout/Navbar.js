@@ -25,10 +25,11 @@ function Navbar() {
         <Link to="/" className="navbar-brand">
           Geel
         </Link>
+        <button className="fa fa-bars" onClick={showMenu}>
+          ///
+        </button>
       </div>
-      <button className="fa fa-bars" onClick={showMenu}>
-        ///
-      </button>
+
       <ul className="navbar-items" ref={navItems}>
         {!isAuthenticated && (
           <div className="right">
