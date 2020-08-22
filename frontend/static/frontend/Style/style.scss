@@ -299,14 +299,22 @@ nav {
     width: 100%;
   }
   nav {
-    .navbar-brand {
-      width: 70%;
+    .nav-top {
       display: block;
+      width: 100%;
+      .navbar-brand {
+        width: 70%;
+        text-align: center;
+        display: inline-block;
+      }
+      .fa {
+        display: inline;
+      }
     }
 
     .navbar-items {
       width: 100%;
-      display: block;
+      display: none;
       margin: 0.1em;
       flex-direction: column;
       height: 90vh;
@@ -325,9 +333,6 @@ nav {
         justify-content: space-around;
         flex-direction: column;
       }
-    }
-    .fa {
-      display: block;
     }
   }
 }

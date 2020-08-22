@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 
 function Navbar() {
   const { isAuthenticated, loading } = useContext(AuthContext);
+  const navItem = useRef();
 
   if (loading || isAuthenticated == null) return "";
+
+  const showMenu = () => {
+    navItem.current.focus.style.display = "block";
+  };
 
   return (
     <nav
@@ -16,10 +21,13 @@ function Navbar() {
         width: "100%",
       }}
     >
-      <Link to="/" className="navbar-brand">
-        Geel
-      </Link>
-      <ul className="navbar-items">
+      <div className="nav-top">
+        <Link to="/" className="navbar-brand">
+          Geel
+        </Link>
+      </div>
+      <i className="fa fa-bars">///</i>
+      <ul className="navbar-items" ref={navItems}>
         {!isAuthenticated && (
           <div className="right">
             <li className="navItem">
@@ -98,9 +106,6 @@ function Navbar() {
           </>
         )}
       </ul>
-      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-        <i className="fa fa-bars">///</i>
-      </a>
     </nav>
   );
 }
