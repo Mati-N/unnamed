@@ -239,7 +239,7 @@ $light-color: rgb(238, 238, 238);
 nav {
   z-index: 100000000;
   font-weight: 200;
-  min-height: 6vh;
+  height: 6vh;
   display: block;
   background-color: $teal-color;
   align-items: center;
@@ -295,6 +295,9 @@ nav {
 }
 
 @media only screen and (max-height: 1000px) {
+  body {
+    width: 100%;
+  }
   nav {
     .navbar-brand {
       width: 70%;
@@ -305,7 +308,7 @@ nav {
       width: 100%;
       display: block;
       margin: 0.1em;
-      flex-direction: row;
+      flex-direction: column;
       height: 90vh;
       width: 70%;
 
@@ -313,14 +316,14 @@ nav {
         right: 0;
         display: flex;
         justify-content: space-around;
-        flex-direction: row;
+        flex-direction: column;
       }
 
       .left {
         left: 0;
         display: flex;
         justify-content: space-around;
-        flex-direction: row;
+        flex-direction: column;
       }
     }
     .fa {
