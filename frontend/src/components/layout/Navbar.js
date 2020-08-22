@@ -10,7 +10,6 @@ function Navbar() {
   if (loading || isAuthenticated == null) return "";
 
   const showMenu = () => {
-    navItems.current.style.display = state.displayed ? "none" : "block";
     setState({ displayed: !state.displayed });
   };
 

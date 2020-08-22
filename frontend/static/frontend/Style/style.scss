@@ -331,8 +331,7 @@ nav {
     }
 
     .navitems-none {
-      animation-direction: reverse;
-      animation-play-state: running;
+      display: none;
     }
 
     .navbar-items {
@@ -343,8 +342,6 @@ nav {
       height: 90vh;
       width: 70%;
       animation: navCome 0.2s ease-in;
-      animation-direction: reverse;
-      animation-play-state: running;
 
       .right {
         right: 0;
