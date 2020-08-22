@@ -1,4 +1,4 @@
-$teal-color: red; //#3d9970;
+$teal-color: #3d9970;
 $light-color: rgb(238, 238, 238);
 
 @font-face {
@@ -295,7 +295,7 @@ nav {
   }
 }
 
-@media only screen and (max-height: 900px) {
+@media only screen and (max-height: 700px) {
   body {
     width: 100%;
   }

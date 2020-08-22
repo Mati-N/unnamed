@@ -1,15 +1,17 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 
 function Navbar() {
   const { isAuthenticated, loading } = useContext(AuthContext);
   const navItems = useRef(null);
+  const [state, setState] = useState({ displayed: false });
 
   if (loading || isAuthenticated == null) return "";
 
   const showMenu = () => {
-    navItems.current.style.display = "block";
+    navItems.current.style.display = state.displayed ? "none" : "block";
+    setState({ displayed: !state.displayed });
   };
 
   return (
