@@ -14,6 +14,12 @@ function Navbar() {
     setState({ displayed: !state.displayed });
   };
 
+  const hide = () => {
+    if (state.displayed) {
+      showMenu();
+    }
+  };
+
   return (
     <nav
       className="nav"
@@ -42,19 +48,19 @@ function Navbar() {
 
       <ul
         className={`navbar-items ${
-          state.displayed ? "navbar-items-active" : ""
+          state.displayed ? "navitems-block" : "navitems-none"
         }`}
         ref={navItems}
       >
         {!isAuthenticated && (
           <div className="right">
             <li className="navItem">
-              <Link to="/login" className="nav-link">
+              <Link to="/login" className="nav-link" onClick={hide}>
                 Login
               </Link>
             </li>
             <li className="navItem">
-              <Link className="nav-link" to="/register">
+              <Link className="nav-link" to="/register" onClick={hide}>
                 Register
               </Link>
             </li>
@@ -64,12 +70,12 @@ function Navbar() {
           <>
             <div className="left">
               <li className="navItem">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/" onClick={hide}>
                   Home
                 </Link>
               </li>
               <li className="navItem">
-                <Link className="nav-link" to="/add-post">
+                <Link className="nav-link" to="/add-post" onClick={hide}>
                   New Post
                 </Link>
               </li>
@@ -93,6 +99,7 @@ function Navbar() {
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    onClick={hide}
                   >
                     <path stroke="none" d="M0 0h24v24H0z" />
                     <polyline points="6 15 12 9 18 15" />
@@ -101,7 +108,7 @@ function Navbar() {
               </li>
 
               <li className="navItem">
-                <Link className="nav-link" to="/account">
+                <Link className="nav-link" to="/account" onClick={hide}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="icon icon-tabler icon-tabler-settings"

@@ -22,15 +22,16 @@ $light-color: rgb(238, 238, 238);
 
 .app {
   min-height: 90vh;
+  width: 100vw;
   display: block;
-  margin: 4em;
+  margin: auto;
 }
 
 .container {
-  width: 100%;
-  padding: 1em;
+  width: 100vw;
+  padding: 4em;
   position: absolute;
-  margin: 0.4em;
+  margin: auto;
 }
 
 .post-body {
@@ -243,6 +244,7 @@ nav {
   display: block;
   background-color: $teal-color;
   align-items: center;
+  margin-bottom: 10em;
 
   .nav-top {
     .navbar-brand {
@@ -323,20 +325,26 @@ nav {
       }
     }
 
-    .navbar-items-active {
-      transform: translate(0%) !important;
+    .navitems-block {
+      animation-direction: normal;
+      animation-play-state: running;
+    }
+
+    .navitems-none {
+      animation-direction: reverse;
+      animation-play-state: running;
     }
 
     .navbar-items {
       background-color: $teal-color;
       opacity: 0.9;
       width: 100% !important;
-      display: none;
       flex-direction: column;
       height: 90vh;
       width: 70%;
-      transform: translate(100%);
-      transition: 0.3s all ease-in;
+      animation: navCome 0.2s ease-in;
+      animation-direction: reverse;
+      animation-play-state: running;
 
       .right {
         right: 0;
@@ -376,9 +384,18 @@ nav {
 
 @keyframes navCome {
   from {
+    display: none;
+    opacity: 0;
     transform: translateX(100%);
   }
   to {
+    opacity: 1;
     transform: translateX(0%);
+    display: flex;
   }
+}
+
+.main {
+  display: block;
+  margin: auto;
 }
