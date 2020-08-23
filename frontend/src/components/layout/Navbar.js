@@ -74,7 +74,7 @@ function Navbar() {
         ref={navItems}
       >
         {!isAuthenticated && (
-          <div className="right">
+          <div className="right" id="right">
             <li className="navItem">
               <Link to="/login" className="nav-link" onClick={hide}>
                 Login

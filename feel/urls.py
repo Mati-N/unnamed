@@ -8,6 +8,6 @@ from django.http import HttpResponseRedirect
 
 urlpatterns = [
     path("", include("frontend.urls")),
-    path("api/", csrf_exempt(jwt_cookie(GraphQLView.as_view(graphiql=True)))),
+    path(r"api/", csrf_exempt(jwt_cookie(GraphQLView.as_view(graphiql=False)))),
     path('admin/', admin.site.urls),
 ]

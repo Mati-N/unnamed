@@ -421,8 +421,14 @@ nav {
       opacity: 0;
       transition: all 0.2s;
 
+      #right {
+        height: 68.5vh;
+        .nav-link {
+          line-height: 34.25vh;
+        }
+      }
+
       .right {
-        right: 0;
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -439,7 +445,6 @@ nav {
       }
 
       .left {
-        left: 0;
         display: flex;
         justify-content: space-around;
         align-items: center;

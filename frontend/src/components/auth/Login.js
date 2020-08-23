@@ -41,32 +41,34 @@ function Login() {
   };
 
   return (
-    <form className="form-auth" method="post" onSubmit={onSubmit}>
-      <p className="h2">Login</p>
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          name="username"
-          onChange={onChange}
-          placeholder="Username"
-          value={loginInfo.username}
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          className="form-control"
-          name="password"
-          onChange={onChange}
-          placeholder="Password"
-          value={loginInfo.password}
-        />
-      </div>
-      <button type="submit" className="btn btn-teal" disabled={disabled}>
-        Login
-      </button>
-    </form>
+    <div className="main">
+      <form className="form-auth" method="post" onSubmit={onSubmit}>
+        <p className="h2">Login</p>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            name="username"
+            onChange={onChange}
+            placeholder="Username"
+            value={loginInfo.username}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            className="form-control"
+            name="password"
+            onChange={onChange}
+            placeholder="Password"
+            value={loginInfo.password}
+          />
+        </div>
+        <button type="submit" className="btn btn-teal" disabled={disabled}>
+          Login
+        </button>
+      </form>
+    </div>
   );
 }
 

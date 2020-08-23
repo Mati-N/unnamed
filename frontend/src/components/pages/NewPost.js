@@ -63,34 +63,36 @@ const NewPost = () => {
   if (sent) return <Redirect to="/" />;
 
   return (
-    <form onSubmit={onSubmit} method="post" className="form-auth">
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          name="title"
-          placeholder="Title"
-          aria-describedby="emailHelp"
-          value={state.title}
-          onChange={onChange}
-          name="title"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="exampleFormControlTextarea1">Content</label>
-        <textarea
-          name="content"
-          value={state.text}
-          className="form-control"
-          name="content"
-          rows="3"
-          onChange={onChange}
-        ></textarea>
-      </div>
-      <button disabled={disabled} type="submit" className="btn btn-teal">
-        Submit
-      </button>
-    </form>
+    <div className="main">
+      <form onSubmit={onSubmit} method="post" className="form-auth">
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            name="title"
+            placeholder="Title"
+            aria-describedby="emailHelp"
+            value={state.title}
+            onChange={onChange}
+            name="title"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="exampleFormControlTextarea1">Content</label>
+          <textarea
+            name="content"
+            value={state.text}
+            className="form-control"
+            name="content"
+            rows="3"
+            onChange={onChange}
+          ></textarea>
+        </div>
+        <button disabled={disabled} type="submit" className="btn btn-teal">
+          Submit
+        </button>
+      </form>
+    </div>
   );
 };
 

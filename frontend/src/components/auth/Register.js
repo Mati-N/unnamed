@@ -7,8 +7,8 @@ function Register() {
   const [registerInfo, setRegisterInfo] = useState({
     username: "",
     password: "",
-    loading: false,
   });
+  const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const Auth = useContext(AuthContext);
   const { setAlert, removeAlert } = useContext(AlertContext);
@@ -46,45 +46,61 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setRegisterInfo({ ...registerInfo, loading: true });
-    console.log("It should work");
     if (registerInfo.username !== "") {
       Auth.Register(registerInfo.username, registerInfo.password);
     }
-    setRegisterInfo({ ...registerInfo, loading: false });
   };
 
   return (
-    <form className="form-auth" method="post" onSubmit={onSubmit}>
-      <p className="h2">Register</p>
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          name="username"
-          onChange={onChange}
-          placeholder="Username"
-          value={registerInfo.username}
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          className="form-control"
-          name="password"
-          onChange={onChange}
-          placeholder="Password"
-          value={registerInfo.password}
-        />
-      </div>
-      {registerInfo.loading ? (
-        <Spinner size={40} />
-      ) : (
-        <button type="submit" className="btn btn-teal" disabled={disabled}>
+    <div className="main">
+      <form
+        className="form-auth"
+        method="post"
+        onSubmit={() => {
+          setLoading(true);
+          onSubmit();
+          setLoading(false);
+        }}
+      >
+        <p className="h2">Register</p>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            name="username"
+            onChange={onChange}
+            placeholder="Username"
+            value={registerInfo.username}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            className="form-control"
+            name="password"
+            onChange={onChange}
+            placeholder="Password"
+            value={registerInfo.password}
+          />
+        </div>
+        {loading && (
+          <Spinner
+            size={35}
+            style={{
+              margin: "auto",
+            }}
+          />
+        )}
+        <button
+          type="submit"
+          className="btn btn-teal"
+          disabled={disabled}
+          style={{ display: loading ? "none" : "block" }}
+        >
           Register
         </button>
-      )}
-    </form>
+      </form>
+    </div>
   );
 }
 
