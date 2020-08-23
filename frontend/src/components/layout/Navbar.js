@@ -39,16 +39,15 @@ function Navbar() {
           className="fa fa-bars"
           onClick={showMenu}
         >
-          <rect width="100" height="20"></rect>
-          <rect y="30" width="100" height="20"></rect>
-          <rect y="60" width="100" height="20"></rect>
+          <rect fill="white" width="100" height="17"></rect>
+          <rect fill="white" y="30" width="100" height="17"></rect>
+          <rect fill="white" y="60" width="100" height="17"></rect>
         </svg>
       </div>
 
       <ul
-        className={`navbar-items ${
-          state.displayed ? "navitems-block" : "navitems-none"
-        }`}
+        className={"navbar-items"}
+        id={state.displayed ? "navitems-block" : "navitems-none"}
         ref={navItems}
       >
         {!isAuthenticated && (

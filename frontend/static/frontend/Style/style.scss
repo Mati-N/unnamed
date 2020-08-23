@@ -301,7 +301,7 @@ nav {
   }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 860px) {
   body {
     width: 100%;
   }
@@ -328,23 +328,27 @@ nav {
       }
     }
 
-    .navitems-block {
-      animation-play-state: running;
+    #navitems-block {
+      //display: flex;
+      transform: translateX(0%);
+      opacity: 0.8;
     }
 
-    .navitems-none {
-      display: none;
+    #navitems-none {
+      transform: translateX(100%);
+      opacity: 0;
+      //display: none;
     }
 
     .navbar-items {
       background-color: $teal-color;
-      opacity: 0.9;
-      width: 100% !important;
+      width: 100%;
       flex-direction: column;
-      height: 90vh;
-      width: 70%;
-      animation: navCome 0.2s ease-in;
-      //animation-play-state: paused;
+      height: 88vh;
+      transform: translateX(100%);
+      display: flex;
+      opacity: 0;
+      transition: all 1s ease-in;
 
       .right {
         right: 0;
