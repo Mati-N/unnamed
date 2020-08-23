@@ -1,4 +1,7 @@
 module.exports = {
+  entry: {
+    main: ["core-js/stable", "regenerator-runtime/runtime", "src/main.js"],
+  },
   module: {
     rules: [
       {
