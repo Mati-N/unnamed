@@ -310,6 +310,34 @@ nav {
   .card {
     width: 95%;
   }
+
+  #line1 {
+    opacity: 0;
+  }
+
+  #line0 {
+    border-radius: 10em;
+    transform: rotate(45deg);
+    rx: 0.5em;
+  }
+
+  #line2 {
+    border-radius: 10em;
+    transform: rotate(-45deg);
+    rx: 0.5em;
+  }
+
+  .line0 {
+    transform: rotate(0deg);
+    transform-origin: left top;
+    transition: all 0.2s;
+  }
+  .line2 {
+    transform: rotate(0deg);
+    transform-origin: left bottom;
+    transition: all 0.2s;
+  }
+
   nav {
     .nav-top {
       display: block;
@@ -325,19 +353,24 @@ nav {
       .fa {
         width: 20%;
         display: inline-block;
+        transition: all 0.5s;
+        padding: 0.1em;
+        overflow: visible;
+      }
+      #fa {
+        transform: scale(0.8);
+        padding: 0.3em;
       }
     }
 
     #navitems-block {
-      //display: flex;
-      transform: translateX(0%);
-      opacity: 0.8;
+      transform: translateX(0%) scale(1);
+      opacity: 0.9;
     }
 
     #navitems-none {
-      transform: translateX(100%);
+      transform: translateX(100%) scale(0.9);
       opacity: 0;
-      //display: none;
     }
 
     .navbar-items {
@@ -348,7 +381,7 @@ nav {
       transform: translateX(100%);
       display: flex;
       opacity: 0;
-      transition: all 1s ease-in;
+      transition: all 0.2s;
 
       .right {
         right: 0;

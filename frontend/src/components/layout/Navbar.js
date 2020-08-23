@@ -37,11 +37,31 @@ function Navbar() {
           width="40"
           height="40"
           className="fa fa-bars"
+          id={state.displayed ? "fa" : ""}
           onClick={showMenu}
         >
-          <rect fill="white" width="100" height="17"></rect>
-          <rect fill="white" y="30" width="100" height="17"></rect>
-          <rect fill="white" y="60" width="100" height="17"></rect>
+          <rect
+            className="line0"
+            fill="white"
+            width="100"
+            height="17"
+            id={state.displayed ? "line0" : " "}
+          ></rect>
+          <rect
+            fill="white"
+            y="30"
+            width="100"
+            height="17"
+            id={state.displayed ? "line1" : " "}
+          ></rect>
+          <rect
+            className="line2"
+            fill="white"
+            y="60"
+            width="100"
+            height="17"
+            id={state.displayed ? "line2" : " "}
+          ></rect>
         </svg>
       </div>
 

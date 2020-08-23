@@ -127,6 +127,13 @@ export const SELF_USER = gql`
           }
         }
       }
+      followers {
+        edges {
+          node {
+            id
+          }
+        }
+      }
     }
   }
 `;
