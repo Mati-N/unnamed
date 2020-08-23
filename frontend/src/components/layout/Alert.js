@@ -1,6 +1,6 @@
 import React, { useContext, Fragment } from "react";
 import AlertContext from "../../context/alert/AlertContext";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated, config } from "react-spring";
 
 const Alert = () => {
   const { alert_info } = useContext(AlertContext);
