@@ -30,7 +30,7 @@ function Navbar() {
     >
       <div className="nav-top">
         <Link to="/" className="navbar-brand">
-          Geel
+          UNNAMED
         </Link>
         <svg
           viewBox="0 0 100 80"
