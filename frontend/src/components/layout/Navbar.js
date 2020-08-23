@@ -46,6 +46,7 @@ function Navbar() {
             width="100"
             height="17"
             id={state.displayed ? "line0" : " "}
+            rx="0.25em"
           ></rect>
           <rect
             fill="white"
@@ -53,6 +54,7 @@ function Navbar() {
             width="100"
             height="17"
             id={state.displayed ? "line1" : " "}
+            rx="0.25em"
           ></rect>
           <rect
             className="line2"
@@ -61,6 +63,7 @@ function Navbar() {
             width="100"
             height="17"
             id={state.displayed ? "line2" : " "}
+            rx="0.25em"
           ></rect>
         </svg>
       </div>
