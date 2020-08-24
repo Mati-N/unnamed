@@ -142,8 +142,9 @@ $light-color: rgb(238, 238, 238);
   }
 
   .like {
-    overflow: visible;
-    display: inline;
+    overflow: auto;
+    display: inline-block;
+    width: 8%;
     .like-icon {
       display: inline-block;
       padding: 0.2em;
