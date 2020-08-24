@@ -7,7 +7,7 @@ from graphene_django.views import GraphQLView
 from django.http import HttpResponseRedirect
 
 urlpatterns = [
-    path("/", include("frontend.urls")),
+    path("", include("frontend.urls")),
     path("api/", jwt_cookie(csrf_exempt(GraphQLView.as_view(graphiql=False)))),
     path('admin/', admin.site.urls),
 ]
