@@ -142,6 +142,7 @@ $light-color: rgb(238, 238, 238);
   }
 
   .like {
+    overflow: visible;
     display: inline;
     .like-icon {
       display: inline-block;
@@ -150,21 +151,12 @@ $light-color: rgb(238, 238, 238);
       height: 1.8em;
       width: 1.8em;
       transform: scale(0.9);
+      transition: all 0.2s;
     }
 
     .like-icon:hover {
       opacity: 0.5;
-    }
-
-    .like {
-      overflow: visible;
-      display: inline;
-      animation: likeAnimation 15s ease-in 0.05s;
-      animation-play-state: paused;
-    }
-
-    .like:focus {
-      animation-play-state: running;
+      transform: scale(0.75);
     }
   }
 }

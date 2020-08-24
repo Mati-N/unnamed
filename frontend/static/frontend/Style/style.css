@@ -29,11 +29,9 @@
 .post .post-text, .card .post-text { padding: 0.4em; margin: 0.1em; border-top: 0.06em solid #9f9e9e; border-bottom: 0.06em solid #9f9e9e; max-height: 32vh; overflow: hidden; width: 100%; word-wrap: break-word; white-space: pre-wrap; word-break: break-all; }
 .post .post-text .more, .card .post-text .more { z-index: 1001; position: absolute; z-index: 3; background: rgba(0, 0, 0, 0); color: blue; border: none; right: 5em; bottom: 6em; outline: none; }
 .post .post-text .more:focus, .card .post-text .more:focus { outline: none; }
-.post .like, .card .like { display: inline; }
-.post .like .like-icon, .card .like .like-icon { display: inline-block; padding: 0.2em; margin: 0.1em; height: 1.8em; width: 1.8em; -webkit-transform: scale(0.9); transform: scale(0.9); }
-.post .like .like-icon:hover, .card .like .like-icon:hover { opacity: 0.5; }
-.post .like .like, .card .like .like { overflow: visible; display: inline; -webkit-animation: likeAnimation 15s ease-in 0.05s; animation: likeAnimation 15s ease-in 0.05s; -webkit-animation-play-state: paused; animation-play-state: paused; }
-.post .like .like:focus, .card .like .like:focus { -webkit-animation-play-state: running; animation-play-state: running; }
+.post .like, .card .like { overflow: visible; display: inline; }
+.post .like .like-icon, .card .like .like-icon { display: inline-block; padding: 0.2em; margin: 0.1em; height: 1.8em; width: 1.8em; -webkit-transform: scale(0.9); transform: scale(0.9); -webkit-transition: all 0.2s; transition: all 0.2s; }
+.post .like .like-icon:hover, .card .like .like-icon:hover { opacity: 0.5; -webkit-transform: scale(0.75); transform: scale(0.75); }
 
 @-webkit-keyframes likeAnimation { 0% { width: 9%; -webkit-transform: scale(1.5); transform: scale(1.5); }
   45% { width: 6%; -webkit-transform: scale(0.9); transform: scale(0.9); }
