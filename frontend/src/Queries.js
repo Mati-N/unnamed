@@ -1,6 +1,8 @@
-import { gql } from "@apollo/client";
+import {
+  gql
+} from "@apollo/client";
 
-export const ADD_USER = gql`
+export const ADD_USER = gql `
   mutation createUser($username: String!, $password: String!) {
     createUser(input: { username: $username, password: $password }) {
       ok
@@ -14,7 +16,7 @@ export const ADD_USER = gql`
   }
 `;
 
-export const LOGIN_USER = gql`
+export const LOGIN_USER = gql `
   mutation tokenAuth($username: String!, $password: String!) {
     tokenAuth(input: { username: $username, password: $password }) {
       payload
@@ -27,7 +29,7 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export const GET_POSTS = gql`
+export const GET_POSTS = gql `
   query posts($cursor: String) {
     posts(first: 45, after: $cursor, orderBy: "creation") {
       pageInfo {
@@ -35,13 +37,19 @@ export const GET_POSTS = gql`
         hasNextPage
       }
       edges {
-        cursor
         node {
           id
           title
           text
           likers {
             id
+          }
+          commentSet {
+            edges {
+              node {
+                id
+              }
+            }
           }
           creation
           commentCount
@@ -55,13 +63,13 @@ export const GET_POSTS = gql`
   }
 `;
 
-export const LIKED = gql`
+export const LIKED = gql `
   query liked($post_id: ID!) {
     liked(id: $post_id)
   }
 `;
 
-export const VERIFY_TOKEN = gql`
+export const VERIFY_TOKEN = gql `
   mutation verifyToken($token: String!) {
     verifyToken(input: { token: $token }) {
       payload
@@ -69,7 +77,7 @@ export const VERIFY_TOKEN = gql`
   }
 `;
 
-export const LOGOUT_USER = gql`
+export const LOGOUT_USER = gql `
   mutation {
     deleteTokenCookie(input: {}) {
       deleted
@@ -77,7 +85,7 @@ export const LOGOUT_USER = gql`
   }
 `;
 
-export const LIKE = gql`
+export const LIKE = gql `
   mutation like($post_id: ID!) {
     likePost(postId: $post_id) {
       ok
@@ -90,15 +98,36 @@ export const LIKE = gql`
   }
 `;
 
-export const CREATE_POST = gql`
+export const CREATE_POST = gql `
   mutation createPost($text: String!, $title: String!) {
     createPost(input: { text: $text, title: $title }) {
       ok
+      post {
+        id
+        title
+        text
+        likers {
+          id
+        }
+        commentSet {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+        creation
+        commentCount
+        user {
+          username
+          id
+        }
+      }
     }
   }
 `;
 
-export const REFRESH_TOKEN = gql`
+export const REFRESH_TOKEN = gql `
   mutation refreshToken($token: String!) {
     refreshToken(input: { refreshToken: $token }) {
       token
@@ -107,7 +136,7 @@ export const REFRESH_TOKEN = gql`
   }
 `;
 
-export const REVOKE_TOKEN = gql`
+export const REVOKE_TOKEN = gql `
   mutation revokeToken($token: String!) {
     revokeToken(input: { refreshToken: $token }) {
       revoked
@@ -115,7 +144,7 @@ export const REVOKE_TOKEN = gql`
   }
 `;
 
-export const SELF_USER = gql`
+export const SELF_USER = gql `
   query self_user {
     user {
       id
@@ -138,7 +167,7 @@ export const SELF_USER = gql`
   }
 `;
 
-export const SELF_POSTS = gql`
+export const SELF_POSTS = gql `
   query self_posts($cursor: String) {
     post(first: 20, orderBy: "creation", after: $cursor) {
       edges {
@@ -146,6 +175,13 @@ export const SELF_POSTS = gql`
           id
           likers {
             id
+          }
+          commentSet {
+            edges {
+              node {
+                id
+              }
+            }
           }
           text
           title
@@ -160,7 +196,7 @@ export const SELF_POSTS = gql`
   }
 `;
 
-export const GET_USER = gql`
+export const GET_USER = gql `
   query get_user($id: ID!) {
     userGet(id: $id) {
       username
@@ -184,7 +220,7 @@ export const GET_USER = gql`
   }
 `;
 
-export const USER_POSTS = gql`
+export const USER_POSTS = gql `
   query user_posts($cursor: String, $id: ID!) {
     userPost(first: 10, orderBy: "creation", after: $cursor, id: $id) {
       edges {
@@ -192,6 +228,13 @@ export const USER_POSTS = gql`
           id
           likers {
             id
+          }
+          commentSet {
+            edges {
+              node {
+                id
+              }
+            }
           }
           text
           title
@@ -206,7 +249,7 @@ export const USER_POSTS = gql`
   }
 `;
 
-export const FOLLOW = gql`
+export const FOLLOW = gql `
   mutation followUser($id: ID!) {
     followUser(id: $id) {
       ok

@@ -4,9 +4,10 @@ import { useQuery } from "@apollo/client";
 import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+import Offline from "./Offline";
 
 function Home() {
-  const { loading, data, error, fetchMore } = useQuery(GET_POSTS);
+  const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS);
   const [spin, setSpin] = useState(false);
 
   if (loading)
@@ -21,7 +22,14 @@ function Home() {
       </div>
     );
 
-  if (error) return `${error}`;
+  if (error) {
+    return (
+      <>
+        <Offline />
+        <button onClick={refetch}>Refresh</button>
+      </>
+    );
+  }
 
   const more = () => {
     fetchMore({
@@ -57,6 +65,7 @@ function Home() {
             key={node.id}
             {...node}
             likes={node.likers.length}
+            comments={node.comments.length}
             user_id={node.user.id}
             username={node.user.username}
           />

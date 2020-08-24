@@ -41,10 +41,11 @@ const Routes = () => {
         <animated.div key={`${key}anim`} style={props} className="container">
           <Switch location={item}>
             <AuthenticationRoute exact path="/login" component={Login} />
+            <AuthenticationRoute exact path="/register" component={Register} />
+
             <PrivateRoute exact path="/" component={Home} />
             <PrivateRoute exact path="/add-post" component={NewPost} />
             <PrivateRoute exact path="/account" component={Account} />
-            <AuthenticationRoute exact path="/register" component={Register} />
             <PrivateRoute exact path="/user/:id" component={User} />
             <Route component={NotFound} />
           </Switch>

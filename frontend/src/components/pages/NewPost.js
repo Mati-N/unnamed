@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_POST } from "../../Queries";
+import { CREATE_POST, GET_POSTS } from "../../Queries";
 import AlertContext from "../../context/alert/AlertContext";
 import { Redirect } from "react-router-dom";
 
@@ -48,14 +48,40 @@ const NewPost = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addPost({ variables: { title: state.title, text: state.content } })
+    addPost({
+      variables: { title: state.title, text: state.content },
+      update: (cache, { data }) => {
+        if (cache) {
+          let { posts } = cache.readQuery({ query: GET_POSTS });
+          console.log(posts);
+          const newData = {
+            ...posts,
+            edges: [
+              {
+                __typename: "PostNodeEdge",
+                node: data.createPost.post,
+              },
+              ...posts.edges,
+            ],
+          };
+          cache.writeQuery({
+            query: GET_POSTS,
+            data: {
+              posts: newData,
+            },
+          });
+        }
+      },
+    })
       .catch((e) => console.log(e))
       .then((data) => {
-        if (data !== null && data.data.createPost.ok) {
-          setAlert("Post Sent", "primary");
-          setSent(true);
-        } else {
-          setAlert("Something went wrong", "warning");
+        if (data) {
+          if (data !== null && data.data.createPost.ok) {
+            setAlert("Post Sent", "primary");
+            setSent(true);
+          } else {
+            setAlert("Something went wrong", "warning");
+          }
         }
       });
   };

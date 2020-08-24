@@ -7,6 +7,7 @@ import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import { Link, Redirect } from "react-router-dom";
+import Offline from "./Offline";
 
 const User = ({ match }) => {
   const {
@@ -18,7 +19,7 @@ const User = ({ match }) => {
     variables: { id: match.params.id },
   });
   const { Logout, user } = useContext(AuthContext);
-  const { removeAlert } = useContext(AlertContext);
+  const { removeAlert, setAlert } = useContext(AlertContext);
   const [spin, setSpin] = useState(false);
   const [following, setFollowing] = useState({
     first: true,
@@ -47,7 +48,9 @@ const User = ({ match }) => {
       </div>
     );
 
-  if (error || user_error) return `${error}`;
+  if (error || user_error) {
+    return <Offline />;
+  }
 
   const more = () => {
     fetchMore({
@@ -87,7 +90,6 @@ const User = ({ match }) => {
           following: !following.following,
           followers: followUser.user.followers.edges.length,
         });
-        console.log(data);
       }
     );
   };
@@ -199,6 +201,7 @@ const User = ({ match }) => {
             key={`${node.id}k`}
             {...node}
             likes={node.likers.length}
+            comments={node.comments.length}
             user_id={user_data.userGet.id}
             username={user_data.userGet.username}
           />

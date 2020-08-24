@@ -152,7 +152,6 @@ $light-color: rgb(238, 238, 238);
     }
 
     .like-icon:hover {
-      box-shadow: inset 0.3em 0.3em 0.3em $teal-color;
       background-color: $teal-color;
       opacity: 0.5;
     }
@@ -167,6 +166,11 @@ $light-color: rgb(238, 238, 238);
     .like:focus {
       animation-play-state: running;
     }
+  }
+  .like:hover {
+    box-shadow: inset 0.3em 0.3em 0.3em $teal-color;
+    border-radius: 40em;
+    overflow: visible;
   }
 }
 
