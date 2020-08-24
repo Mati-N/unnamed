@@ -1,6 +1,5 @@
 from django.db import models
 from datetime import datetime
-from .changeTime import *
 import pytz
 from django.contrib.auth.models import User
 
@@ -16,10 +15,6 @@ class Post(models.Model):
 
     def __str__(self):
         return f"Post {self.id}: {self.title}: created {self.before()} ago"
-
-    def before(self):
-        d = str(utc.localize(datetime.now()) - self.creation)
-        return changeTime(d)
 
 # Comment model
 class Comment(models.Model):
