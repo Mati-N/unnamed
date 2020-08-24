@@ -166,8 +166,7 @@ const AuthState = (props) => {
         loggedIn,
         user: state.user,
       }
-    } >
-    {
+    } > {
       props.children
     } <
     /AuthContext.Provider>
