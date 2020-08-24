@@ -201,7 +201,7 @@ const User = ({ match }) => {
             key={`${node.id}k`}
             {...node}
             likes={node.likers.length}
-            comments={node.comments.length}
+            comments={node.commentSet.length}
             user_id={user_data.userGet.id}
             username={user_data.userGet.username}
           />

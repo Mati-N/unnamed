@@ -189,7 +189,7 @@ const Account = () => {
             key={`${node.id}k`}
             {...node}
             likes={node.likers.length}
-            comments={node.comments.length}
+            comments={node.commentSet.length}
             user_id={user_data.user.id}
             username="You"
           />
