@@ -141,23 +141,26 @@ $light-color: rgb(238, 238, 238);
     }
   }
 
-  .like {
-    overflow: auto;
-    display: inline-block;
-    width: 8%;
-    .like-icon {
-      display: inline-block;
-      padding: 0.2em;
-      margin: 0.1em;
-      height: 1.8em;
-      width: 1.8em;
-      transform: scale(0.9);
-      transition: all 0.2s;
-    }
+  .info-bottom {
+    display: flex;
+    justify-content: space-around;
+    width: 17%;
 
-    .like-icon:hover {
-      opacity: 0.5;
-      transform: scale(0.75);
+    .like {
+      .like-icon {
+        display: inline-block;
+        padding: 0.2em;
+        margin: 0.1em;
+        height: 1.8em;
+        width: 1.8em;
+        transform: scale(0.9);
+        transition: all 0.2s;
+      }
+
+      .like-icon:hover {
+        opacity: 0.5;
+        transform: scale(0.75);
+      }
     }
   }
 }
