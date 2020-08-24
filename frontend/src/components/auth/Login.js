@@ -8,6 +8,7 @@ function Login() {
     password: "",
   });
   const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
   const Auth = useContext(AuthContext);
   const { setAlert, removeAlert } = useContext(AlertContext);
   useEffect(() => {

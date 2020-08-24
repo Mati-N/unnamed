@@ -29,5 +29,8 @@
     "react-spinners-kit": "^1.9.1",
     "react-spring": "^8.0.27",
     "react-waypoint": "^9.0.3"
+  },
+  "dependencies": {
+    "js-cookie": "^2.2.1"
   }
 }
