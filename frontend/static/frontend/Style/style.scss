@@ -142,7 +142,7 @@ $light-color: rgb(238, 238, 238);
   }
 
   .like {
-    width: 30%;
+    min-width: 10%;
     display: inline-block;
     .like-icon {
       display: inline-block;

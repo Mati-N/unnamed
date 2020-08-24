@@ -190,8 +190,8 @@ const PostItem = ({
                 />
               </svg>
             </Link>
+            {state.comments > 0 && state.comments}
           </span>
-          {state.comments > 0 && state.comments}
         </>
       )}
     </div>
