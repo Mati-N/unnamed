@@ -49,6 +49,7 @@ function Navbar() {
             rx="0.25em"
           ></rect>
           <rect
+            className="line1"
             fill="white"
             y="30"
             width="100"
