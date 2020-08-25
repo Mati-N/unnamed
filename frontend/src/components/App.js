@@ -25,11 +25,20 @@ function App() {
         <AuthState>
           <Router>
             <Navbar />
-
-            <div className="app">
+            <a
+              style={{
+                opacity: 0,
+              }}
+              class="skip-link"
+              href="#main"
+            >
+              Skip to main
+            </a>
+            <main className="app">
               <Alert />
               <Routes />
-            </div>
+            </main>
+            <footer>footer</footer>
           </Router>
         </AuthState>
       </AlertState>
