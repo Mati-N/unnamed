@@ -92,7 +92,12 @@ const NewPost = () => {
     <div className="main">
       <form onSubmit={onSubmit} method="post" className="form-auth">
         <div className="form-group">
-          <label display="none" htmlFor="title">
+          <label
+            style={{
+              opacity: 0,
+            }}
+            htmlFor="title"
+          >
             Title
           </label>
           <input

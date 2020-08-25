@@ -46,7 +46,7 @@ function Login() {
       <form className="form-auth" method="post" onSubmit={onSubmit}>
         <p className="h2">Login</p>
         <div className="form-group">
-          <label display="none" htmlFor="username">
+          <label style={{ opacity: 0 }} htmlFor="username">
             Username
           </label>
           <input
@@ -59,7 +59,12 @@ function Login() {
           />
         </div>
         <div className="form-group">
-          <label display="none" htmlFor="password">
+          <label
+            style={{
+              opacity: 0,
+            }}
+            htmlFor="password"
+          >
             Password
           </label>
           <input
