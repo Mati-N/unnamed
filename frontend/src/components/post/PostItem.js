@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLazyQuery, useMutation, from } from "@apollo/client";
 import { LIKED, LIKE } from "../../Queries";
 import { Link } from "react-router-dom";
-import Liked from "../../../static/frontend/SVG/like.svg";
-import Heart from "../../../static/frontend/SVG/heart.svg";
+import Liked from "../SVG/Like";
+import Heart from "../SVG/Heart";
 import { useSpring, animated } from "react-spring";
 
 const PostItem = ({
