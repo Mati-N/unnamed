@@ -112,7 +112,9 @@ const NewPost = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="content">Content</label>
+          <label htmlFor="content" display="none">
+            Content
+          </label>
           <textarea
             name="content"
             value={state.text}
@@ -120,6 +122,7 @@ const NewPost = () => {
             name="content"
             rows="3"
             onChange={onChange}
+            id="content"
           ></textarea>
         </div>
         <button disabled={disabled} type="submit" className="btn btn-teal">

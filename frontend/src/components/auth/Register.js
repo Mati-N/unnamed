@@ -68,6 +68,7 @@ function Register() {
             name="username"
             onChange={onChange}
             placeholder="Username"
+            id="username"
             value={registerInfo.username}
           />
         </div>
@@ -76,6 +77,7 @@ function Register() {
             Password
           </label>
           <input
+            id="password"
             type="password"
             className="form-control"
             name="password"
