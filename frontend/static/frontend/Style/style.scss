@@ -249,20 +249,17 @@ $light-color: rgb(238, 238, 238);
 nav {
   z-index: 100000000;
   font-weight: 200;
-  height: 8vh;
+  height: 12vh;
   display: block;
   background-color: $teal-color;
   align-items: center;
-  padding: 0.2em;
   margin-bottom: auto;
 
   .nav-top {
-
     .navbar-brand {
       color: $light-color;
       padding: 0.4em;
       font-size: 1.9em !important;
-      height: inherit;
     }
 
     .navbar-brand:hover {
