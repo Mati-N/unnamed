@@ -1,16 +1,16 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, lazy } from "react";
 import { Switch, useLocation, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import AuthenticationRoute from "./AuthenticationRoute";
 import { useTransition, animated, config } from "react-spring";
-import Home from "../pages/Home";
-import Account from "../pages/Account";
-import NewPost from "../pages/NewPost";
-import Login from "../auth/Login";
-import Register from "../auth/Register";
-import NotFound from "../pages/NotFound";
+const Home = lazy(() => import("../pages/Home"));
+const Account = lazy(() => import("../pages/Account"));
+const NewPost = lazy(() => import("../pages/NewPost"));
+const Login = lazy(() => import("../auth/Login"));
+const Register = lazy(() => import("../auth/Register"));
+const NotFound = lazy(() => import("../pages/NotFound"));
 import AuthContext from "../../context/auth/AuthContext";
-import User from "../pages/User";
+const User = lazy(() => import("../pages/User"));
 
 const Routes = () => {
   const { loggedIn } = useContext(AuthContext);

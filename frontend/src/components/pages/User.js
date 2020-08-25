@@ -1,13 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, lazy } from "react";
 import { GET_USER, USER_POSTS, FOLLOW } from "../../Queries";
 import { useQuery, useMutation } from "@apollo/client";
-import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
-import { Link, Redirect } from "react-router-dom";
-import Offline from "./Offline";
+import { Redirect } from "react-router-dom";
+const Offline = lazy(() => import("./Offline"));
+const PostItem = lazy(() => import("../post/PostItem"));
 
 const User = ({ match }) => {
   const {

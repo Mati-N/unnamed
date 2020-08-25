@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, lazy } from "react";
 import { SELF_POSTS, SELF_USER } from "../../Queries";
 import { useQuery } from "@apollo/client";
-import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import { Link } from "react-router-dom";
+const PostItem = lazy(() => import("../post/PostItem"));
 
 const Account = () => {
   const {
