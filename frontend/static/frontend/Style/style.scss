@@ -21,10 +21,6 @@ $light-color: rgb(238, 238, 238);
   display: none;
 }
 
-ul {
-  list-style-type: none;
-}
-
 .form-auth {
   padding: 3em;
   height: 100%;
@@ -253,17 +249,20 @@ ul {
 nav {
   z-index: 100000000;
   font-weight: 200;
-  height: 12vh;
+  height: 8vh;
   display: block;
   background-color: $teal-color;
   align-items: center;
+  padding: 0.2em;
   margin-bottom: auto;
 
   .nav-top {
+
     .navbar-brand {
       color: $light-color;
       padding: 0.4em;
       font-size: 1.9em !important;
+      height: inherit;
     }
 
     .navbar-brand:hover {
@@ -285,10 +284,6 @@ nav {
     min-height: 8vh;
     margin: 0;
     right: 5;
-
-    li {
-      width: auto;
-    }
 
     .right {
       right: 0;
