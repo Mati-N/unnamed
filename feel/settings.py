@@ -158,7 +158,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LANGUAGE_CODE = 'en-us'
 
-# I need to add this you know you probably know you don't ??????????
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
