@@ -286,6 +286,10 @@ nav {
     margin: 0;
     right: 5;
 
+    li {
+      width: auto;
+    }
+
     .right {
       right: 0;
       display: flex;
