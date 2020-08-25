@@ -75,8 +75,8 @@ function Navbar() {
         ref={navItems}
       >
         {!isAuthenticated && (
-          <li className="right" id="right">
-            <ul>
+          <li>
+            <ul className="right" id="right">
               <li className="navItem">
                 <Link to="/login" className="nav-link" onClick={hide}>
                   Login
@@ -92,8 +92,8 @@ function Navbar() {
         )}
         {isAuthenticated && (
           <>
-            <li className="left">
-              <ul>
+            <li>
+              <ul className="left">
                 <li className="navItem">
                   <Link className="nav-link" to="/" onClick={hide}>
                     Home
@@ -106,8 +106,8 @@ function Navbar() {
                 </li>
               </ul>
             </li>
-            <li className="right">
-              <ul>
+            <li>
+              <ul className="right">
                 <li className="navItem">
                   <button
                     className="to-up"
