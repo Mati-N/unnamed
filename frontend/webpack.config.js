@@ -3,8 +3,7 @@ module.exports = {
     main: ["core-js/stable", "regenerator-runtime/runtime", "src/main.js"],
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
@@ -20,8 +19,12 @@ module.exports = {
       },
     ],
   },
+  devtool: 'source-map',
   watch: true,
   watchOptions: {
     ignored: /node_modules/,
   },
+  optimization: {
+    minimize: true
+  }
 };
