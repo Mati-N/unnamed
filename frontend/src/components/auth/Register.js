@@ -59,6 +59,9 @@ function Register() {
       <form className="form-auth" method="post" onSubmit={onSubmit}>
         <p className="h2">Register</p>
         <div className="form-group">
+          <label display="none" htmlFor="username">
+            Username
+          </label>
           <input
             type="text"
             className="form-control"
@@ -69,6 +72,9 @@ function Register() {
           />
         </div>
         <div className="form-group">
+          <label display="none" htmlFor="password">
+            Password
+          </label>
           <input
             type="password"
             className="form-control"

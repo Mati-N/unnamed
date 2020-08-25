@@ -46,6 +46,9 @@ function Login() {
       <form className="form-auth" method="post" onSubmit={onSubmit}>
         <p className="h2">Login</p>
         <div className="form-group">
+          <label display="none" htmlFor="username">
+            Username
+          </label>
           <input
             type="text"
             className="form-control"
@@ -56,6 +59,9 @@ function Login() {
           />
         </div>
         <div className="form-group">
+          <label display="none" htmlFor="password">
+            Password
+          </label>
           <input
             type="password"
             className="form-control"

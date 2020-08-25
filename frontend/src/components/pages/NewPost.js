@@ -92,6 +92,9 @@ const NewPost = () => {
     <div className="main">
       <form onSubmit={onSubmit} method="post" className="form-auth">
         <div className="form-group">
+          <label display="none" htmlFor="title">
+            Title
+          </label>
           <input
             type="text"
             className="form-control"
@@ -104,7 +107,7 @@ const NewPost = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="exampleFormControlTextarea1">Content</label>
+          <label htmlFor="content">Content</label>
           <textarea
             name="content"
             value={state.text}
