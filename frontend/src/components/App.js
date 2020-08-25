@@ -35,7 +35,7 @@ function App() {
                 style={{
                   opacity: 0,
                 }}
-                class="skip-link"
+                className="skip-link"
                 href="#main"
               >
                 Skip to main
