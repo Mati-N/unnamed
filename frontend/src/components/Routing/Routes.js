@@ -1,15 +1,17 @@
-import React, { Fragment, useContext, useEffect, lazy } from "react";
+import React, { Fragment, useContext, useEffect, lazy, Suspense } from "react";
 import { Switch, useLocation, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import AuthenticationRoute from "./AuthenticationRoute";
 import { useTransition, animated, config } from "react-spring";
+import AuthContext from "../../context/auth/AuthContext";
+import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+
 const Home = lazy(() => import("../pages/Home"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
 const Login = lazy(() => import("../auth/Login"));
 const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
-import AuthContext from "../../context/auth/AuthContext";
 const User = lazy(() => import("../pages/User"));
 
 const Routes = () => {
@@ -36,7 +38,7 @@ const Routes = () => {
   }, []);
 
   return (
-    <Fragment>
+    <Suspense fallback={<Spinner size={50} />}>
       {transitions.map(({ item, props, key }) => (
         <animated.div key={`${key}anim`} style={props} className="container">
           <Switch location={item}>
@@ -51,7 +53,7 @@ const Routes = () => {
           </Switch>
         </animated.div>
       ))}
-    </Fragment>
+    </Suspense>
   );
 };
 
