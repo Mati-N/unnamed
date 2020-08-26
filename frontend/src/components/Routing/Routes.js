@@ -15,7 +15,7 @@ const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const User = lazy(() => import("../pages/User"));
 
-const Routes = () => {
+const Routes = ({ client }) => {
   const { loggedIn } = useContext(AuthContext);
   const location = useLocation();
   const transitions = useTransition(location, (location) => location.pathname, {
@@ -68,7 +68,12 @@ const Routes = () => {
               <PrivateRoute exact path="/add-post" component={NewPost} />
               <PrivateRoute exact path="/account" component={Account} />
               <PrivateRoute exact path="/user/:id" component={User} />
-              <PrivateRoute exact path="/post/:id" component={Post} />
+              <PrivateRoute
+                exact
+                path="/post/:id"
+                component={Post}
+                client={client}
+              />
               <Route component={NotFound} />
             </Switch>
           </Suspense>

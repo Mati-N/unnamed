@@ -9,6 +9,7 @@ const Post = ({
   match: {
     params: { id },
   },
+  client,
 }) => {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_COMMENTS, {
     variables: { id },

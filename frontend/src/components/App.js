@@ -28,7 +28,7 @@ function App() {
 
             <main className="app" id="main">
               <Alert />
-              <Routes />
+              <Routes client={client} />
             </main>
             <footer>
               <a
