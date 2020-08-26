@@ -6,6 +6,7 @@ import { useTransition, animated, config } from "react-spring";
 import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
+const Post = lazy(() => import("../pages/Post"));
 const Home = lazy(() => import("../pages/Home"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
@@ -67,6 +68,7 @@ const Routes = () => {
               <PrivateRoute exact path="/add-post" component={NewPost} />
               <PrivateRoute exact path="/account" component={Account} />
               <PrivateRoute exact path="/user/:id" component={User} />
+              <PrivateRoute exact path="/post/:id" component={Post} />
               <Route component={NotFound} />
             </Switch>
           </Suspense>

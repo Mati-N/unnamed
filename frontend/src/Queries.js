@@ -29,6 +29,7 @@ export const LOGIN_USER = gql `
   }
 `;
 
+
 export const GET_POSTS = gql `
   query posts($cursor: String) {
     posts(first: 45, after: $cursor, orderBy: "creation") {
@@ -264,6 +265,34 @@ export const FOLLOW = gql `
         }
       }
       message
+    }
+  }
+`;
+
+
+
+
+
+
+
+
+
+export const GET_COMMENTS = gql `
+  query postComments($id: ID!, $cursor: String) {
+    postComments(id: $id, after: $cursor) {
+      edges {
+        node {
+          id
+          user {
+            username
+            id
+          }
+          content
+        }
+      }
+      pageInfo {
+        endCursor
+      }
     }
   }
 `;
