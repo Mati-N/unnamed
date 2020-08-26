@@ -1,1 +1,1 @@
-web: gunicorn feel.wsgi --log-file -
+web: python manage.py collectstatic; python manage.py compress; python manage.py collectstatic; gunicorn feel.wsgi --log-file -
