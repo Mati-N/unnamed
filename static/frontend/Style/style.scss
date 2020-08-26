@@ -22,7 +22,10 @@ $light-color: rgb(238, 238, 238);
 }
 
 .label-hide {
-  display: none;
+  opacity: 0;
+  height: 0.001em;
+  padding: 0em;
+  margin: 0em;
 }
 
 .form-auth {
