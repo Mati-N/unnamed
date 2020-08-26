@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
-import { useQuery } from "@apollo/client";
+import { useQuery, readQuery } from "@apollo/client";
 import { GET_POSTS, GET_COMMENTS } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
