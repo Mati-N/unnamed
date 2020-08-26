@@ -10,7 +10,7 @@ const Post = ({
     params: { id },
   },
 }) => {
-  const { loading, data, error, fetchMore, refetch } = useQuery(GET_COMMENTS, {
+  const { loading, data, error, fetchMore, refetch } = useQuery(GET_POST, {
     variables: { id },
   });
   const [spin, setSpin] = useState(true);
