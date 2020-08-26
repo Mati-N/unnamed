@@ -27,7 +27,9 @@ function Home() {
     return (
       <>
         <Offline />
-        <button onClick={refetch}>Refresh</button>
+        <button className="btn btn-teal" onClick={refetch}>
+          Refresh
+        </button>
       </>
     );
   }

@@ -59,7 +59,7 @@ function Register() {
       <form className="form-auth" method="post" onSubmit={onSubmit}>
         <p className="h2">Register</p>
         <div className="form-group">
-          <label style={{ opacity: 0 }} htmlFor="username">
+          <label className="label-hide" htmlFor="username">
             Username
           </label>
           <input
@@ -73,7 +73,7 @@ function Register() {
           />
         </div>
         <div className="form-group">
-          <label style={{ opacity: 0 }} htmlFor="password">
+          <label className="label-hide" htmlFor="password">
             Password
           </label>
           <input
