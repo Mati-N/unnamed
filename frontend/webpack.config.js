@@ -19,6 +19,9 @@ module.exports = {
       },
     ],
   },
+  output: {
+    publicPath: "/static/frontend/"
+  },
   devtool: "source-map",
   watch: true,
   watchOptions: {
