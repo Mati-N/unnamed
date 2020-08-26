@@ -253,6 +253,7 @@ class Query(object):
     user = graphene.Field(UserType)
     user_get = graphene.Field(UserType, id=graphene.ID())
     comments = DjangoFilterConnectionField(CommentNode, filterset_class=CommentFilter)
+    post_comments = DjangoFilterConnectionField(CommentNode, filterset_class=CommentFilter, id=graphene.ID())
     likes = graphene.List(LikeType)
     is_following = graphene.Boolean(id=graphene.ID())
     liked = graphene.Boolean(id=graphene.ID())
@@ -267,6 +268,9 @@ class Query(object):
             return User.objects.filter(username=username)
 
         return User.objects.all()
+
+    def resolve_post_comments(self, info, id, **kwargs):
+        return Comment.objects.filter(post=Post.objects.get(id=id))
 
     def resolve_is_following(self, info, id, **kwargs):
         return len(Following.objects.filter(user=info.context.user, user_f=User.objects.get(id=id))) > 0
@@ -304,8 +308,8 @@ class Query(object):
         # liked=(len(Like.objects.filter(user=info.context.user, post=Post)) > 0), 
         return Post.objects.all().annotate(like_count=Count('likers')).order_by('-like_count')
 
-    def reslove_comments(self, info, order="creation", **kwargs):
-        return Comment.objects.all().order_by(order)
+    def reslove_comments(self, info,  **kwargs):
+        return Comment.objects.all()
 
     def resolve_likes(self, info, **kwargs):
         return Like.objects.all()
