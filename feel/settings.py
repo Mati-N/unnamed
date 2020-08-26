@@ -80,6 +80,7 @@ TEMPLATES = [
     },
 ]
 
+# Change the things right now
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
