@@ -50,11 +50,10 @@ const Post = ({
 
   const {
     post: {
-      posts: {
-        edges: { node: post },
-      },
+      posts: { edges },
     },
   } = data;
+  const post = edges[0].node;
 
   return (
     <div className="main">
