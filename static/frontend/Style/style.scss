@@ -6,21 +6,6 @@ $light-color: rgb(238, 238, 238);
   src: url("../Fonts/Alata-Regular.woff2") format("woff2");
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Alata", sans-serif;
-  font-weight: normal;
-  z-index: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-*::-webkit-scrollbar {
-  display: none;
-}
-
 .label-hide {
   opacity: 0;
   height: 0.001em;
@@ -31,20 +16,6 @@ $light-color: rgb(238, 238, 238);
 .form-auth {
   padding: 3em;
   height: 100%;
-}
-
-.app {
-  min-height: 90vh;
-  width: 100vw;
-  display: block;
-  margin: auto;
-  margin-top: 12vh;
-}
-
-.container {
-  width: 100vw;
-  position: absolute;
-  margin: auto;
 }
 
 .post-body {

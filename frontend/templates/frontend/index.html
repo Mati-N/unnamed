@@ -8,6 +8,36 @@
   <meta name="Description" content="This is a social media app I'm making to learn how to make web apps">
   <title>UNNAMED
   </title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Alata", sans-serif;
+      font-weight: normal;
+      z-index: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    .app {
+      min-height: 90vh;
+      width: 100vw;
+      display: block;
+      margin: auto;
+      margin-top: 12vh;
+    }
+
+    .container {
+      width: 100vw;
+      position: absolute;
+      margin: auto;
+    }
+  </style>
   {% load static %}
   <link rel="stylesheet" href="{% static 'frontend/Style/style.css' %}" />
   <link rel="stylesheet" href="{% static 'frontend/Style/bootstrap.min.css' %}" />
