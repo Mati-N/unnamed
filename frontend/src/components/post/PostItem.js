@@ -3,9 +3,9 @@ import { useLazyQuery, useMutation, from } from "@apollo/client";
 import { LIKED, LIKE } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
-const Like = lazy(() => import("../SVG/Like"));
-const Heart = lazy(() => import("../SVG/Heart"));
-const Comments = lazy(() => import("../SVG/Comments"));
+const Liked = lazy(() => import("../SVG/Like.svg"));
+const Heart = lazy(() => import("../SVG/Heart.svg"));
+const Comments = lazy(() => import("../SVG/Comments.svg"));
 
 const PostItem = ({
   text,
