@@ -44,7 +44,7 @@ const Post = ({
     });
   };
 
-  if (loading) {
+  if (loading && !data) {
     return <Spinner size={40} />;
   }
 
