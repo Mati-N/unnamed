@@ -19,6 +19,7 @@ const Post = ({
       id,
     },
   });
+
   console.log(post);
   const [spin, setSpin] = useState(true);
 
