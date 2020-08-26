@@ -161,7 +161,7 @@ const PostItem = ({
             {state.likes > 0 && state.likes}
           </span>
           <span className="like">
-            <Link to={`/post/${id}`}>
+            <Link to={`/post/${id}`} className="like-icon">
               <Comments />
             </Link>
             {state.comments > 0 && state.comments}
