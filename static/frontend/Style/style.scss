@@ -6,6 +6,12 @@ $light-color: rgb(238, 238, 238);
   src: url("../Fonts/Alata-Regular.woff2") format("woff2");
 }
 
+* {
+  font-family: "Alata",
+    sans-serif;
+
+}
+
 .label-hide {
   opacity: 0;
   height: 0.001em;
