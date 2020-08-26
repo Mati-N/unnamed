@@ -37,7 +37,6 @@ ALLOWED_HOSTS = [ 'selamselam.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
     'api',
     'frontend',
     'django.contrib.admin',
@@ -45,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'graphene_django',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
 ]
