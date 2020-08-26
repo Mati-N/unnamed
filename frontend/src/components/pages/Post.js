@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import PostItem from "../post/PostItem";
+/*import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
 import { GET_POSTS, GET_COMMENTS } from "../../Queries";
-import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+import { ImpulseSpinner as Spinner } from "react-spinners-kit";*/
 
-const Post = ({
+/*const Post = ({
   match: {
     params: { id },
   },
@@ -62,6 +62,8 @@ const Post = ({
       {(loading || spin) && <Spinner />}
     </div>
   );
-};
+};*/
+
+const Post = () => <h1>I l</h1>;
 
 export default Post;
