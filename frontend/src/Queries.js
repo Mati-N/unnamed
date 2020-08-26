@@ -65,7 +65,7 @@ export const GET_POSTS = gql `
 `;
 
 export const GET_POST = gql `
-  query post($id: ID!) {
+  query post($id: ID!, $cursor: String) {
     posts(id: $id) {
       edges {
         node {
