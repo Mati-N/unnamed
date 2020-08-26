@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
-import { useQuery, readQuery } from "@apollo/client";
+import { useQuery, Cache } from "@apollo/client";
 import { GET_POSTS, GET_COMMENTS } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
@@ -13,7 +13,7 @@ const Post = ({
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_COMMENTS, {
     variables: { id },
   });
-  const { post } = readQuery({
+  const { post } = Cache.readQuery({
     query: GET_POSTS,
     variables: {
       id,
