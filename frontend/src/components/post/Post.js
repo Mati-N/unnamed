@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
-import { useQuery, ApolloContextValue } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_POSTS, GET_COMMENTS } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
@@ -13,9 +13,8 @@ const Post = ({
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_COMMENTS, {
     variables: { id },
   });
-  const apc = useContext(ApolloContextValue);
 
-  const { post } = apc.readQuery({
+  const { post } = client.readQuery({
     query: GET_POSTS,
     variables: {
       id,
