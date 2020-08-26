@@ -13,7 +13,7 @@ const Post = ({
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_COMMENTS, {
     variables: { id },
   });
-  const { post } = client.readQuery({
+  const { post } = readQuery({
     query: GET_POSTS,
     variables: {
       id,
