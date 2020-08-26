@@ -6,7 +6,7 @@ import { useTransition, animated, config } from "react-spring";
 import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
-const Post = lazy(() => import("../pages/Post"));
+import Post from "../post/Post";
 const Home = lazy(() => import("../pages/Home"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
