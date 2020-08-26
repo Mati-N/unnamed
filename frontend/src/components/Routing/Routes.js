@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, lazy, Suspense } from "react";
+import React, { useContext, useEffect, lazy, Suspense } from "react";
 import { Switch, useLocation, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import AuthenticationRoute from "./AuthenticationRoute";
@@ -38,22 +38,41 @@ const Routes = () => {
   }, []);
 
   return (
-    <Suspense fallback={<Spinner size={50} />}>
+    <>
       {transitions.map(({ item, props, key }) => (
         <animated.div key={`${key}anim`} style={props} className="container">
-          <Switch location={item}>
-            <AuthenticationRoute exact path="/login" component={Login} />
-            <AuthenticationRoute exact path="/register" component={Register} />
+          <Suspense
+            fallback={
+              <div className="main">
+                <div className="spinner">
+                  <Spinner
+                    size={50}
+                    style={{
+                      margin: "auto",
+                    }}
+                  />
+                </div>
+              </div>
+            }
+          >
+            <Switch location={item}>
+              <AuthenticationRoute exact path="/login" component={Login} />
+              <AuthenticationRoute
+                exact
+                path="/register"
+                component={Register}
+              />
 
-            <PrivateRoute exact path="/" component={Home} />
-            <PrivateRoute exact path="/add-post" component={NewPost} />
-            <PrivateRoute exact path="/account" component={Account} />
-            <PrivateRoute exact path="/user/:id" component={User} />
-            <Route component={NotFound} />
-          </Switch>
+              <PrivateRoute exact path="/" component={Home} />
+              <PrivateRoute exact path="/add-post" component={NewPost} />
+              <PrivateRoute exact path="/account" component={Account} />
+              <PrivateRoute exact path="/user/:id" component={User} />
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
         </animated.div>
       ))}
-    </Suspense>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext } from "react";
 import AlertContext from "../../context/alert/AlertContext";
-import { useSpring, animated, config } from "react-spring";
+import { useSpring, animated } from "react-spring";
 
 const Alert = () => {
   const { alert_info } = useContext(AlertContext);
@@ -11,7 +11,7 @@ const Alert = () => {
 
   if (alert_info != null) {
     return (
-      <Fragment>
+      <>
         <animated.div
           style={animation}
           className={`app-alert alert-${alert_info.alert_type}`}
@@ -35,7 +35,7 @@ const Alert = () => {
           </svg>
           <h1 style={{ display: "inline" }}>{alert_info.msg}</h1>
         </animated.div>
-      </Fragment>
+      </>
     );
   }
   return null;
