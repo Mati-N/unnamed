@@ -296,13 +296,13 @@ class Query(object):
         text = kwargs.get('text')
 
         if id is not None:
-            return Post.objects.get(pk=id)
+            return Post.objects.filter(pk=id)
         elif text is not None and title is not None:
-            return Post.objects.filter(text=text, title=title, order_by=order)
+            return Post.objects.filter(text=text, title=title)
         elif text is not None:
-            return Post.objects.filter(text=text, order_by=order)
+            return Post.objects.filter(text=text)
         elif title is not None:
-            return Post.objects.filter(title=title, order_by=order)
+            return Post.objects.filter(title=title)
 
 
         # liked=(len(Like.objects.filter(user=info.context.user, post=Post)) > 0), 
