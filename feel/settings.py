@@ -30,7 +30,7 @@ SECRET_KEY = '6z7orf7**r)yisjf5@bkwe$#_s1n^&-%&$l!+2#n=@7ulknv_%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'selamselam.herokuapp.com']
 
 
 
