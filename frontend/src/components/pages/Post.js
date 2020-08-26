@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
-import { readQuery, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_POSTS, GET_COMMENTS } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
@@ -19,6 +19,7 @@ const Post = ({
       id,
     },
   });
+  console.log(post);
   const [spin, setSpin] = useState(true);
 
   const more = () => {
