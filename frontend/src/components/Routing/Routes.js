@@ -68,12 +68,7 @@ const Routes = ({ client }) => {
               <PrivateRoute exact path="/add-post" component={NewPost} />
               <PrivateRoute exact path="/account" component={Account} />
               <PrivateRoute exact path="/user/:id" component={User} />
-              <PrivateRoute
-                exact
-                path="/post/:id"
-                component={Post}
-                client={client}
-              />
+              <PrivateRoute exact path="/post/:id" component={Post} />
               <Route component={NotFound} />
             </Switch>
           </Suspense>

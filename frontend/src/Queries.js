@@ -64,6 +64,53 @@ export const GET_POSTS = gql `
   }
 `;
 
+export const GET_POST = gql `
+  query post($id: ID!) {
+    posts(id: $id) {
+      edges {
+        node {
+          id
+          title
+          text
+          likers {
+            id
+          }
+          commentSet {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+          creation
+          commentCount
+          user {
+            username
+            id
+          }
+        }
+      }
+    }
+
+    postComments(id: $id, after: $cursor) {
+      edges {
+        node {
+          id
+          user {
+            username
+            id
+          }
+          content
+        }
+      }
+      pageInfo {
+        endCursor
+      }
+    }
+  }
+`;
+
+
 export const LIKED = gql `
   query liked($post_id: ID!) {
     liked(id: $post_id)
@@ -265,34 +312,6 @@ export const FOLLOW = gql `
         }
       }
       message
-    }
-  }
-`;
-
-
-
-
-
-
-
-
-
-export const GET_COMMENTS = gql `
-  query postComments($id: ID!, $cursor: String) {
-    postComments(id: $id, after: $cursor) {
-      edges {
-        node {
-          id
-          user {
-            username
-            id
-          }
-          content
-        }
-      }
-      pageInfo {
-        endCursor
-      }
     }
   }
 `;

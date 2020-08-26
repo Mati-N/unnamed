@@ -1,55 +1,60 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
-import { GET_POSTS, GET_COMMENTS } from "../../Queries";
+import { GET_POST } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
 const Post = ({
   match: {
     params: { id },
   },
-  client,
 }) => {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_COMMENTS, {
     variables: { id },
   });
-
-  const { post } = client.readQuery({
-    query: GET_POSTS,
-    variables: {
-      id,
-    },
-  });
-
-  console.log(post);
   const [spin, setSpin] = useState(true);
 
   const more = () => {
     fetchMore({
       query: GET_COMMENTS,
-      variables: { cursor: data.postComments.pageInfo.endCursor },
+      variables: { cursor: data.post.postComments.pageInfo.endCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);
-        if (!previousResult.postComments.pageInfo.hasNextPage) {
+        if (!previousResult.post.postComments.pageInfo.hasNextPage) {
           setSpin(false);
           return previousResult;
         }
-        const newEdges = fetchMoreResult.postComments.edges;
-        const pageInfo = fetchMoreResult.postComments.pageInfo;
+        const newEdges = fetchMoreResult.post.postComments.edges;
+        const pageInfo = fetchMoreResult.post.postComments.pageInfo;
 
         return newEdges.length
           ? {
-              postComments: {
-                __typename: previousResult.postComments.__typename,
-                edges: [...previousResult.posts.edges, ...newEdges],
-                pageInfo,
+              post: {
+                ...previousResult.post,
+                postComments: {
+                  __typename: previousResult.post.postComments.__typename,
+                  edges: [...previousResult.post.posts.edges, ...newEdges],
+                  pageInfo,
+                },
               },
             }
           : previousResult;
       },
     });
   };
+
+  if (loading) {
+    return <Spinner size={40} />;
+  }
+
+  const {
+    post: {
+      posts: {
+        edges: { node: post },
+      },
+    },
+  } = data;
 
   return (
     <div className="main">
