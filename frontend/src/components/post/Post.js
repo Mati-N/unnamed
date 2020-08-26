@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
 import { useQuery, ApolloContextValue } from "@apollo/client";
@@ -13,7 +13,9 @@ const Post = ({
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_COMMENTS, {
     variables: { id },
   });
-  const { post } = ApolloContextValue.readQuery({
+  const apc = useContext(ApolloContextValue);
+
+  const { post } = apc.readQuery({
     query: GET_POSTS,
     variables: {
       id,
