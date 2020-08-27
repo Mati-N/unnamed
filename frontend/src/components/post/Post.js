@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, lazy } from "react";
 import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
 import { GET_POST } from "../../Queries";
