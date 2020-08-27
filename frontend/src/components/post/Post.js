@@ -50,6 +50,7 @@ const Post = ({
   console.log(data.posts.edges);
   const { node } = data.posts.edges[0];
 
+  return "i love nani ass";
   return (
     <div className="main">
       <PostItem
