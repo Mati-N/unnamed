@@ -6,7 +6,7 @@ import { useTransition, animated, config } from "react-spring";
 import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
-import Post from "../post/Post";
+const Post = lazy(() => import("../post/Post"));
 const Home = lazy(() => import("../pages/Home"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
@@ -15,7 +15,7 @@ const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const User = lazy(() => import("../pages/User"));
 
-const Routes = ({ client }) => {
+const Routes = () => {
   const { loggedIn } = useContext(AuthContext);
   const location = useLocation();
   const transitions = useTransition(location, (location) => location.pathname, {
