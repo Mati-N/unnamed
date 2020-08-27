@@ -61,7 +61,7 @@ const Post = ({
         username={node.user.username}
       /> */}
       <pre>
-        {node.user}
+        {node.user.username}
 
         {node.text}
       </pre>
