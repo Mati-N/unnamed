@@ -13,7 +13,7 @@ const Post = ({
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_POST, {
     variables: { id },
   });
-  const [spin, setSpin] = useState(true);
+  /*const [spin, setSpin] = useState(true);
 
   const more = () => {
     fetchMore({
@@ -43,19 +43,16 @@ const Post = ({
       },
     });
   };
-
+*/
   if (loading && !data) {
     return <Spinner size={40} />;
   }
 
-  const {
-    post: {
-      posts: { edges },
-    },
-  } = data;
-  const post = edges[0].node;
+  console.log(data);
+  //const post = edges[0].node;
 
-  return (
+  return <Spinner size={40} />;
+  /*return (
     <div className="main">
       <PostItem
         key={post.id}
@@ -67,7 +64,7 @@ const Post = ({
       />
       {(loading || spin) && <Spinner />}
     </div>
-  );
+  );*/
 };
 
 export default Post;
