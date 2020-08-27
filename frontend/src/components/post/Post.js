@@ -48,8 +48,8 @@ const Post = ({
     return <Spinner size={40} />;
   }
 
-  console.log(data.edges);
-  const post = data.edges.node;
+  console.log(data.posts.edges);
+  const post = data.posts.edges.node;
 
   return (
     <div className="main">
