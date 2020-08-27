@@ -37,10 +37,6 @@ const Routes = () => {
   useEffect(() => {
     loggedIn();
   }, []);
-
-  return (
-    <h1>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiii</h1>
-  );
   return (
     <>
       {transitions.map(({ item, props, key }) => (
@@ -71,7 +67,7 @@ const Routes = () => {
               <PrivateRoute exact path="/add-post" component={NewPost} />
               <PrivateRoute exact path="/account" component={Account} />
               <PrivateRoute exact path="/user/:id" component={User} />
-              <PrivateRoute exact path="/post/:id" component={Post} />
+              {/*<PrivateRoute exact path="/post/:id" component={Post} />*/}
               <Route component={NotFound} />
             </Switch>
           </Suspense>
