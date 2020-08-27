@@ -48,23 +48,17 @@ const Post = ({
     return <Spinner size={40} />;
   }
   const { node } = data.posts.edges[0];
-  console.log(node);
 
   return (
     <div className="main">
-      {/* <PostItem
+      <PostItem
         key={node.id}
-        {...node}
         likes={node.likers.length}
         comments={node.commentSet.length}
         user_id={node.user.id}
         username={node.user.username}
-      /> */}
-      <pre>
-        {node.user.username}
-
-        {node.text}
-      </pre>
+        {...node}
+      />
       {(loading || spin) && <Spinner />}
     </div>
   );
