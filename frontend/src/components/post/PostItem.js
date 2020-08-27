@@ -106,7 +106,8 @@ const PostItem = ({
       });
   };
 
-  return (
+  return <h1>"HI"</h1>;
+  /*return (
     <div className="post card">
       <div className="post-top card-top">
         <div className="post-info-top">
@@ -169,7 +170,7 @@ const PostItem = ({
         </div>
       )}
     </div>
-  );
+  );*/
 };
 
 export default PostItem;
