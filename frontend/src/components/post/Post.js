@@ -46,22 +46,29 @@ const Post = ({
     });
   };
 
-  if (loading && !data) {
+  /*if (loading && !data) {
     return <Spinner size={40} />;
-  }
+  }*/
   const { node } = data.posts.edges[0];
 
   return (
     <div className="main">
-      {/*<PostItem
+      <PostItem
         key={node.id}
-        likes={node.likers.length}
+        comments={50}
+        user_id={35}
+        id={35}
+        username="Ethiopian"
+        text=" "
+        title=" "
+        creation={new Date()}
+      />{" "}
+      {/*likes={node.likers.length}
         comments={node.commentSet.length}
         user_id={node.user.id}
         username={node.user.username}
         {...node}
-      />*/}
-      <Alert />
+  />*/}
       {(loading || spin) && <Spinner />}
     </div>
   );
