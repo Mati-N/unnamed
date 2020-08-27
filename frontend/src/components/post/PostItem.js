@@ -3,6 +3,7 @@ import { useLazyQuery, useMutation, from } from "@apollo/client";
 import { LIKED, LIKE } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
+
 const Liked = lazy(() => import("../SVG/Like.svg"));
 const Heart = lazy(() => import("../SVG/Heart.svg"));
 const Comments = lazy(() => import("../SVG/Comments.svg"));
@@ -106,8 +107,7 @@ const PostItem = ({
       });
   };
 
-  return <h1>"HI"</h1>;
-  /*return (
+  return (
     <div className="post card">
       <div className="post-top card-top">
         <div className="post-info-top">
@@ -170,7 +170,7 @@ const PostItem = ({
         </div>
       )}
     </div>
-  );*/
+  );
 };
 
 export default PostItem;

@@ -63,16 +63,18 @@ function Home() {
   return (
     <>
       <div className="main">
-        {data.posts.edges.map(({ node }) => (
-          <PostItem
+        {data.posts.edges.map(({ node }) =>
+          ({
+            /*<PostItem
             key={node.id}
             {...node}
             likes={node.likers.length}
             comments={node.commentSet.length}
             user_id={node.user.id}
             username={node.user.username}
-          />
-        ))}
+          />*/
+          }(<>{node.id}</>))
+        )}
         <Waypoint onEnter={more}>
           <div className="spinner">{spin && <Spinner size={40} />}</div>
         </Waypoint>
