@@ -49,7 +49,7 @@ const Post = ({
   }
 
   console.log(data.posts.edges);
-  const post = data.posts.edges.node;
+  const post = data.posts.edges[0].node;
 
   return (
     <div className="main">
