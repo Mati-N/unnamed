@@ -3,7 +3,7 @@ import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
 import { GET_POST } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
-const PostItem = lazy(() => import("../post/PostItem"));
+const PostItem = lazy(() => import("./PostItem"));
 
 const Post = ({
   match: {
@@ -52,14 +52,19 @@ const Post = ({
 
   return (
     <div className="main">
-      <PostItem
+      {/* <PostItem
         key={node.id}
         {...node}
         likes={node.likers.length}
         comments={node.commentSet.length}
         user_id={node.user.id}
         username={node.user.username}
-      />
+      /> */}
+      <pre>
+        {node.user}
+
+        {node.text}
+      </pre>
       {(loading || spin) && <Spinner />}
     </div>
   );
