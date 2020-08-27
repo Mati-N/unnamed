@@ -47,20 +47,18 @@ const Post = ({
   if (loading && !data) {
     return <Spinner size={40} />;
   }
-
   console.log(data.posts.edges);
-  const post = data.posts.edges[0].node;
-  console.log(post);
+  const { node } = data.posts.edges[0];
 
   return (
     <div className="main">
       <PostItem
-        key={post.id}
-        {...post}
-        likes={post.likers.length}
-        comments={post.commentSet.length}
-        user_id={post.user.id}
-        username={post.user.username}
+        key={node.id}
+        {...node}
+        likes={node.likers.length}
+        comments={node.commentSet.length}
+        user_id={node.user.id}
+        username={node.user.username}
       />
       {(loading || spin) && <Spinner />}
     </div>
