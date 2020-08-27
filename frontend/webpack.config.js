@@ -20,7 +20,7 @@ module.exports = {
     ],
   },
   output: {
-    publicPath: "/static/frontend/"
+    publicPath: "/static/frontend/",
   },
   devtool: "source-map",
   watch: true,
@@ -29,8 +29,5 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    splitChunks: {
-      chunks: 'all',
-    },
   }
 };
