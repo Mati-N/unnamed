@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import PostItem from "../post/PostItem";
 import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
 import { GET_POST } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+const PostItem = lazy(() => import("../post/PostItem"));
 
 const Post = ({
   match: {
@@ -47,10 +47,9 @@ const Post = ({
   if (loading && !data) {
     return <Spinner size={40} />;
   }
-  console.log(data.posts.edges);
   const { node } = data.posts.edges[0];
+  console.log(node);
 
-  return "i love nani ass";
   return (
     <div className="main">
       <PostItem
