@@ -1,11 +1,12 @@
 import React, { useState, lazy } from "react";
 import { GET_POSTS } from "../../Queries";
 import { useQuery } from "@apollo/client";
-
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
-const Offline = lazy(() => import("./Offline"));
-const PostItem = lazy(() => import("../post/PostItem"));
+/*const Offline = lazy(() => import("./Offline"));
+const PostItem = lazy(() => import("../post/PostItem"));*/
+import Offline from "./Offline";
+import PostItem from "../post/PostItem";
 
 function Home() {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS);
@@ -60,7 +61,6 @@ function Home() {
     });
   };
 
-  return <h1>Home</h1>;
   return (
     <>
       <div className="main">

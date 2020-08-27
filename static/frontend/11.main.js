@@ -1,6 +1,6 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[11],{"./src/components/pages/Home.js":
-/*!**************************************!*\
-  !*** ./src/components/pages/Home.js ***!
-  \**************************************/
-/*! exports provided: default */function(e,n,s){"use strict";s.r(n);s(/*! @babel/runtime/helpers/extends */"./node_modules/@babel/runtime/helpers/extends.js"),s(/*! @babel/runtime/helpers/toConsumableArray */"./node_modules/@babel/runtime/helpers/toConsumableArray.js");var t=s(/*! @babel/runtime/helpers/slicedToArray */"./node_modules/@babel/runtime/helpers/slicedToArray.js"),a=s.n(t),l=s(/*! react */"./node_modules/react/index.js"),r=s.n(l),o=s(/*! ../../Queries */"./src/Queries.js"),c=s(/*! @apollo/client */"./node_modules/@apollo/client/index.js"),u=(s(/*! react-waypoint */"./node_modules/react-waypoint/es/index.js"),s(/*! react-spinners-kit */"./node_modules/react-spinners-kit/lib/index.js")),i=Object(l.lazy)((function(){return s.e(/*! import() */2).then(s.bind(null,/*! ./Offline */"./src/components/pages/Offline.js"))}));n.default=function(){var e=Object(c.useQuery)(o.GET_POSTS),n=e.loading,s=(e.data,e.error),t=(e.fetchMore,e.refetch),d=Object(l.useState)(!0),m=a()(d,2);return m[0],m[1],n?r.a.createElement("div",{className:"spinner"},r.a.createElement(u.ImpulseSpinner,{size:50,style:{margin:"auto"}})):s?r.a.createElement(r.a.Fragment,null,r.a.createElement(i,null),r.a.createElement("button",{className:"btn btn-teal",onClick:t},"Refresh")):r.a.createElement("h1",null,"Home")}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[11],{"./src/components/pages/NotFound.js":
+/*!******************************************!*\
+  !*** ./src/components/pages/NotFound.js ***!
+  \******************************************/
+/*! exports provided: default */function(e,n,o){"use strict";o.r(n);var t=o(/*! react */"./node_modules/react/index.js"),a=o.n(t);n.default=function(){return a.a.createElement("div",{className:"main"},a.a.createElement("h2",null,"404 Not Found"),a.a.createElement("p",null,"The page you are looking for does not exists."))}}}]);
 //# sourceMappingURL=11.main.js.map
