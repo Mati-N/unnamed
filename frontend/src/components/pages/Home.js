@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const Offline = lazy(() => import("./Offline"));
-const PostItem = lazy(() => import("../post/PostItem"));
+//const PostItem = lazy(() => import("../post/PostItem"));
 
 function Home() {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS);
@@ -73,7 +73,7 @@ function Home() {
             user_id={node.user.id}
             username={node.user.username}
           />*/
-          }(<>{node.id}</>))
+          }("beautiful"))
         )}
         <Waypoint onEnter={more}>
           <div className="spinner">{spin && <Spinner size={40} />}</div>
