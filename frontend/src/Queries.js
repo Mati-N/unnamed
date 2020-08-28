@@ -101,6 +101,7 @@ export const GET_POST = gql `
             id
           }
           content
+          creation
         }
       }
       pageInfo {
@@ -330,6 +331,7 @@ export const CREATE_COMMENT = gql `
           id
         }
         content
+        creation
       }
       __typename
     }

@@ -8,6 +8,7 @@ import Error from "../layout/Error";
 import { Link } from "react-router-dom";
 
 const PostItem = lazy(() => import("./PostItem"));
+const Comments = lazy(() => import("./Comments"));
 
 const Post = ({
   match: {
@@ -65,15 +66,8 @@ const Post = ({
             username={node.user.username}
             {...node}
           />
-          {data.postComments.edges.map(({ node }) => (
-            <>
-              <span>
-                <span>node.user.username</span>
-                <Link to={`post/${node.user.id}`} />
-              </span>
-              <h1>node.content</h1>
-            </>
-          ))}
+          <Comments comments={data.postComments.edges} />
+
           <Waypoint onEnter={more}>
             <div className="spinner">
               {(loading || spin) && <Spinner size={40} />}
