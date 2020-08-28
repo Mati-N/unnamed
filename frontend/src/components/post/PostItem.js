@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-
-const PostItem = () => <h1>It not work</h1>;
-
-export default PostItem;
-/*import { useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { LIKED, LIKE } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
@@ -179,4 +175,3 @@ const PostItem = ({
 };
 
 export default PostItem;
-*/
