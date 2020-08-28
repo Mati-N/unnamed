@@ -6,14 +6,24 @@ import { useTransition, animated, config } from "react-spring";
 import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
-const Post = lazy(() => import("../post/Post"));
+/*const Post = lazy(() => import("../post/Post"));
 const Home = lazy(() => import("../pages/Home"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
 const Login = lazy(() => import("../auth/Login"));
 const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
-const User = lazy(() => import("../pages/User"));
+const User = lazy(() => import("../pages/User"));*/
+import {
+  Post,
+  Home,
+  Account,
+  NewPost,
+  Login,
+  Register,
+  NotFound,
+  User,
+} from "../pages";
 
 const Routes = () => {
   const { loggedIn } = useContext(AuthContext);
@@ -41,7 +51,8 @@ const Routes = () => {
     <>
       {transitions.map(({ item, props, key }) => (
         <animated.div key={`${key}anim`} style={props} className="container">
-          <Suspense
+          (
+          {/*<Suspense
             fallback={
               <div className="main">
                 <div className="spinner">
@@ -54,23 +65,19 @@ const Routes = () => {
                 </div>
               </div>
             }
-          >
-            <Switch location={item}>
-              <AuthenticationRoute exact path="/login" component={Login} />
-              <AuthenticationRoute
-                exact
-                path="/register"
-                component={Register}
-              />
+          >*/}
+          )
+          <Switch location={item}>
+            <AuthenticationRoute exact path="/login" component={Login} />
+            <AuthenticationRoute exact path="/register" component={Register} />
 
-              <PrivateRoute exact path="/" component={Home} />
-              <PrivateRoute exact path="/add-post" component={NewPost} />
-              <PrivateRoute exact path="/account" component={Account} />
-              <PrivateRoute exact path="/user/:id" component={User} />
-              <PrivateRoute exact path="/post/:id" component={Post} />
-              <Route component={NotFound} />
-            </Switch>
-          </Suspense>
+            <PrivateRoute exact path="/" component={Home} />
+            <PrivateRoute exact path="/add-post" component={NewPost} />
+            <PrivateRoute exact path="/account" component={Account} />
+            <PrivateRoute exact path="/user/:id" component={User} />
+            <PrivateRoute exact path="/post/:id" component={Post} />
+            <Route component={NotFound} />
+          </Switch>
         </animated.div>
       ))}
     </>
