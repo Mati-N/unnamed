@@ -5,6 +5,7 @@ import { GET_POST } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "../layout/Error";
+import { Link } from "react-router-dom";
 
 const PostItem = lazy(() => import("./PostItem"));
 
