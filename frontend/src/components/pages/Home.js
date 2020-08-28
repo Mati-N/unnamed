@@ -6,7 +6,7 @@ import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const Offline = lazy(() => import("./Offline"));
 const PostItem = lazy(() => import("../post/PostItem"));
 
-export default Home = () => <>"home"</>;
+export default Home = () => <h1>"home"</h1>;
 
 /*
 function Home() {
