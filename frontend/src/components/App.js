@@ -4,7 +4,7 @@ import AuthState from "../context/auth/AuthState";
 import AlertState from "../context/alert/AlertState";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import Cookies from "js-cookie";
-import Error from "./layout/Error";
+import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const Navbar = lazy(() => import("./layout/Navbar"));
 const Alert = lazy(() => import("./layout/Alert"));
 const Routes = lazy(() => import("./Routing/Routes"));
