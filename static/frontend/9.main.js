@@ -1,6 +1,6 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{"./src/components/pages/Home.js":
-/*!**************************************!*\
-  !*** ./src/components/pages/Home.js ***!
-  \**************************************/
-/*! exports provided: default */function(e,n,s){"use strict";s.r(n);var o=s(/*! react */"./node_modules/react/index.js"),d=s.n(o);s(/*! ../../Queries */"./src/Queries.js"),s(/*! @apollo/client */"./node_modules/@apollo/client/index.js"),s(/*! react-waypoint */"./node_modules/react-waypoint/es/index.js"),s(/*! react-spinners-kit */"./node_modules/react-spinners-kit/lib/index.js");n.default=Home=function(){return d.a.createElement("h1",null,'"home"')}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{"./src/components/pages/Offline.js":
+/*!*****************************************!*\
+  !*** ./src/components/pages/Offline.js ***!
+  \*****************************************/
+/*! exports provided: default */function(e,n,l){"use strict";l.r(n);var s=l(/*! react */"./node_modules/react/index.js"),t=l.n(s);n.default=function(){return t.a.createElement("div",null,t.a.createElement("h1",null,"It seems like you are offline"),t.a.createElement("small",null,"Try refreshing"))}}}]);
 //# sourceMappingURL=9.main.js.map
