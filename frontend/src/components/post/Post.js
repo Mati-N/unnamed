@@ -53,7 +53,7 @@ const Post = ({
   const { node } = data.posts.edges[0];
 
   return (
-    <Suspense fallback={Error}>
+    <Suspense FallbackComponent={Error}>
       <ErrorBoundary FallbackComponent={Error}>
         <div className="main">
           <PostItem
