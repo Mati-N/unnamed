@@ -41,21 +41,21 @@ const Routes = () => {
     <>
       {transitions.map(({ item, props, key }) => (
         <animated.div key={`${key}anim`} style={props} className="container">
-          <Suspense
-            fallback={
-              <div className="main">
-                <div className="spinner">
-                  <Spinner
-                    size={50}
-                    style={{
-                      margin: "auto",
-                    }}
-                  />
+          <Switch location={item}>
+            <Suspense
+              fallback={
+                <div className="main">
+                  <div className="spinner">
+                    <Spinner
+                      size={50}
+                      style={{
+                        margin: "auto",
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            }
-          >
-            <Switch location={item}>
+              }
+            >
               <AuthenticationRoute exact path="/login" component={Login} />
               <AuthenticationRoute
                 exact
@@ -69,8 +69,8 @@ const Routes = () => {
               <PrivateRoute exact path="/user/:id" component={User} />
               <PrivateRoute exact path="/post/:id" component={Post} />
               <Route component={NotFound} />
-            </Switch>
-          </Suspense>
+            </Suspense>
+          </Switch>
         </animated.div>
       ))}
     </>
