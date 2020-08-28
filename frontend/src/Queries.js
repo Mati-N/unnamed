@@ -315,3 +315,23 @@ export const FOLLOW = gql `
     }
   }
 `;
+
+export const CREATE_COMMENT = gql `
+  mutation createComment($id: ID!, $comment: String!){
+    createComment(input: {
+      post: $id,
+      content: $comment
+    }) {
+      ok
+      comment {
+        id
+        user {
+          username
+          id
+        }
+        content
+      }
+      __typename
+    }
+  }
+`;

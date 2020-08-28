@@ -53,8 +53,8 @@ const Post = ({
   const { node } = data.posts.edges[0];
 
   return (
-    <Suspense FallbackComponent={Error}>
-      <ErrorBoundary FallbackComponent={Error}>
+    <ErrorBoundary FallbackComponent={Error}>
+      <Suspense FallbackComponent={Error}>
         <div className="main">
           <PostItem
             key={node.id}
@@ -79,8 +79,8 @@ const Post = ({
             </div>
           </Waypoint>
         </div>
-      </ErrorBoundary>
-    </Suspense>
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
