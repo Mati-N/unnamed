@@ -5,8 +5,8 @@ import { GET_POST } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "../layout/Error";
-
-const PostItem = lazy(() => import("./PostItem"));
+import PostItem from "./PostItem";
+//const PostItem = lazy(() => import("./PostItem"));
 
 const Post = ({
   match: {
@@ -53,34 +53,32 @@ const Post = ({
   const { node } = data.posts.edges[0];
 
   return (
-    <Suspense FallbackComponent={Error}>
-      <ErrorBoundary FallbackComponent={Error}>
-        <div className="main">
-          <PostItem
-            key={node.id}
-            likes={node.likers.length}
-            comments={node.commentSet.length}
-            user_id={node.user.id}
-            username={node.user.username}
-            {...node}
-          />
-          {data.postComments.edges.map(({ node }) => (
-            <>
-              <span>
-                <span>node.user.username</span>
-                <Link to={`post/${node.user.id}`} />
-              </span>
-              <h1>node.content</h1>
-            </>
-          ))}
-          <Waypoint onEnter={more}>
-            <div className="spinner">
-              {(loading || spin) && <Spinner size={40} />}
-            </div>
-          </Waypoint>
-        </div>
-      </ErrorBoundary>
-    </Suspense>
+    <ErrorBoundary FallbackComponent={Error}>
+      <div className="main">
+        <PostItem
+          key={node.id}
+          likes={node.likers.length}
+          comments={node.commentSet.length}
+          user_id={node.user.id}
+          username={node.user.username}
+          {...node}
+        />
+        {data.postComments.edges.map(({ node }) => (
+          <>
+            <span>
+              <span>node.user.username</span>
+              <Link to={`post/${node.user.id}`} />
+            </span>
+            <h1>node.content</h1>
+          </>
+        ))}
+        <Waypoint onEnter={more}>
+          <div className="spinner">
+            {(loading || spin) && <Spinner size={40} />}
+          </div>
+        </Waypoint>
+      </div>
+    </ErrorBoundary>
   );
 };
 
