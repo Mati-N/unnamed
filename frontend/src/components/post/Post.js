@@ -22,7 +22,7 @@ const Post = ({
   const more = () => {
     fetchMore({
       query: GET_POST,
-      variables: { cursor: data.postComments.pageInfo.endCursor },
+      variables: { cursor: data.postComments.pageInfo.endCursor, id },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);
         if (!previousResult.postComments.pageInfo.hasNextPage) {
