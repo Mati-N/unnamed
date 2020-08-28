@@ -6,6 +6,9 @@ import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const Offline = lazy(() => import("./Offline"));
 const PostItem = lazy(() => import("../post/PostItem"));
 
+export default Home = () => <>"home"</>;
+
+/*
 function Home() {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS);
   const [spin, setSpin] = useState(true);
@@ -59,7 +62,6 @@ function Home() {
     });
   };
 
-  return <Spinner size={0.0404040404040404040404040404040404045550054054} />;
   return (
     <>
       <div className="main">
@@ -82,3 +84,4 @@ function Home() {
 }
 
 export default Home;
+*/
