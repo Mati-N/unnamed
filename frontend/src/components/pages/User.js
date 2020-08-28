@@ -7,7 +7,7 @@ import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import { Redirect } from "react-router-dom";
 const Offline = lazy(() => import("./Offline"));
-const PostItem = lazy(() => import("../post/PostItem"));
+const Posts = lazy(() => import("../post/Posts"));
 
 const User = ({ match }) => {
   const {
@@ -196,16 +196,7 @@ const User = ({ match }) => {
         </div>
       </div>
       <div className="main">
-        {userPost.edges.map(({ node }) => (
-          <PostItem
-            key={`${node.id}k`}
-            {...node}
-            likes={node.likers.length}
-            comments={node.commentSet.length}
-            user_id={user_data.userGet.id}
-            username={user_data.userGet.username}
-          />
-        ))}
+        <Posts posts={userPost.edges} />
         <Waypoint
           onEnter={() => {
             more();

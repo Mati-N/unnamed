@@ -20,7 +20,7 @@ const Post = ({
 
   const more = () => {
     fetchMore({
-      query: GET_COMMENTS,
+      query: GET_POST,
       variables: { cursor: data.post.postComments.pageInfo.endCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);

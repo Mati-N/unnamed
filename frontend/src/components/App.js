@@ -1,12 +1,12 @@
-import React from "react";
+import React, { lazy } from "react";
 import { HashRouter as Router } from "react-router-dom";
-import Routes from "./Routing/Routes";
-import Navbar from "./layout/Navbar";
-import Alert from "./layout/Alert";
 import AuthState from "../context/auth/AuthState";
 import AlertState from "../context/alert/AlertState";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import Cookies from "js-cookie";
+const Navbar = lazy(() => import("./layout/Navbar"));
+const Alert = lazy(() => import("./layout/Alert"));
+const Routes = lazy(() => import("./Routing/Routes"));
 
 const client = new ApolloClient({
   uri: "/api/",
