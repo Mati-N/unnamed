@@ -1,11 +1,10 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, lazy } from "react";
 import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
 import { GET_POST } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "../layout/Error";
-import { Link } from "react-router-dom";
 
 const PostItem = lazy(() => import("./PostItem"));
 const Comments = lazy(() => import("./Comments"));
@@ -54,27 +53,26 @@ const Post = ({
   }
   const { node } = data.posts.edges[0];
 
+  console.log(data);
   return (
     <ErrorBoundary FallbackComponent={Error}>
-      <Suspense FallbackComponent={Error}>
-        <div className="main">
-          <PostItem
-            key={node.id}
-            likes={node.likers.length}
-            comments={node.commentSet.length}
-            user_id={node.user.id}
-            username={node.user.username}
-            {...node}
-          />
-          <Comments comments={data.postComments.edges} />
+      <div className="main">
+        <PostItem
+          key={node.id}
+          likes={node.likers.length}
+          comments={node.commentSet.length}
+          user_id={node.user.id}
+          username={node.user.username}
+          {...node}
+        />
+        <Comments comments={data.postComments.edges} />
 
-          <Waypoint onEnter={more}>
-            <div className="spinner">
-              {(loading || spin) && <Spinner size={40} />}
-            </div>
-          </Waypoint>
-        </div>
-      </Suspense>
+        <Waypoint onEnter={more}>
+          <div className="spinner">
+            {(loading || spin) && <Spinner size={40} />}
+          </div>
+        </Waypoint>
+      </div>
     </ErrorBoundary>
   );
 };
