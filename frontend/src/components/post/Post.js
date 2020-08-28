@@ -63,7 +63,20 @@ const Post = ({
           username={node.user.username}
           {...node}
         />
-        {(loading || spin) && <Spinner />}
+        {data.postComments.edges.map(({ node }) => (
+          <>
+            <span>
+              <span>node.user.username</span>
+              <Link to={`post/${node.user.id}`} />
+            </span>
+            <h1>node.content</h1>
+          </>
+        ))}
+        <Waypoint onEnter={more}>
+          <div className="spinner">
+            {(loading || spin) && <Spinner size={40} />}
+          </div>
+        </Waypoint>
       </div>
     </ErrorBoundary>
   );

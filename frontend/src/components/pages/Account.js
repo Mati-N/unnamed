@@ -6,7 +6,7 @@ import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import { Link } from "react-router-dom";
-const PostItem = lazy(() => import("../post/PostItem"));
+const Posts = lazy(() => import("../post/Posts"));
 
 const Account = () => {
   const {
@@ -184,16 +184,7 @@ const Account = () => {
         </div>
       </div>
       <div className="main">
-        {post.edges.map(({ node }) => (
-          <PostItem
-            key={`${node.id}k`}
-            {...node}
-            likes={node.likers.length}
-            comments={node.commentSet.length}
-            user_id={user_data.user.id}
-            username="You"
-          />
-        ))}
+        <Posts posts={post.edges} />
         <Waypoint
           onEnter={() => {
             more();

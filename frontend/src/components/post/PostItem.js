@@ -167,6 +167,14 @@ const PostItem = ({
             </Link>
             {state.comments > 0 && state.comments}
           </span>
+          {/*<span>
+            <form className="cfrm"  method="post">
+              <div className="form-group comment-form">
+                <input class="form-control" type="text" id="comment" name="text" />
+                  <button class="btn btn-outline-primary" type="submit" id="btn" disabled>Comment</button>
+                </div>
+            </form>
+          </span>*/}
         </div>
       )}
     </div>
