@@ -6,7 +6,7 @@ const Comments = ({ comments }) => {
     <>
       {comments.map(({ node }) => (
         <>
-          <Comment {...node} />
+          <Comment key={`com${node.id}`} {...node} />
         </>
       ))}
     </>
