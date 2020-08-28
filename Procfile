@@ -1,1 +1,1 @@
-web: python manage.py collectstatic --noinput; python manage.py compress; python manage.py collectstatic --noinput; gunicorn feel.wsgi --log-file -
+web: python manage.py collectstatic --noinput --clear; python manage.py collectstatic --noinput; gunicorn feel.wsgi --log-file -
