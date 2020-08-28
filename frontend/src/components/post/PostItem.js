@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { LIKED, LIKE } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
-import Liked from "../SVG/Like.svg";
-import Heart from "../SVG/Heart.svg";
-import Comments from "../SVG/Comments.svg";
+
+const Liked = lazy(() => import("../SVG/Like.svg"));
+const Heart = lazy(() => import("../SVG/Heart.svg"));
+const Comments = lazy(() => import("../SVG/Comments.svg"));
 
 const PostItem = ({
   text,
@@ -107,70 +108,68 @@ const PostItem = ({
   };
 
   return (
-    <>
-      <div className="post card">
-        <div className="post-top card-top">
-          <div className="post-info-top">
-            <Link to={`user/${user_id}`} className="post-user">
-              {" "}
-              {username}{" "}
-            </Link>
-            <small className="post-time">
-              {timeSince(new Date(creation))} ago{" "}
-            </small>
-          </div>
-          <h5 className="post-title">{title}</h5>
+    <div className="post card">
+      <div className="post-top card-top">
+        <div className="post-info-top">
+          <Link to={`user/${user_id}`} className="post-user">
+            {" "}
+            {username}{" "}
+          </Link>
+          <small className="post-time">
+            {timeSince(new Date(creation))} ago{" "}
+          </small>
         </div>
-        <animated.pre
-          ref={self}
-          className={`post-text`}
-          style={state.hasMore ? expandText : {}}
-        >
-          {text}
-          {state.hasMore && (
-            <button
-              className="more"
-              onClick={() => {
-                setState({ ...state, expand: !state.expand });
-              }}
-            >
-              {state.expand ? "less" : "more"}
-            </button>
-          )}
-        </animated.pre>
-        {!state.loading && (
-          <div className="info-bottom">
-            <span
-              className="like"
-              onClick={() => {
-                like();
-              }}
-              onMouseOver={() => setHovered(true)}
-              onMouseOut={() => setHovered(false)}
-            >
-              {!hovered ? (
-                state.liked ? (
-                  <Liked className="like-icon" />
-                ) : (
-                  <Heart className="like-icon" />
-                )
-              ) : !state.liked ? (
+        <h5 className="post-title">{title}</h5>
+      </div>
+      <animated.pre
+        ref={self}
+        className={`post-text`}
+        style={state.hasMore ? expandText : {}}
+      >
+        {text}
+        {state.hasMore && (
+          <button
+            className="more"
+            onClick={() => {
+              setState({ ...state, expand: !state.expand });
+            }}
+          >
+            {state.expand ? "less" : "more"}
+          </button>
+        )}
+      </animated.pre>
+      {!state.loading && (
+        <div className="info-bottom">
+          <span
+            className="like"
+            onClick={() => {
+              like();
+            }}
+            onMouseOver={() => setHovered(true)}
+            onMouseOut={() => setHovered(false)}
+          >
+            {!hovered ? (
+              state.liked ? (
                 <Liked className="like-icon" />
               ) : (
                 <Heart className="like-icon" />
-              )}
-              {state.likes > 0 && state.likes}
-            </span>
-            <span className="like">
-              <Link to={`/post/${id}`} className="like-icon">
-                <Comments />
-              </Link>
-              {state.comments > 0 && state.comments}
-            </span>
-          </div>
-        )}
-      </div>
-    </>
+              )
+            ) : !state.liked ? (
+              <Liked className="like-icon" />
+            ) : (
+              <Heart className="like-icon" />
+            )}
+            {state.likes > 0 && state.likes}
+          </span>
+          <span className="like">
+            <Link to={`/post/${id}`} className="like-icon">
+              <Comments />
+            </Link>
+            {state.comments > 0 && state.comments}
+          </span>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -57,20 +57,12 @@ const Post = ({
       <div className="main">
         <PostItem
           key={node.id}
-          comments={50}
-          user_id={35}
-          id={35}
-          username="Ethiopian"
-          text=" "
-          title=" "
-          creation={new Date()}
-        />{" "}
-        {/*likes={node.likers.length}
-        comments={node.commentSet.length}
-        user_id={node.user.id}
-        username={node.user.username}
-        {...node}
-  />*/}
+          likes={node.likers.length}
+          comments={node.commentSet.length}
+          user_id={node.user.id}
+          username={node.user.username}
+          {...node}
+        />
         {(loading || spin) && <Spinner />}
       </div>
     </ErrorBoundary>
