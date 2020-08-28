@@ -1,4 +1,4 @@
-/*import React, { useState, useEffect, useRef, lazy } from "react";
+import React, { useState, useEffect, useRef, lazy } from "react";
 import { useLazyQuery, useMutation, from } from "@apollo/client";
 import { LIKED, LIKE } from "../../Queries";
 import { Link } from "react-router-dom";
@@ -171,12 +171,6 @@ const PostItem = ({
       )}
     </div>
   );
-};*/
-
-import React from "react";
-
-const PostItem = () => {
-  return "WHY ISNT IT NOT WORKING";
 };
 
 export default PostItem;
