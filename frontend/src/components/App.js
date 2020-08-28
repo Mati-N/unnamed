@@ -1,9 +1,10 @@
-import React, { lazy } from "react";
+import React, { lazy, Suspense } from "react";
 import { HashRouter as Router } from "react-router-dom";
 import AuthState from "../context/auth/AuthState";
 import AlertState from "../context/alert/AlertState";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import Cookies from "js-cookie";
+import Error from "./layout/Error";
 const Navbar = lazy(() => import("./layout/Navbar"));
 const Alert = lazy(() => import("./layout/Alert"));
 const Routes = lazy(() => import("./Routing/Routes"));
@@ -23,25 +24,42 @@ function App() {
     <ApolloProvider client={client}>
       <AlertState>
         <AuthState>
-          <Router>
-            <Navbar />
+          <Suspense
+            fallback={
+              <main className="app">
+                <div className="main">
+                  <div className="spinner">
+                    <Spinner
+                      size={50}
+                      style={{
+                        margin: "auto",
+                      }}
+                    />
+                  </div>
+                </div>
+              </main>
+            }
+          >
+            <Router>
+              <Navbar />
 
-            <main className="app" id="main">
-              <Alert />
-              <Routes />
-            </main>
-            <footer>
-              <a
-                style={{
-                  opacity: 0,
-                }}
-                className="skip-link"
-                href="#main"
-              >
-                Skip to main
-              </a>
-            </footer>
-          </Router>
+              <main className="app" id="main">
+                <Alert />
+                <Routes />
+              </main>
+              <footer>
+                <a
+                  style={{
+                    opacity: 0,
+                  }}
+                  className="skip-link"
+                  href="#main"
+                >
+                  Skip to main
+                </a>
+              </footer>
+            </Router>
+          </Suspense>
         </AuthState>
       </AlertState>
     </ApolloProvider>
