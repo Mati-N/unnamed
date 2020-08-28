@@ -1,4 +1,4 @@
-import React, { useState, lazy, ErrorInfo } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
 import { GET_POST } from "../../Queries";
@@ -53,32 +53,34 @@ const Post = ({
   const { node } = data.posts.edges[0];
 
   return (
-    <ErrorBoundary FallbackComponent={Error}>
-      <div className="main">
-        <PostItem
-          key={node.id}
-          likes={node.likers.length}
-          comments={node.commentSet.length}
-          user_id={node.user.id}
-          username={node.user.username}
-          {...node}
-        />
-        {data.postComments.edges.map(({ node }) => (
-          <>
-            <span>
-              <span>node.user.username</span>
-              <Link to={`post/${node.user.id}`} />
-            </span>
-            <h1>node.content</h1>
-          </>
-        ))}
-        <Waypoint onEnter={more}>
-          <div className="spinner">
-            {(loading || spin) && <Spinner size={40} />}
-          </div>
-        </Waypoint>
-      </div>
-    </ErrorBoundary>
+    <Suspense fallback={Error}>
+      <ErrorBoundary FallbackComponent={Error}>
+        <div className="main">
+          <PostItem
+            key={node.id}
+            likes={node.likers.length}
+            comments={node.commentSet.length}
+            user_id={node.user.id}
+            username={node.user.username}
+            {...node}
+          />
+          {data.postComments.edges.map(({ node }) => (
+            <>
+              <span>
+                <span>node.user.username</span>
+                <Link to={`post/${node.user.id}`} />
+              </span>
+              <h1>node.content</h1>
+            </>
+          ))}
+          <Waypoint onEnter={more}>
+            <div className="spinner">
+              {(loading || spin) && <Spinner size={40} />}
+            </div>
+          </Waypoint>
+        </div>
+      </ErrorBoundary>
+    </Suspense>
   );
 };
 
