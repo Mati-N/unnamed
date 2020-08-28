@@ -22,23 +22,23 @@ const Post = ({
   const more = () => {
     fetchMore({
       query: GET_POST,
-      variables: { cursor: data.post.postComments.pageInfo.endCursor },
+      variables: { cursor: data.postComments.pageInfo.endCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);
-        if (!previousResult.post.postComments.pageInfo.hasNextPage) {
+        if (!previousResult.postComments.pageInfo.hasNextPage) {
           setSpin(false);
           return previousResult;
         }
-        const newEdges = fetchMoreResult.post.postComments.edges;
-        const pageInfo = fetchMoreResult.post.postComments.pageInfo;
+        const newEdges = fetchMoreResult.postComments.edges;
+        const pageInfo = fetchMoreResult.postComments.pageInfo;
 
         return newEdges.length
           ? {
               post: {
                 ...previousResult.post,
                 postComments: {
-                  __typename: previousResult.post.postComments.__typename,
-                  edges: [...previousResult.post.posts.edges, ...newEdges],
+                  __typename: previousResult.postComments.__typename,
+                  edges: [...previousResult.postComments.edges, ...newEdges],
                   pageInfo,
                 },
               },
@@ -46,6 +46,7 @@ const Post = ({
           : previousResult;
       },
     });
+    setSpin(false);
   };
 
   if (loading && !data) {
