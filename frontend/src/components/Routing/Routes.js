@@ -7,8 +7,7 @@ import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
 const Post = lazy(() => import("../post/Post"));
-//const Home = lazy(() => import("../pages/Home"));
-import Home from "../pages/Home";
+const Home = lazy(() => import("../pages/Home"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
 const Login = lazy(() => import("../auth/Login"));

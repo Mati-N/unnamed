@@ -1,6 +1,6 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{"./src/components/pages/Offline.js":
-/*!*****************************************!*\
-  !*** ./src/components/pages/Offline.js ***!
-  \*****************************************/
-/*! exports provided: default */function(e,n,l){"use strict";l.r(n);var s=l(/*! react */"./node_modules/react/index.js"),t=l.n(s);n.default=function(){return t.a.createElement("div",null,t.a.createElement("h1",null,"It seems like you are offline"),t.a.createElement("small",null,"Try refreshing"))}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{"./src/components/pages/NotFound.js":
+/*!******************************************!*\
+  !*** ./src/components/pages/NotFound.js ***!
+  \******************************************/
+/*! exports provided: default */function(e,n,o){"use strict";o.r(n);var t=o(/*! react */"./node_modules/react/index.js"),a=o.n(t);n.default=function(){return a.a.createElement("div",{className:"main"},a.a.createElement("h2",null,"404 Not Found"),a.a.createElement("p",null,"The page you are looking for does not exists."))}}}]);
 //# sourceMappingURL=9.main.js.map
