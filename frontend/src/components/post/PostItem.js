@@ -25,6 +25,7 @@ const PostItem = ({
     height: "32vh",
     loading: false,
     comments,
+    expand: false,
   };
   const [liked] = useLazyQuery(LIKED, {
     variables: { post_id: id },

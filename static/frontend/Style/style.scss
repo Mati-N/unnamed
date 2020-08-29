@@ -109,9 +109,8 @@ $light-color: rgb(238, 238, 238);
     word-break: break-all;
 
     .more {
-      z-index: 1001;
+      z-index: 1000001;
       position: absolute;
-      z-index: 3;
       background: rgba(0, 0, 0, 0);
       color: blue;
       border: none;
