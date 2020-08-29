@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, lazy } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { LIKED, LIKE } from "../../Queries";
+import { LIKED, LIKE, CREATE_COMMENT, GET_POST } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 
@@ -35,9 +35,11 @@ const PostItem = ({
   });
 
   const [hovered, setHovered] = useState(false);
+  const [comment, setComment] = useState("");
   const self = useRef(null);
 
   const [likePost] = useMutation(LIKE);
+  const [addComment] = useMutation(CREATE_COMMENT);
   const [state, setState] = useState(initialState);
 
   const expandText = useSpring({
@@ -107,6 +109,38 @@ const PostItem = ({
         });
       });
   };
+  const add_comment = () => {
+    addComment({
+      variables: { id: id, content: comment },
+      update: (cache, { data }) => {
+        if (cache) {
+          let { postComments } = cache.readQuery({
+            query: GET_POST,
+            variables: { id },
+          });
+          if (postComments) {
+            const newData = {
+              ...postComments,
+              edges: [
+                {
+                  __typename: "CommentNodeConnection",
+                  node: data.createComment.comment,
+                },
+                ...postComments.edges,
+              ],
+            };
+            cache.writeQuery({
+              query: GET_POST,
+              variables: { id },
+              data: {
+                postComments: newData,
+              },
+            });
+          }
+        }
+      },
+    });
+  };
 
   return (
     <div className="post card">
@@ -168,14 +202,28 @@ const PostItem = ({
             </Link>
             {state.comments > 0 && state.comments}
           </span>
-          {/*<span>
-            <form className="cfrm"  method="post">
+          <span>
+            <form className="cfrm" method="post" onSubmit={add_comment}>
               <div className="form-group comment-form">
-                <input class="form-control" type="text" id="comment" name="text" />
-                  <button class="btn btn-outline-primary" type="submit" id="btn" disabled>Comment</button>
-                </div>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="comment"
+                  name="text"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <button
+                  class="btn btn-outline-primary"
+                  type="submit"
+                  id="btn"
+                  disabled
+                >
+                  Comment
+                </button>
+              </div>
             </form>
-          </span>*/}
+          </span>
         </div>
       )}
     </div>
