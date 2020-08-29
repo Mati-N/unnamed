@@ -1,19 +1,8 @@
-import React, {
-  useReducer,
-  useEffect,
-  useContext
-} from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
-import {
-  LOGIN,
-  LOGOUT,
-  SET_LOADING
-} from "../types";
-import {
-  useMutation,
-  useLazyQuery
-} from "@apollo/client";
+import { LOGIN, LOGOUT, SET_LOADING } from "../types";
+import { useMutation, useLazyQuery } from "@apollo/client";
 import {
   ADD_USER,
   LOGIN_USER,
@@ -22,7 +11,7 @@ import {
   VERIFY_TOKEN,
   REFRESH_TOKEN,
   REVOKE_TOKEN,
-} from "../../Queries";
+} from "../../components/SVG/Queries";
 import AlertContext from "../alert/AlertContext";
 
 const AuthState = (props) => {
@@ -35,10 +24,7 @@ const AuthState = (props) => {
     user: localStorage.getItem("USER"),
   };
 
-  const {
-    setAlert,
-    removeAlert
-  } = useContext(AlertContext);
+  const { setAlert, removeAlert } = useContext(AlertContext);
   const [state, dispatch] = useReducer(AuthReducer, initialState);
   const [addUser] = useMutation(ADD_USER);
   const [login] = useMutation(LOGIN_USER);
@@ -50,26 +36,24 @@ const AuthState = (props) => {
   const loggedIn = () => {
     if (localStorage.getItem("TOKEN") == null) {
       dispatch({
-        type: LOGOUT
+        type: LOGOUT,
       });
       dispatch({
-        type: SET_LOADING
+        type: SET_LOADING,
       });
       return;
     }
     try {
       verify({
         variables: {
-          token: state.token
-        }
-      }).then(({
-        data
-      }) => {
+          token: state.token,
+        },
+      }).then(({ data }) => {
         if (data.verifyToken != null) {
           refresh({
             variables: {
-              token: state.refreshToken
-            }
+              token: state.refreshToken,
+            },
           }).then((d) => {
             if (d.data.refreshToken !== null) {
               localStorage.setItem("TOKEN", d.data.refreshToken.token);
@@ -78,26 +62,26 @@ const AuthState = (props) => {
                 d.data.refreshToken.refreshToken
               );
               dispatch({
-                type: LOGIN
+                type: LOGIN,
               });
             } else {
               dispatch({
-                type: LOGOUT
+                type: LOGOUT,
               });
             }
           });
         } else {
           dispatch({
-            type: LOGOUT
+            type: LOGOUT,
           });
         }
       });
       dispatch({
-        type: SET_LOADING
+        type: SET_LOADING,
       });
     } catch {
       dispatch({
-        type: "OFFLINE"
+        type: "OFFLINE",
       });
     }
   };
@@ -108,17 +92,20 @@ const AuthState = (props) => {
 
   const Login = (username, password) => {
     login({
-        variables: {
-          username: username,
-          password: password
-        },
-      })
+      variables: {
+        username: username,
+        password: password,
+      },
+    })
       .catch((error) => setAlert(error.message, "danger"))
       .then((d) => {
         if (d) {
           if (d.data.tokenAuth !== null) {
             localStorage.setItem("TOKEN", d.data.tokenAuth.token);
-            localStorage.setItem("REFRESH_TOKEN", d.data.tokenAuth.refreshToken);
+            localStorage.setItem(
+              "REFRESH_TOKEN",
+              d.data.tokenAuth.refreshToken
+            );
             localStorage.setItem("USER", d.data.tokenAuth.user.id);
             dispatch({
               type: LOGIN,
@@ -131,11 +118,11 @@ const AuthState = (props) => {
   const Register = (username, password) => {
     removeAlert();
     addUser({
-        variables: {
-          username: username,
-          password: password
-        },
-      })
+      variables: {
+        username: username,
+        password: password,
+      },
+    })
       .catch((error) => `${error}`)
       .then((d) => {
         if (d.data.createUser.ok) {
@@ -151,8 +138,8 @@ const AuthState = (props) => {
   const Logout = () => {
     revoke({
       variables: {
-        token: state.refreshToken
-      }
+        token: state.refreshToken,
+      },
     });
     logout();
     setAlert("Logged out!", "primary");
@@ -161,9 +148,9 @@ const AuthState = (props) => {
     });
   };
 
-  return ( <
-    AuthContext.Provider value = {
-      {
+  return (
+    <AuthContext.Provider
+      value={{
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         Login,
@@ -171,11 +158,11 @@ const AuthState = (props) => {
         Logout,
         loggedIn,
         user: state.user,
-      }
-    } > {
-      props.children
-    } <
-    /AuthContext.Provider>
+      }}
+    >
+      {" "}
+      {props.children}{" "}
+    </AuthContext.Provider>
   );
 };
 

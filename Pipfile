@@ -30,7 +30,7 @@ Rx = "==1.6.1"
 dj-database-url = "*"
 gunicorn = "*"
 django-heroku = "*"
-whitenoise = "*"
+whitenoise = {extras = ["brotli"], version = "*"}
 
 [requires]
 python_version = "3.8"
