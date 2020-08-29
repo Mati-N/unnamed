@@ -1,42 +1,52 @@
 from django.db import models
-from datetime import datetime
 import pytz
-from django.contrib.auth.models import User
-utc=pytz.UTC
-    
+from django.contrib.auth.models import User as Django_User
+
+from utils.models import AutoTimeStamped
+utc = pytz.UTC
+
+
+__all__ = ['User', 'Post', 'Comment', 'Like', 'Following']
+
+
+# User model
+class User(AutoTimeStamped):
+    user = models.OneToOneField(Django_User, on_delete=models.PROTECT)
+
+
 # Post model
-class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
+class Post(AutoTimeStamped):
+    user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=260)
-    text = models.CharField(max_length=5500)
-    commentCount = models.IntegerField(default=0)
-    creation = models.DateTimeField(auto_now_add=True)
-                                               
-    def __str__(self):                                
-        return f"Post {self.id}: {self.title}: created {self.before()} ago"
-                                                      
+    text = models.TextField()
+
+    def __str__(self):
+        return f"Post {self.id}: {self.title}: created {self.created_at} ago"
+
+    @property
+    def comment_count(self):
+        return self.comments.count()
+
+
 # Comment model                                       
-class Comment(models.Model):                             
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    content = models.CharField(max_length=1000)
-    creation = models.DateTimeField(auto_now_add=True)
+class Comment(AutoTimeStamped):
+    user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="comments")
+    post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="comments")
+    content = models.TextField()
 
     def __str__(self):
         return f"Comment {self.id} on Post"
 
+
 # Like model
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="like") 
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likers")
+    user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="likes")
+    post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="likes")
+
 
 # Following model
 class Following(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following") # The person who follows a person
-    user_f = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers") # The person who is being followed
-
-
-
-####################
+    target = models.ForeignKey('api.User', related_name='followers', on_delete=models.CASCADE, blank=False, null=True)
+    follower = models.ForeignKey('api.User', related_name='targets', on_delete=models.CASCADE, blank=False, null=True)
 
 
