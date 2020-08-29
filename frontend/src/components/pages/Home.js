@@ -62,7 +62,7 @@ function Home() {
   return (
     <>
       <div className="main">
-        <Posts posts={data.edges} self={false} id={null} />
+        <Posts posts={data.edges} />
         <Waypoint onEnter={more}>
           <div className="spinner">{spin && <Spinner size={40} />}</div>
         </Waypoint>
