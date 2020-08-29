@@ -113,7 +113,7 @@ const PostItem = ({
   const add_comment = (e) => {
     e.preventDefault();
     addComment({
-      variables: { id: id, content: comment },
+      variables: { post: id, content: comment },
       update: (cache, { data }) => {
         if (cache) {
           let { postComments } = cache.readQuery({
