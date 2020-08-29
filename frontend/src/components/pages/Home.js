@@ -10,7 +10,7 @@ function Home() {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS);
   const [spin, setSpin] = useState(true);
 
-  if (loading || !data || data.edges.length < 1)
+  if (loading || !data)
     return (
       <div className="spinner">
         <Spinner
