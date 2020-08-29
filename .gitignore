@@ -404,4 +404,4 @@ dmypy.json
 .pytype/
 
 .env
-feel/__pycache__
+*/__pycache__
