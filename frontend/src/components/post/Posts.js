@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 const PostItem = lazy(() => import("./PostItem"));
 
 const Posts = ({ posts, self, id }) => {
+  console.log(posts);
   return (
     <div>
       {posts.map(({ node }) => (
