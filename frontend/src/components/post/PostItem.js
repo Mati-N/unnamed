@@ -216,12 +216,7 @@ const PostItem = ({
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
-                <button
-                  class="btn btn-outline-primary"
-                  type="submit"
-                  id="btn"
-                  disabled
-                >
+                <button class="btn btn-outline-primary" type="submit" id="btn">
                   Comment
                 </button>
               </div>
