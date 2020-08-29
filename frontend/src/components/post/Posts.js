@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 const PostItem = lazy(() => import("./PostItem"));
 
-const Posts = ({ posts, self, id }) => {
+const Posts = ({ posts, self, username, id }) => {
   console.log(posts);
   return (
     <div>
@@ -12,7 +12,7 @@ const Posts = ({ posts, self, id }) => {
           likes={node.likers.length}
           comments={node.commentSet.length}
           user_id={self ? id : node.user.id}
-          username={self ? "You" : node.user.username}
+          username={self ? username : node.user.username}
         />
       ))}
     </div>

@@ -184,7 +184,7 @@ const Account = () => {
         </div>
       </div>
       <div className="main">
-        <Posts posts={post.edges} self={true} id={user} />
+        <Posts posts={post.edges} self={true} id={user} username="You" />
         <Waypoint
           onEnter={() => {
             more();

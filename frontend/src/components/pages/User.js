@@ -196,7 +196,12 @@ const User = ({ match }) => {
         </div>
       </div>
       <div className="main">
-        <Posts posts={userPost.edges} />
+        <Posts
+          posts={userPost.edges}
+          self={true}
+          username={user_data.userGet.username}
+          id={match.params.id}
+        />
         <Waypoint
           onEnter={() => {
             more();
