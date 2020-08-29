@@ -174,36 +174,39 @@ const PostItem = ({
         )}
       </animated.pre>
       {!state.loading && (
-        <div className="info-bottom">
-          <span
-            className="like"
-            onClick={() => {
-              like();
-            }}
-            onMouseOver={() => setHovered(true)}
-            onMouseOut={() => setHovered(false)}
-          >
-            {!hovered ? (
-              state.liked ? (
+        <>
+          <div className="info-bottom">
+            <span
+              className="like"
+              onClick={() => {
+                like();
+              }}
+              onMouseOver={() => setHovered(true)}
+              onMouseOut={() => setHovered(false)}
+            >
+              {!hovered ? (
+                state.liked ? (
+                  <Liked className="like-icon" />
+                ) : (
+                  <Heart className="like-icon" />
+                )
+              ) : !state.liked ? (
                 <Liked className="like-icon" />
               ) : (
                 <Heart className="like-icon" />
-              )
-            ) : !state.liked ? (
-              <Liked className="like-icon" />
-            ) : (
-              <Heart className="like-icon" />
-            )}
-            {state.likes > 0 && state.likes}
-          </span>
-          <span className="like">
-            <Link to={`/post/${id}`} className="like-icon">
-              <Comments />
-            </Link>
-            {state.comments > 0 && state.comments}
-          </span>
-          <span>
-            <form className="cfrm" method="post" onSubmit={add_comment}>
+              )}
+              {state.likes > 0 && state.likes}
+            </span>
+            <span className="like">
+              <Link to={`/post/${id}`} className="like-icon">
+                <Comments />
+              </Link>
+              {state.comments > 0 && state.comments}
+            </span>
+          </div>
+
+          <span className="comment-form">
+            <form onSubmit={add_comment}>
               <div className="form-group comment-form">
                 <input
                   class="form-control"
@@ -224,7 +227,7 @@ const PostItem = ({
               </div>
             </form>
           </span>
-        </div>
+        </>
       )}
     </div>
   );
