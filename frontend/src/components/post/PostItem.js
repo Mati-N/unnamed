@@ -110,7 +110,8 @@ const PostItem = ({
         });
       });
   };
-  const add_comment = () => {
+  const add_comment = (e) => {
+    e.preventDefault();
     addComment({
       variables: { id: id, content: comment },
       update: (cache, { data }) => {
