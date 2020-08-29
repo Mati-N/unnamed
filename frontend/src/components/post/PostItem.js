@@ -16,6 +16,7 @@ const PostItem = ({
   likes,
   creation,
   user_id,
+  comments,
   show_comment,
 }) => {
   const initialState = {
