@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Comment = ({ id, username, content, creation }) => {
+const Comment = ({ id, username, content }) => {
   return (
     <div className="comment card">
       <div className="post-top card-top">
@@ -10,9 +10,6 @@ const Comment = ({ id, username, content, creation }) => {
             {" "}
             {username}{" "}
           </Link>
-          <small className="post-time">
-            {timeSince(new Date(creation))} ago{" "}
-          </small>
         </div>
         <pre className="comment-content">{content}</pre>
       </div>

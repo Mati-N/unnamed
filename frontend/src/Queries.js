@@ -101,7 +101,6 @@ export const GET_POST = gql `
             id
           }
           content
-          creation
         }
       }
       pageInfo {

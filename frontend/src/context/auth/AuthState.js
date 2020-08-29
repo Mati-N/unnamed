@@ -11,7 +11,7 @@ import {
   VERIFY_TOKEN,
   REFRESH_TOKEN,
   REVOKE_TOKEN,
-} from "../../components/SVG/Queries";
+} from "../../Queries";
 import AlertContext from "../alert/AlertContext";
 
 const AuthState = (props) => {
