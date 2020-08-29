@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Comment = ({ id, username, content }) => {
+const Comment = ({ user: { username, id }, content }) => {
   return (
     <div className="comment card">
       <div className="post-top card-top">
