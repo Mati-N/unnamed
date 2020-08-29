@@ -54,7 +54,6 @@ const Post = ({
   }
   const { node } = data.posts.edges[0];
 
-  console.log(data);
   return (
     <ErrorBoundary FallbackComponent={Error}>
       <div className="main">

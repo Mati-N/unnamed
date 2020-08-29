@@ -118,7 +118,7 @@ const PostItem = ({
         if (cache) {
           let { postComments } = cache.readQuery({
             query: GET_POST,
-            variables: { id },
+            variables: { id: parseInt(id) },
           });
           if (postComments) {
             const newData = {
