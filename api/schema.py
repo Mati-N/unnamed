@@ -98,7 +98,7 @@ class PostInput(graphene.InputObjectType):
 
 # The input needed to work wiht the comment model
 class CommentInput(graphene.InputObjectType):
-    post = graphene.Int()
+    post = graphene.ID()
     content = graphene.String()
 
 # The mutation which create a comment
