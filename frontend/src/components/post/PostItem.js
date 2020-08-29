@@ -113,7 +113,7 @@ const PostItem = ({
   const add_comment = (e) => {
     e.preventDefault();
     addComment({
-      variables: { post: id, content: comment },
+      variables: { id, content: comment },
       update: (cache, { data }) => {
         if (cache) {
           let { postComments } = cache.readQuery({
@@ -212,18 +212,14 @@ const PostItem = ({
               <form onSubmit={add_comment}>
                 <div className="form-group comment-form">
                   <input
-                    class="form-control"
+                    className="form-control"
                     type="text"
                     id="comment"
                     name="text"
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                   />
-                  <button
-                    class="btn btn-outline-primary"
-                    type="submit"
-                    id="btn"
-                  >
+                  <button className="btn btn-teal" type="submit" id="btn">
                     Comment
                   </button>
                 </div>
