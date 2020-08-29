@@ -13,6 +13,7 @@ const Posts = ({ posts, self, username, id }) => {
           comments={node.commentSet.length}
           user_id={self ? id : node.user.id}
           username={self ? username : node.user.username}
+          show_comment={false}
         />
       ))}
     </div>

@@ -64,6 +64,7 @@ const Post = ({
           comments={node.commentSet.length}
           user_id={node.user.id}
           username={node.user.username}
+          show_comment={true}
           {...node}
         />
         <Comments comments={data.postComments.edges} />

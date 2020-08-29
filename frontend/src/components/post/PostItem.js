@@ -16,7 +16,7 @@ const PostItem = ({
   likes,
   creation,
   user_id,
-  comments,
+  show_comment,
 }) => {
   const initialState = {
     done: false,
@@ -205,23 +205,29 @@ const PostItem = ({
             </span>
           </div>
 
-          <span className="comment-form">
-            <form onSubmit={add_comment}>
-              <div className="form-group comment-form">
-                <input
-                  class="form-control"
-                  type="text"
-                  id="comment"
-                  name="text"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-                <button class="btn btn-outline-primary" type="submit" id="btn">
-                  Comment
-                </button>
-              </div>
-            </form>
-          </span>
+          {show_comment && (
+            <span className="comment-form">
+              <form onSubmit={add_comment}>
+                <div className="form-group comment-form">
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="comment"
+                    name="text"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <button
+                    class="btn btn-outline-primary"
+                    type="submit"
+                    id="btn"
+                  >
+                    Comment
+                  </button>
+                </div>
+              </form>
+            </span>
+          )}
         </>
       )}
     </div>
