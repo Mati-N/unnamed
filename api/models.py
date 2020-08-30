@@ -11,7 +11,7 @@ __all__ = ['User', 'Post', 'Comment', 'Like', 'Following']
 
 
 class User(AbstractUser):
-    #bio = models.TextField(max_length=500, blank=True, null=True)
+    bio = models.TextField(max_length=500, blank=True, null=True)
 
     @property
     def followers(self):
