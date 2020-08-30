@@ -9,7 +9,7 @@ $light-color: rgb(238, 238, 238);
 * {
   font-family: "Alata",
     sans-serif;
-  transition: all 0.55s;
+  transition: all 0.3s;
 }
 
 .label-hide {
@@ -321,6 +321,10 @@ nav {
   .post,
   .card {
     width: 95%;
+
+    .info-bottom {
+      width: 40%;
+    }
   }
 
   .app {
