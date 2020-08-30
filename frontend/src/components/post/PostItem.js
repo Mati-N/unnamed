@@ -210,20 +210,18 @@ const PostItem = ({
 
           {show_comment && (
             <span className="comment-form">
-              <form onSubmit={add_comment}>
-                <div className="form-group comment-form">
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="comment"
-                    name="text"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                  <button className="btn btn-teal" type="submit" id="btn">
-                    Comment
-                  </button>
-                </div>
+              <form onSubmit={add_comment} className="form-group comment-form">
+                <input
+                  className="form-control"
+                  type="text"
+                  id="comment"
+                  name="text"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <button className="btn btn-teal" type="submit" id="btn">
+                  Comment
+                </button>
               </form>
             </span>
           )}
