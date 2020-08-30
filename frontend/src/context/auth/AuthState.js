@@ -53,31 +53,33 @@ const AuthState = (props) => {
           Logout();
         })
         .then(({ data }) => {
-          if (data.verifyToken != null) {
-            refresh({
-              variables: {
-                token: state.refreshToken,
-              },
-            }).then((d) => {
-              if (d.data.refreshToken !== null) {
-                localStorage.setItem("TOKEN", d.data.refreshToken.token);
-                localStorage.setItem(
-                  "REFRESH_TOKEN",
-                  d.data.refreshToken.refreshToken
-                );
-                dispatch({
-                  type: LOGIN,
-                });
-              } else {
-                dispatch({
-                  type: LOGOUT,
-                });
-              }
-            });
-          } else {
-            dispatch({
-              type: LOGOUT,
-            });
+          if (data) {
+            if (data.verifyToken != null) {
+              refresh({
+                variables: {
+                  token: state.refreshToken,
+                },
+              }).then((d) => {
+                if (d.data.refreshToken !== null) {
+                  localStorage.setItem("TOKEN", d.data.refreshToken.token);
+                  localStorage.setItem(
+                    "REFRESH_TOKEN",
+                    d.data.refreshToken.refreshToken
+                  );
+                  dispatch({
+                    type: LOGIN,
+                  });
+                } else {
+                  dispatch({
+                    type: LOGOUT,
+                  });
+                }
+              });
+            } else {
+              dispatch({
+                type: LOGOUT,
+              });
+            }
           }
         });
       dispatch({
