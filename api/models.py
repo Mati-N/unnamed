@@ -9,9 +9,8 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=260)
     text = models.CharField(max_length=5500)
-    commentCount = models.IntegerField(default=0)
     creation = models.DateTimeField(auto_now_add=True)
-                                               
+                                              
     def __str__(self):                                
         return f"Post {self.id}: {self.title}: created {self.before()} ago"
                                                       
