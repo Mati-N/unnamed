@@ -12,6 +12,8 @@ __all__ = ['User', 'Post', 'Comment', 'Like', 'Following']
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True, null=True)
+    USERNAME_FIELD = "username"
+    PASSWORD_FIRLD = "password"
 
     @property
     def follower_count(self):
