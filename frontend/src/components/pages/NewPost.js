@@ -90,7 +90,7 @@ const NewPost = () => {
   if (sent) return <Redirect to="/" />;
 
   return (
-    <div className="main">
+    <>
       <form onSubmit={onSubmit} method="post" className="form-auth">
         <div className="form-group">
           <label className="label-hide" htmlFor="title">
@@ -123,7 +123,7 @@ const NewPost = () => {
           Submit
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

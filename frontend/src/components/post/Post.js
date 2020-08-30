@@ -56,7 +56,7 @@ const Post = ({
 
   return (
     <ErrorBoundary FallbackComponent={Error}>
-      <div className="main">
+      <>
         <PostItem
           key={node.id}
           likes={node.likers.length}
@@ -73,7 +73,7 @@ const Post = ({
             {(loading || spin) && <Spinner size={40} />}
           </div>
         </Waypoint>
-      </div>
+      </>
     </ErrorBoundary>
   );
 };

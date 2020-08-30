@@ -41,7 +41,7 @@ const Routes = () => {
   return (
     <React.Fragment>
       {transitions.map(({ item, props, key }) => (
-        <animated.div key={`${key}anim`} style={props} className="container">
+        <animated.div key={`${key}anim`} style={props}>
           <Suspense
             fallback={
               <div className="main">

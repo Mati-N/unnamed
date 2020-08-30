@@ -61,12 +61,10 @@ function Home() {
 
   return (
     <>
-      <div className="main">
-        <Posts posts={data.posts.edges} self={false} id={null} />
-        <Waypoint onEnter={more}>
-          <div className="spinner">{spin && <Spinner size={40} />}</div>
-        </Waypoint>
-      </div>
+      <Posts posts={data.posts.edges} self={false} id={null} />
+      <Waypoint onEnter={more}>
+        <div className="spinner">{spin && <Spinner size={40} />}</div>
+      </Waypoint>
     </>
   );
 }

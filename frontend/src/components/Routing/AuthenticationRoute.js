@@ -19,7 +19,11 @@ const AuthenticationRoute = ({ component: Component, auth, ...rest }) => {
         else if (isAuthenticated) {
           return <Redirect to="/" />;
         } else {
-          return <Component {...props} />;
+          return (
+            <div className="main">
+              <Component {...props} />
+            </div>
+          );
         }
       }}
     />
