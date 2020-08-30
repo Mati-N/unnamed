@@ -74,23 +74,22 @@ $light-color: rgb(238, 238, 238);
 
   .comment-form {
     width: 100%;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 8vh;
+    padding: 0.1em;
+    margin: 0;
 
-    form {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      height: 8vh;
+    #comment {
+      display: inline-block;
+      width: 55%;
+    }
 
-      #comment {
-        display: inline-block;
-        width: 55%;
-      }
+    #btn {
+      width: 30%;
 
-      #btn {
-        width: 30%;
-        display: inline-block;
-      }
+      display: inline-block;
     }
   }
 
