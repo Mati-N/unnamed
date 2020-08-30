@@ -1,6 +1,7 @@
 from django.db import models
 import pytz
-from django.contrib.auth.models import User as Django_User
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 from utils.models import AutoTimeStamped
 utc = pytz.UTC
@@ -9,14 +10,19 @@ utc = pytz.UTC
 __all__ = ['User', 'Post', 'Comment', 'Like', 'Following']
 
 
-# User model
-class User(AutoTimeStamped):
-    user = models.OneToOneField(Django_User, on_delete=models.PROTECT)
+class User(AbstractUser):
+    bio = models.TextField(max_length=500, blank=True, null=True)
 
+    @property
+    def followers(self):
+        return self.followers.count()
 
+    @property
+    def posts(self):
+        return self.posts.count()
 # Post model
 class Post(AutoTimeStamped):
-    user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="posts")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=260)
     text = models.TextField()
 
@@ -27,10 +33,14 @@ class Post(AutoTimeStamped):
     def comment_count(self):
         return self.comments.count()
 
+    @property
+    def like_count(self):
+        return self.likes.count()
+
 
 # Comment model                                       
 class Comment(AutoTimeStamped):
-    user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments")
     post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()
 
@@ -40,13 +50,13 @@ class Comment(AutoTimeStamped):
 
 # Like model
 class Like(models.Model):
-    user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likes")
     post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="likes")
 
 
 # Following model
 class Following(models.Model):
-    target = models.ForeignKey('api.User', related_name='followers', on_delete=models.CASCADE, blank=False, null=True)
-    follower = models.ForeignKey('api.User', related_name='targets', on_delete=models.CASCADE, blank=False, null=True)
+    target = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE, blank=False, null=True)
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='targets', on_delete=models.CASCADE, blank=False, null=True)
 
 

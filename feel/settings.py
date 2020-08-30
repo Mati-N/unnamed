@@ -135,6 +135,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'api.User'
+
+
 GRAPHENE = {
     "SCHEMA": 'schema.schema',
     'MIDDLEWARE': [

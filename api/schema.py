@@ -15,7 +15,7 @@ from .models import *
 class UserFilter(django_filters.FilterSet):
     class Meta:
         model = User
-        fields = {'username': ['exact', 'icontains', 'istartswith']}
+        fields = {'user__username': ['exact', 'icontains', 'istartswith']}
 
     order_by = OrderingFilter(
         fields=(
@@ -26,6 +26,8 @@ class UserFilter(django_filters.FilterSet):
 # The user model's type
 class UserNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
+    followers = graphene.Int(source="followers")
+    posts = graphene.Int(source="posts")
 
     class Meta:
         model = User
@@ -47,15 +49,16 @@ class PostFilter(django_filters.FilterSet):
         
     order_by = OrderingFilter(
         fields=(
-            ('-creation', 'creation'), ("likes", "likes")
+            ('-created_at', 'created_at'), ("likes", "likes")
         )
     )
 
 # The post model's type
 class PostNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
-    like_count = graphene.Int()
-    #liked = graphene.Boolean(source=Like.objects.filter(user=info.context.user, post=Post.objects.get(pk=id)))
+    like_count = graphene.Int(source="like_count")
+    comment_count = graphene.Int(source="comment_count")
+
     class Meta:
         model = Post
         interfaces = (graphene.relay.Node,)
