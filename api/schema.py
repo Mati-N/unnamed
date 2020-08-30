@@ -9,13 +9,15 @@ from graphene_django.filter import DjangoFilterConnectionField
 from django_filters import OrderingFilter
 from time import sleep
 from django.db.models import Count, IntegerField
+from django.conf import settings
 
 from .models import *
 
+
 class UserFilter(django_filters.FilterSet):
     class Meta:
-        model = User
-        fields = {'user__username': ['exact', 'icontains', 'istartswith']}
+        model = settings.AUTH_USER_MODEL
+        fields = {'username': ['exact', 'icontains', 'istartswith']}
 
     order_by = OrderingFilter(
         fields=(
@@ -30,7 +32,7 @@ class UserNode(DjangoObjectType):
     posts = graphene.Int(source="posts")
 
     class Meta:
-        model = User
+        model = settings.AUTH_USER_MODEL
         interfaces = (graphene.relay.Node,)
 
 
@@ -82,7 +84,7 @@ class LikeType(DjangoObjectType):
 
 class UserType(DjangoObjectType):
     class Meta:
-        model = User
+        model = settings.AUTH_USER_MODEL
 
 class FollowNode(DjangoObjectType):
     class Meta:
@@ -152,13 +154,13 @@ class Follow(graphene.Mutation):
     @login_required
     def mutate(root, info, id):
         ok = True
-        user_instance = User.objects.get(id=id)
+        user_instance = settings.AUTH_USER_MODEL.objects.get(id=id)
         follow_instance = Following.objects.filter(user=info.context.user, user_f=user_instance)
         if len(follow_instance) > 0:
             follow_instance[0].delete()
             return Follow(ok=ok, user=user_instance, message="Unfollowed")
 
-        follow_instance = Following(user=info.context.user, user_f=User.objects.get(id=id))
+        follow_instance = Following(user=info.context.user, user_f=settings.AUTH_USER_MODEL.objects.get(id=id))
         follow_instance.save()
 
         return Follow(ok=ok, user=user_instance, message="Followed")
@@ -204,11 +206,11 @@ class CreateUser(graphene.Mutation):
         if info.context.user.is_authenticated:
             return CreateUser(ok=ok, user=info.context.user, message="Already logged in")
 
-        if User.objects.filter(username=input.username):
+        if settings.AUTH_USER_MODEL.objects.filter(username=input.username):
             return CreateUser(ok=ok, user=None, message="Username is already in use")
 
         ok = True
-        user_instance = User(username=input.username)
+        user_instance = settings.AUTH_USER_MODEL(username=input.username)
         user_instance.set_password(input.password)
         user_instance.save()
 
@@ -228,7 +230,7 @@ class UpdateUser(graphene.Mutation):
     @login_required
     def mutate(root, info, newP=None, input=None):
         ok = False
-        user_instance = User.objects.get(id=info.context.user.id)
+        user_instance = settings.AUTH_USER_MODEL.objects.get(id=info.context.user.id)
 
         if user_instance:
             if not user_instance.check_password(input.password):
@@ -267,17 +269,17 @@ class Query(object):
         username = kwargs.get('username')
 
         if id is not None:
-            return User.objects.filter(pk=id)
+            return settings.AUTH_USER_MODEL.objects.filter(pk=id)
         elif username is not None:
-            return User.objects.filter(username=username)
+            return settings.AUTH_USER_MODEL.objects.filter(username=username)
 
-        return User.objects.all()
+        return settings.AUTH_USER_MODEL.objects.all()
 
     def resolve_post_comments(self, info, id, **kwargs):
         return Comment.objects.filter(post=Post.objects.get(id=id))
 
     def resolve_is_following(self, info, id, **kwargs):
-        return len(Following.objects.filter(user=info.context.user, user_f=User.objects.get(id=id))) > 0
+        return len(Following.objects.filter(user=info.context.user, user_f=settings.AUTH_USER_MODEL.objects.get(id=id))) > 0
 
     def resolve_post(self, info, **kwargs):
         return info.context.user.posts
@@ -286,10 +288,10 @@ class Query(object):
         return Post.objects.filter(user__followers__user=info.context.user)
 
     def resolve_user_post(self, info, id, **kwargs):
-        return Post.objects.filter(user=User.objects.get(id=id))
+        return Post.objects.filter(user=settings.AUTH_USER_MODEL.objects.get(id=id))
 
     def resolve_user_get(self, info, id, **kwargs):
-        return User.objects.get(id=id)
+        return settings.AUTH_USER_MODEL.objects.get(id=id)
 
     def resolve_user(self, info, **kwargs):
         return info.context.user
