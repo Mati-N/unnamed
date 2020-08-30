@@ -75,6 +75,18 @@ $light-color: rgb(238, 238, 238);
   .comment-form {
     width: 95%;
     display: block;
+
+    form {
+      #comment {
+        display: inline-block;
+        width: 70%;
+      }
+
+      #btn {
+        width: 29%;
+        display: inline-block;
+      }
+    }
   }
 
   &-top {
