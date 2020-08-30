@@ -42,16 +42,8 @@ export const GET_POSTS = gql `
           id
           title
           text
-          likers {
-            id
-          }
-          commentSet {
-            edges {
-              node {
-                id
-              }
-            }
-          }
+          like_count
+          comment_count
           creation
           user {
             username
@@ -71,16 +63,8 @@ export const GET_POST = gql `
           id
           title
           text
-          likers {
-            id
-          }
-          commentSet {
-            edges {
-              node {
-                id
-              }
-            }
-          }
+          like_count
+          comment_count
           creation
           user {
             username
@@ -136,9 +120,7 @@ export const LIKE = gql `
     likePost(postId: $post_id) {
       ok
       post {
-        likers {
-          id
-        }
+        like_count
       }
     }
   }
@@ -152,16 +134,8 @@ export const CREATE_POST = gql `
         id
         title
         text
-        likers {
-          id
-        }
-        commentSet {
-          edges {
-            node {
-              id
-            }
-          }
-        }
+        like_count
+        comment_count
         creation
         user {
           username
@@ -194,20 +168,8 @@ export const SELF_USER = gql `
     user {
       id
       username
-      posts {
-        edges {
-          node {
-            id
-          }
-        }
-      }
-      followers {
-        edges {
-          node {
-            id
-          }
-        }
-      }
+      post_count
+      follower_count
     }
   }
 `;
@@ -218,16 +180,8 @@ export const SELF_POSTS = gql `
       edges {
         node {
           id
-          likers {
-            id
-          }
-          commentSet {
-            edges {
-              node {
-                id
-              }
-            }
-          }
+          like_count
+          comment_count
           text
           title
           creation
@@ -271,16 +225,8 @@ export const USER_POSTS = gql `
       edges {
         node {
           id
-          likers {
-            id
-          }
-          commentSet {
-            edges {
-              node {
-                id
-              }
-            }
-          }
+          like_count
+          comment_count
           text
           title
           creation

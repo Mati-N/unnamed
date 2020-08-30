@@ -14,11 +14,11 @@ class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True, null=True)
 
     @property
-    def followers(self):
+    def follower_count(self):
         return self.followers.count()
 
     @property
-    def posts(self):
+    def post_count(self):
         return self.posts.count()
 # Post model
 class Post(AutoTimeStamped):

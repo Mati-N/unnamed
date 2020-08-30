@@ -13,19 +13,19 @@ const PostItem = ({
   title,
   username,
   id,
-  likes,
+  like_count,
   creation,
   user_id,
-  comments,
+  comment_count,
   show_comment,
 }) => {
   const initialState = {
     done: false,
-    likes,
+    likes: like_count,
     hasMore: false,
     height: "32vh",
     loading: false,
-    comments,
+    comments: comment_count,
     expand: false,
   };
   const [liked] = useLazyQuery(LIKED, {

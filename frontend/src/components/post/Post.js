@@ -59,8 +59,6 @@ const Post = ({
       <>
         <PostItem
           key={node.id}
-          likes={node.likers.length}
-          comments={node.commentSet.length}
           user_id={node.user.id}
           username={node.user.username}
           show_comment={true}
