@@ -77,13 +77,17 @@ $light-color: rgb(238, 238, 238);
     display: block;
 
     form {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
       #comment {
         display: inline-block;
-        width: 70%;
+        width: 68%;
       }
 
       #btn {
-        width: 29%;
+        width: 28%;
         display: inline-block;
       }
     }
