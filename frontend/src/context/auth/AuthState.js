@@ -80,9 +80,7 @@ const AuthState = (props) => {
         type: SET_LOADING,
       });
     } catch {
-      dispatch({
-        type: "OFFLINE",
-      });
+      Logout();
     }
   };
 
@@ -136,16 +134,21 @@ const AuthState = (props) => {
   };
 
   const Logout = () => {
-    revoke({
-      variables: {
-        token: state.refreshToken,
-      },
-    });
-    logout();
-    setAlert("Logged out!", "primary");
-    dispatch({
-      type: LOGOUT,
-    });
+    try {
+      revoke({
+        variables: {
+          token: state.refreshToken,
+        },
+      });
+      logout();
+      setAlert("Logged out!", "primary");
+
+      dispatch({
+        type: LOGOUT,
+      });
+    } catch {
+      dispatch({ type: LOGOUT });
+    }
   };
 
   return (
