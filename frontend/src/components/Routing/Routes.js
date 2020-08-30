@@ -32,6 +32,7 @@ const Routes = () => {
       transform: "scale(0.6) translateX(70%)",
     },
     config: config.stiff,
+    duration: "0.25s",
   });
 
   useEffect(() => {
