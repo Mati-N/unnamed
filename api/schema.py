@@ -128,10 +128,11 @@ class CreatePost(graphene.Mutation):
 
     @staticmethod
     @login_required
-    def mutate(root, info, input=None):
-        ok = True
+    def mutate(root, info, input):
+        ok = False
         post_instance = Post(user=info.context.user, title=input.title, text=input.text)
         post_instance.save()
+        ok = True
 
         return CreatePost(ok=ok, post=post_instance)
 
