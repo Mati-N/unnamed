@@ -1,6 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{"./src/components/post/Posts.js":
-/*!**************************************!*\
-  !*** ./src/components/post/Posts.js ***!
-  \**************************************/
-/*! exports provided: default */function(e,n,s){"use strict";s.r(n);var t=s(/*! @babel/runtime/helpers/extends */"./node_modules/@babel/runtime/helpers/extends.js"),o=s.n(t),r=s(/*! react */"./node_modules/react/index.js"),u=s.n(r),c=Object(r.lazy)((function(){return s.e(/*! import() */3).then(s.bind(null,/*! ./PostItem */"./src/components/post/PostItem.js"))}));n.default=function(e){var n=e.posts,s=e.self,t=e.username,r=e.id;return console.log(n),u.a.createElement("div",null,n.map((function(e){var n=e.node;return u.a.createElement(c,o()({key:n.id},n,{likes:n.likers.length,comments:n.commentSet.length,user_id:s?r:n.user.id,username:s?t:n.user.username,show_comment:!1}))})))}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{110:function(e,n,l){"use strict";l.r(n);var t=l(0),a=l.n(t);n.default=function(){return a.a.createElement("div",null,a.a.createElement("h1",null,"It seems like you are offline"),a.a.createElement("small",null,"Try refreshing"))}}}]);
 //# sourceMappingURL=1.main.js.map

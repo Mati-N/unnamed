@@ -53,7 +53,6 @@ export const GET_POSTS = gql `
             }
           }
           creation
-          commentCount
           user {
             username
             id
@@ -83,7 +82,6 @@ export const GET_POST = gql `
             }
           }
           creation
-          commentCount
           user {
             username
             id
@@ -165,7 +163,6 @@ export const CREATE_POST = gql `
           }
         }
         creation
-        commentCount
         user {
           username
           id
