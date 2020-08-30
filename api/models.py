@@ -18,14 +18,6 @@ class User(AutoTimeStamped):
 class Post(AutoTimeStamped):
     user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=260)
-<<<<<<< HEAD
-    text = models.CharField(max_length=5500)
-    creation = models.DateTimeField(auto_now_add=True)
-                                              
-    def __str__(self):                                
-        return f"Post {self.id}: {self.title}: created {self.before()} ago"
-                                                      
-=======
     text = models.TextField()
 
     def __str__(self):
@@ -36,7 +28,6 @@ class Post(AutoTimeStamped):
         return self.comments.count()
 
 
->>>>>>> 46f3b16bcf601fb05a0dacdd326c2da41c406a40
 # Comment model                                       
 class Comment(AutoTimeStamped):
     user = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="comments")
