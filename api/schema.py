@@ -51,7 +51,7 @@ class PostFilter(django_filters.FilterSet):
         
     order_by = OrderingFilter(
         fields=(
-            ('-created_at', 'created_at'), ("likes", "likes")
+            ('-created_at', 'created_at'), ("like_count", "like_count")
         )
     )
 
@@ -64,6 +64,13 @@ class PostNode(DjangoObjectType):
     class Meta:
         model = Post
         interfaces = (graphene.relay.Node,)
+
+    def resolve_like_count(self, info):
+        return self.like_count
+
+    def resolve_comment_count(self, info):
+        return self.comment_count
+
 
 class CommentFilter(django_filters.FilterSet):
     class Meta:
