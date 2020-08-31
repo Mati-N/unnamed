@@ -88,7 +88,7 @@ const User = ({ match }) => {
         setFollowing({
           ...following,
           following: !following.following,
-          followers: followUser.user.followers.edges.length,
+          followers: followUser.user.followerCount,
         });
       }
     );
@@ -99,7 +99,7 @@ const User = ({ match }) => {
       setFollowing({
         first: false,
         following: user_data.isFollowing,
-        followers: user_data.userGet.followers.edges.length,
+        followers: user_data.userGet.followerCount,
       });
     }
   }
@@ -191,7 +191,7 @@ const User = ({ match }) => {
               <path stroke="none" d="M0 0h24v24H0z" />
               <polyline points="9 6 15 12 9 18" />
             </svg>{" "}
-            {following.followers}
+            {following.followerCount}
           </span>
         </div>
         <Posts
