@@ -32,7 +32,7 @@ export const LOGIN_USER = gql `
 
 export const GET_POSTS = gql `
   query posts($cursor: String) {
-    posts(first: 45, after: $cursor, orderBy: "createdAt") {
+    posts(first: 45, after: $cursor, orderBy: "created_at") {
       pageInfo {
         endCursor
         hasNextPage
@@ -176,7 +176,7 @@ export const SELF_USER = gql `
 
 export const SELF_POSTS = gql `
   query self_posts($cursor: String) {
-    post(first: 20, orderBy: "createdAt", after: $cursor) {
+    post(first: 20, orderBy: "created_at", after: $cursor) {
       edges {
         node {
           id
@@ -209,7 +209,7 @@ export const GET_USER = gql `
 
 export const USER_POSTS = gql `
   query user_posts($cursor: String, $id: ID!) {
-    userPost(first: 10, orderBy: "createdAt", after: $cursor, id: $id) {
+    userPost(first: 10, orderBy: "created_at", after: $cursor, id: $id) {
       edges {
         node {
           id
