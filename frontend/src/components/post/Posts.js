@@ -9,8 +9,6 @@ const Posts = ({ posts, self, username, id }) => {
         <PostItem
           key={node.id}
           {...node}
-          likes={node.likers.length}
-          comments={node.commentSet.length}
           user_id={self ? id : node.user.id}
           username={self ? username : node.user.username}
           show_comment={false}

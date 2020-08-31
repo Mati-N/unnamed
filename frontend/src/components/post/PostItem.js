@@ -106,7 +106,7 @@ const PostItem = ({
         setState({
           ...state,
           liked: !state.liked,
-          likes: likePost.post.likers.length,
+          likes: likePost.post.likeCount,
         });
       });
   };
