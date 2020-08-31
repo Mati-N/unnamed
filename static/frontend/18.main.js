@@ -1,6 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[18],{"./src/components/pages/NotFound.js":
-/*!******************************************!*\
-  !*** ./src/components/pages/NotFound.js ***!
-  \******************************************/
-/*! exports provided: default */function(e,n,o){"use strict";o.r(n);var t=o(/*! react */"./node_modules/react/index.js"),a=o.n(t);n.default=function(){return a.a.createElement(a.a.Fragment,null,a.a.createElement("h2",null," 404 Not Found ")," ",a.a.createElement("p",null," The page you are looking for does not exists. ")," ")}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[18],{127:function(e,t,a){"use strict";a.r(t);var n=a(41),c=a.n(n),r=a(0),o=a.n(r),m=a(22),s=function(e){var t=e.user,a=t.username,n=t.id,c=e.content;return o.a.createElement("div",{className:"comment card"},o.a.createElement("div",{className:"post-top card-top"},o.a.createElement("div",{className:"post-info-top"},o.a.createElement(m.b,{to:"user/".concat(n),className:"post-user"}," ",a," ")),o.a.createElement("pre",{className:"comment-content"},c)))};t.default=function(e){var t=e.comments;return o.a.createElement(o.a.Fragment,null,t.map((function(e){var t=e.node;return o.a.createElement(o.a.Fragment,null,o.a.createElement(s,c()({key:"com".concat(t.id)},t)))})))}}}]);
 //# sourceMappingURL=18.main.js.map

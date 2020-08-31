@@ -13,15 +13,15 @@ const PostItem = ({
   title,
   username,
   id,
-  like_count,
-  creation,
+  likeCount,
+  createdAt,
   user_id,
   comment_count,
   show_comment,
 }) => {
   const initialState = {
     done: false,
-    likes: like_count,
+    likes: likeCount,
     hasMore: false,
     height: "32vh",
     loading: false,
@@ -154,7 +154,7 @@ const PostItem = ({
             {username}{" "}
           </Link>
           <small className="post-time">
-            {timeSince(new Date(creation))} ago{" "}
+            {timeSince(new Date(createdAt))} ago{" "}
           </small>
         </div>
         <h5 className="post-title">{title}</h5>

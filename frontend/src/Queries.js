@@ -32,7 +32,7 @@ export const LOGIN_USER = gql `
 
 export const GET_POSTS = gql `
   query posts($cursor: String) {
-    posts(first: 45, after: $cursor, orderBy: "creation") {
+    posts(first: 45, after: $cursor, orderBy: "createdAt") {
       pageInfo {
         endCursor
         hasNextPage
@@ -42,9 +42,9 @@ export const GET_POSTS = gql `
           id
           title
           text
-          like_count
-          comment_count
-          creation
+          likeCount
+          commentCount
+          createdAt
           user {
             username
             id
@@ -63,9 +63,9 @@ export const GET_POST = gql `
           id
           title
           text
-          like_count
-          comment_count
-          creation
+          likeCount
+          commentCount
+          createdAt
           user {
             username
             id
@@ -120,7 +120,7 @@ export const LIKE = gql `
     likePost(postId: $post_id) {
       ok
       post {
-        like_count
+        likeCount
       }
     }
   }
@@ -134,9 +134,9 @@ export const CREATE_POST = gql `
         id
         title
         text
-        like_count
-        comment_count
-        creation
+        likeCount
+        commentCount
+        createdAt
         user {
           username
           id
@@ -168,23 +168,23 @@ export const SELF_USER = gql `
     user {
       id
       username
-      post_count
-      follower_count
+      postCount
+      followerCount
     }
   }
 `;
 
 export const SELF_POSTS = gql `
   query self_posts($cursor: String) {
-    post(first: 20, orderBy: "creation", after: $cursor) {
+    post(first: 20, orderBy: "createdAt", after: $cursor) {
       edges {
         node {
           id
-          like_count
-          comment_count
+          likeCount
+          commentCount
           text
           title
-          creation
+          createdAt
         }
       }
       pageInfo {
@@ -199,20 +199,8 @@ export const GET_USER = gql `
   query get_user($id: ID!) {
     userGet(id: $id) {
       username
-      posts {
-        edges {
-          node {
-            id
-          }
-        }
-      }
-      followers {
-        edges {
-          node {
-            id
-          }
-        }
-      }
+      postCount
+      followerCount
     }
 
     isFollowing(id: $id)
@@ -221,15 +209,15 @@ export const GET_USER = gql `
 
 export const USER_POSTS = gql `
   query user_posts($cursor: String, $id: ID!) {
-    userPost(first: 10, orderBy: "creation", after: $cursor, id: $id) {
+    userPost(first: 10, orderBy: "createdAt", after: $cursor, id: $id) {
       edges {
         node {
           id
-          like_count
-          comment_count
+          likeCount
+          commentCount
           text
           title
-          creation
+          createdAt
         }
       }
       pageInfo {
@@ -246,13 +234,7 @@ export const FOLLOW = gql `
       ok
       user {
         id
-        followers {
-          edges {
-            node {
-              id
-            }
-          }
-        }
+        followerCount
       }
       message
     }
@@ -273,7 +255,7 @@ export const CREATE_COMMENT = gql `
           id
         }
         content
-        creation
+        createdAt
       }
       __typename
     }

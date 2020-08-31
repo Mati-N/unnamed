@@ -91,7 +91,7 @@ const Account = () => {
               <path stroke="none" d="M0 0h24v24H0z" />
               <polyline points="9 6 15 12 9 18" />
             </svg>{" "}
-            {user_data.user.post_count}
+            {user_data.user.postCount}
           </span>
           <span className="info">
             Followers
@@ -110,7 +110,7 @@ const Account = () => {
               <path stroke="none" d="M0 0h24v24H0z" />
               <polyline points="9 6 15 12 9 18" />
             </svg>{" "}
-            {user_data.user.follower_count}
+            {user_data.user.followerCount}
           </span>
         </div>
         <div className="options-container">
