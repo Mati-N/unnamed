@@ -66,7 +66,7 @@ const Account = () => {
 
   const { post } = data;
   return (
-    <div className="main">
+    <>
       <div className="account-info">
         <div className="account-info-top">
           <span className="username" style={{ display: "block" }}>
@@ -193,7 +193,7 @@ const Account = () => {
           <div className="spinner">{spin && <Spinner size={40} />}</div>
         </Waypoint>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -12,8 +12,10 @@ const AuthenticationRoute = ({ component: Component, auth, ...rest }) => {
       render={(props) => {
         if (loading || isAuthenticated == null)
           return (
-            <div className="spinner">
-              <Spinner size={60} style={{}} />
+            <div className="main">
+              <div className="spinner">
+                <Spinner size={60} style={{}} />
+              </div>
             </div>
           );
         else if (isAuthenticated) {

@@ -12,8 +12,10 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
       render={(props) => {
         if (loading || isAuthenticated == null)
           return (
-            <div className="spinner">
-              <Spinner size={68} />
+            <div className="main">
+              <div className="spinner">
+                <Spinner size={68} />
+              </div>
             </div>
           );
         else if (!isAuthenticated) {
