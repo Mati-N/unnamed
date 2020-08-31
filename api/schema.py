@@ -58,18 +58,12 @@ class PostFilter(django_filters.FilterSet):
 # The post model's type
 class PostNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
-    like_count = graphene.Int()#source="like_count")
-    comment_count = graphene.Int()#source="comment_count")
+    like_count = graphene.Int(source="like_count")
+    comment_count = graphene.Int(source="comment_count")
 
     class Meta:
         model = Post
         interfaces = (graphene.relay.Node,)
-
-    def resolve_like_count(self, info):
-        return self.like_count
-
-    def resolve_comment_count(self, info):
-        return self.comment_count
 
 
 class CommentFilter(django_filters.FilterSet):
@@ -90,6 +84,9 @@ class LikeType(DjangoObjectType):
         model = Like
 
 class UserType(DjangoObjectType):
+    followers = graphene.Int(source="followers")
+    posts = graphene.Int(source="posts")
+
     class Meta:
         model = User
 
