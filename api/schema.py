@@ -28,8 +28,8 @@ class UserFilter(django_filters.FilterSet):
 # The user model's type
 class UserNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
-    followers = graphene.Int(source="followers")
-    posts = graphene.Int(source="posts")
+    follower_count = graphene.Int(source="follower_count")
+    post_count = graphene.Int(source="post_count")
 
     class Meta:
         model = User
