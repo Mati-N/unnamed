@@ -129,7 +129,7 @@ const AuthState = (props) => {
     })
       .catch((error) => `${error}`)
       .then((d) => {
-        if (d) {
+        if (d.data) {
           if (d.data.createUser.ok) {
             Login(username, password);
             return true;
