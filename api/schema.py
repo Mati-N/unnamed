@@ -58,8 +58,8 @@ class PostFilter(django_filters.FilterSet):
 # The post model's type
 class PostNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
-    like_count = graphene.Int(source="like_count")
-    comment_count = graphene.Int(source="comment_count")
+    like_count = graphene.Int()#source="like_count")
+    comment_count = graphene.Int()#source="comment_count")
 
     class Meta:
         model = Post
