@@ -315,7 +315,7 @@ class Query(object):
             return Post.objects.filter(title=title)
 
 
-        return Post.objects.all().order_by('-like_count')
+        return Post.objects.all()
 
     def reslove_comments(self, info,  **kwargs):
         return Comment.objects.all()
