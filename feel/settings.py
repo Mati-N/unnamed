@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
 
@@ -141,7 +141,7 @@ GRAPHENE = {
 }
 
 
-SECURE_SSL_REDIRECT = False#True
+SECURE_SSL_REDIRECT = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
