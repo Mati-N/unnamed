@@ -32,7 +32,7 @@ const Routes = () => {
       transform: "scale(0.6) translateX(70%)",
     },
     config: config.stiff,
-    duration: "0.09s",
+    duration: "0.35s",
   });
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Routes = () => {
   return (
     <React.Fragment>
       {transitions.map(({ item, props, key }) => (
-        <animated.div key={`${key}anim`} style={props}>
+        <animated.div key={`${key}anim`} style={props} className="container">
           <Suspense
             fallback={
               <div className="main">

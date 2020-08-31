@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Suspense } from "react";
 import { Route, Redirect } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
@@ -23,7 +23,22 @@ const AuthenticationRoute = ({ component: Component, auth, ...rest }) => {
         } else {
           return (
             <div className="main">
-              <Component {...props} />
+              <Suspense
+                fallback={
+                  <div className="main">
+                    <div className="spinner">
+                      <Spinner
+                        size={50}
+                        style={{
+                          margin: "auto",
+                        }}
+                      />
+                    </div>
+                  </div>
+                }
+              >
+                <Component {...props} />
+              </Suspense>
             </div>
           );
         }
