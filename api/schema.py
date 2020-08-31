@@ -311,8 +311,7 @@ class Query(object):
             return Post.objects.filter(title=title)
 
 
-        # liked=(len(Like.objects.filter(user=info.context.user, post=Post)) > 0), 
-        return Post.objects.all().annotate(like_count=Count('likers')).order_by('-like_count')
+        return Post.objects.all().order_by('-like_count')
 
     def reslove_comments(self, info,  **kwargs):
         return Comment.objects.all()
