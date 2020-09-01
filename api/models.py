@@ -5,7 +5,6 @@ from django.conf import settings
 
 from utils.models import AutoTimeStamped
 utc = pytz.UTC
-##############################
 
 __all__ = ['User', 'Post', 'Comment', 'Like', 'Following']
 
@@ -20,7 +19,6 @@ class User(AbstractUser):
     @property
     def post_count(self):
         return self.posts.count()
-# Post model
 class Post(AutoTimeStamped):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=260)
@@ -38,7 +36,6 @@ class Post(AutoTimeStamped):
         return self.likes.count()
 
 
-# Comment model                                       
 class Comment(AutoTimeStamped):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments")
     post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="comments")
@@ -48,15 +45,13 @@ class Comment(AutoTimeStamped):
         return f"Comment {self.id} on Post"
 
 
-# Like model
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likes")
     post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="likes")
 
 
-# Following model
 class Following(models.Model):
-    target = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE, blank=False, null=True)
-    follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='targets', on_delete=models.CASCADE, blank=False, null=True)
+    target = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE)
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='targets', on_delete=models.CASCADE)
 
 
