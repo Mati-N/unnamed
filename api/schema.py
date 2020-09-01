@@ -15,8 +15,8 @@ from .models import *
 
 
 class Query(object):
-    Users = Users.Field()
-    Posts = Posts.Field()
+    Users = Users.Field
+    Posts = Posts.Field
     following_posts = FollowingPosts.Field()
     self_posts = SelfPost.Field()
     self_user = SelfUser.Field()
