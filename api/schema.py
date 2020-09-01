@@ -7,8 +7,8 @@ from django_filters import OrderingFilter
 from time import sleep
 from django.db.models import Count, IntegerField
 from django.conf import settings
-from .schema.mutations import *
-from .schema.querie import *
+from .schemafiles.mutations import *
+from .schemafiles.querie import *
 
 from .models import *
 
