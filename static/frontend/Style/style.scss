@@ -9,7 +9,6 @@ $light-color: rgb(238, 238, 238);
 * {
   font-family: "Alata",
     sans-serif;
-  transition: all 0.1s;
 }
 
 .label-hide {
@@ -75,6 +74,10 @@ $light-color: rgb(238, 238, 238);
   border-radius: 0.4em;
   border: 0.03em solid $light-color !important;
   box-shadow: 0.01em 0 0.1em rgb(159, 158, 158);
+
+  * {
+    transition: all 0.1s;
+  }
 
   .comment-form {
     width: 100%;
@@ -215,6 +218,10 @@ $light-color: rgb(238, 238, 238);
   padding: 0.8em;
   height: 40% !important;
   border: 0.1em solid rgba(82, 82, 82, 0.5);
+
+  * {
+    transition: all 0.1s;
+  }
 }
 
 .account-info:hover {
@@ -262,7 +269,9 @@ nav {
   align-items: center;
   margin-bottom: auto;
 
-
+  * {
+    transition: all 0.1s;
+  }
 
   .nav-top {
     .navbar-brand {
