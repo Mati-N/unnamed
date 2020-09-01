@@ -6,6 +6,7 @@ from graphene_django.filter import DjangoFilterConnectionField
 from time import sleep
 from django.db.models import Count, IntegerField
 from django.conf import settings
+from graphql_jwt.decorators import login_required
 from .schemafiles.mutations import *
 from .schemafiles.querie import *
 
