@@ -1,5 +1,6 @@
 import graphene
 import graphql_jwt
+from .Nodes import *
 
 # JSON Web token generator which stores the user object
 class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
