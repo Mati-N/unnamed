@@ -3,7 +3,6 @@ from graphene import InputObjectType
 import graphql_jwt
 from django.contrib.auth import authenticate
 from graphene_django.filter import DjangoFilterConnectionField
-from django_filters import OrderingFilter
 from time import sleep
 from django.db.models import Count, IntegerField
 from django.conf import settings
