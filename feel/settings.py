@@ -141,7 +141,7 @@ GRAPHENE = {
 }
 
 
-SECURE_SSL_REDIRECT = True
+##SECURE_SSL_REDIRECT = False#True
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
