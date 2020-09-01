@@ -1,0 +1,66 @@
+import django_filters
+from graphene_django.types import DjangoObjectType
+
+__all__ = ['UserNode', 'PostNode', 'CommentNode', 'FollowNode']
+
+
+class UserFilter(django_filters.FilterSet):
+    class Meta:
+        model = User
+        fields = {'username': ['exact', 'icontains', 'istartswith']}
+
+    order_by = OrderingFilter(
+        fields=(
+            ('date_joined', 'date'), ('username', 'username')
+        )
+    )
+
+# The user model's type
+class UserNode(DjangoObjectType):
+    id = graphene.ID(source='pk', required=True)
+    follower_count = graphene.Int(source="follower_count")
+    post_count = graphene.Int(source="post_count")
+
+    class Meta:
+        model = User
+        interfaces = (graphene.relay.Node,)
+
+class PostFilter(django_filters.FilterSet):
+    class Meta:
+        model = Post
+        fields = {'title': ['exact', 'icontains', 'istartswith'], 'text': ['exact', 'icontains', 'istartswith'], 'user': ['exact']}
+        
+    order_by = OrderingFilter(
+        fields=(
+            ('-created_at', 'created_at'), ("like_count", "like_count")
+        )
+    )
+
+# The post model's type
+class PostNode(DjangoObjectType):
+    id = graphene.ID(source='pk', required=True)
+    like_count = graphene.Int(source="like_count")
+    comment_count = graphene.Int(source="comment_count")
+
+    class Meta:
+        model = Post
+        interfaces = (graphene.relay.Node,)
+        filter_class = PostFilter
+
+
+class CommentFilter(django_filters.FilterSet):
+    class Meta:
+        model = Comment
+        fields = {'content': ['exact', 'icontains', 'istartswith']}
+
+# The comment model's type
+class CommentNode(DjangoObjectType):
+    class Meta:
+        model = Comment
+        interfaces = (graphene.relay.Node,)
+        filter_class = CommentFilter
+
+class FollowNode(DjangoObjectType):
+    class Meta:
+        model = Following
+        interfaces = (graphene.relay.Node,)
