@@ -1,5 +1,6 @@
 import django_filters
 from graphene_django.types import DjangoObjectType
+from models import *
 
 __all__ = ['UserNode', 'PostNode', 'CommentNode', 'FollowNode']
 
