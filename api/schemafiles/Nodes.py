@@ -1,4 +1,5 @@
 import django_filters
+import graphene
 from graphene_django.types import DjangoObjectType
 from django_filters import OrderingFilter
 from ..models import *
