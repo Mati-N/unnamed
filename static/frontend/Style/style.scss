@@ -2,12 +2,21 @@ $teal-color: #3d9970;
 $light-color: rgb(238, 238, 238);
 
 @font-face {
-  font-family: "Alata";
-  src: url("../Fonts/Alata-Regular.woff2") format("woff2");
+  @font-face {
+    font-family: 'Hind Siliguri';
+    src: url('../Fonts/HindSiliguri-Medium.eot');
+    src: url('../Fonts/HindSiliguri-Medium.eot?#iefix') format('embedded-opentype'),
+      url('../Fonts/HindSiliguri-Medium.woff2') format('woff2'),
+      url('../Fonts/HindSiliguri-Medium.woff') format('woff'),
+      url('../Fonts/HindSiliguri-Medium.svg#HindSiliguri-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
 }
 
 * {
-  font-family: "Alata",
+  font-family: "Hind Siliguri",
     sans-serif;
 }
 
