@@ -13,6 +13,13 @@ $light-color: rgb(238, 238, 238);
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('../Chiret-Regular.ttf');
+  font-style: normal;
+  unicode-range: U+1200-U+137F;
+}
+
 * {
   font-family: "Hind Siliguri",
     sans-serif;
