@@ -1,7 +1,8 @@
 import graphene
 import graphql_jwt
-from .Nodes import *
 from graphql_jwt.decorators import login_required
+from ..models import *
+from .Nodes import *
 
 
 # JSON Web token generator which stores the user object
