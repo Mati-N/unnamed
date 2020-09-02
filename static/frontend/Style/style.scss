@@ -18,7 +18,7 @@ $light-color: rgb(238, 238, 238);
     sans-serif;
 }
 
-*:not(.container) {
+*:not(.container, .post-text) {
   transition: all 0.2s;
 }
 
