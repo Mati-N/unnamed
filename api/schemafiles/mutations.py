@@ -107,7 +107,7 @@ class LikePost(graphene.relay.ClientIDMutation):
 class CreateUser(graphene.relay.ClientIDMutation):
     class Input:
         username = graphene.String()
-    password = graphene.String()
+        password = graphene.String()
 
     ok = graphene.Boolean()
     user = graphene.relay.Node.Field(UserNode)
