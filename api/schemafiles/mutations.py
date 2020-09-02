@@ -85,8 +85,9 @@ class LikePost(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, post_id):
+    def mutate_and_get_payload(root, info, input):
         ok = True
+        post_id = input.post_id
         post_instance = Post.objects.get(pk=post_id)
         like_instance = Like.objects.filter(user=info.context.user, post=post_instance)
         if len(like_instance) > 0:
