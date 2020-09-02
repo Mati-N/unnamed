@@ -1,5 +1,5 @@
 import graphene
-import graphene_jwt
+import graphql_jwt
 from graphql_jwt.decorators import login_required
 from ..models import *
 from .Nodes import *
