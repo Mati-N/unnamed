@@ -19,7 +19,7 @@ class Query(object):
     following_posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
     post = DjangoFilterConnectionField(PostNode, post_title=graphene.String(), post_text=graphene.String())
     user_post = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
-    user = graphene.Field(UserNode)
+    self_user = graphene.Field(UserNode)
     user_get = graphene.relay.Node.Field(UserNode, id=graphene.ID())
     comments = DjangoFilterConnectionField(CommentNode)
     post_comments = DjangoFilterConnectionField(CommentNode, id=graphene.ID())

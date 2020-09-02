@@ -165,7 +165,7 @@ export const REVOKE_TOKEN = gql `
 
 export const SELF_USER = gql `
   query self_user {
-    user {
+    selfUser {
       id
       username
       postCount
