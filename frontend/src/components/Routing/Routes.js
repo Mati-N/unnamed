@@ -5,6 +5,8 @@ import AuthenticationRoute from "./AuthenticationRoute";
 import { useTransition, animated, config } from "react-spring";
 import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+import { ErrorBoundary } from "react-error-boundary";
+import Error from "../layout/Error";
 
 const Post = lazy(() => import("../post/Post"));
 const Home = lazy(() => import("../pages/Home"));
@@ -41,36 +43,38 @@ const Routes = () => {
     <React.Fragment>
       {transitions.map(({ item, props, key }) => (
         <animated.div key={`${key}anim`} style={props} className="container">
-          <Suspense
-            fallback={
-              <div className="main">
-                <div className="spinner">
-                  <Spinner
-                    size={50}
-                    style={{
-                      margin: "auto",
-                    }}
-                  />
+          <ErrorBoundary FallbackComponent={Error}>
+            <Suspense
+              fallback={
+                <div className="main">
+                  <div className="spinner">
+                    <Spinner
+                      size={50}
+                      style={{
+                        margin: "auto",
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            }
-          >
-            <Switch location={item}>
-              <AuthenticationRoute exact path="/login" component={Login} />
-              <AuthenticationRoute
-                exact
-                path="/register"
-                component={Register}
-              />
+              }
+            >
+              <Switch location={item}>
+                <AuthenticationRoute exact path="/login" component={Login} />
+                <AuthenticationRoute
+                  exact
+                  path="/register"
+                  component={Register}
+                />
 
-              <PrivateRoute exact path="/" component={Home} />
-              <PrivateRoute exact path="/add-post" component={NewPost} />
-              <PrivateRoute exact path="/account" component={Account} />
-              <PrivateRoute exact path="/user/:id" component={User} />
-              <PrivateRoute exact path="/post/:id" component={Post} />
-              <Route component={NotFound} />
-            </Switch>
-          </Suspense>
+                <PrivateRoute exact path="/" component={Home} />
+                <PrivateRoute exact path="/add-post" component={NewPost} />
+                <PrivateRoute exact path="/account" component={Account} />
+                <PrivateRoute exact path="/user/:id" component={User} />
+                <PrivateRoute exact path="/post/:id" component={Post} />
+                <Route component={NotFound} />
+              </Switch>
+            </Suspense>
+          </ErrorBoundary>
         </animated.div>
       ))}
     </React.Fragment>
