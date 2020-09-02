@@ -5,9 +5,7 @@ from django.contrib.auth import authenticate
 from graphql_jwt.decorators import login_required
 from graphene_django.filter import DjangoFilterConnectionField
 from django_filters import OrderingFilter
-from time import sleep
 from django.db.models import Count, IntegerField
-from django.conf import settings
 from .schemafiles.Nodes import *
 from .schemafiles.mutations import *
 

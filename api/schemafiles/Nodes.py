@@ -49,7 +49,7 @@ class PostNode(DjangoObjectType):
     class Meta:
         model = Post
         interfaces = (graphene.relay.Node,)
-        filter_class = PostFilter
+        filterset_class = PostFilter
 
 
 class CommentFilter(django_filters.FilterSet):
@@ -62,7 +62,7 @@ class CommentNode(DjangoObjectType):
     class Meta:
         model = Comment
         interfaces = (graphene.relay.Node,)
-        filter_class = CommentFilter
+        filterset_class = CommentFilter
 
 class FollowNode(DjangoObjectType):
     class Meta:
