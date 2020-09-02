@@ -8,16 +8,9 @@ $light-color: rgb(238, 238, 238);
     url('../Fonts/HindSiliguri-Medium.woff2') format('woff2'),
     url('../Fonts/HindSiliguri-Medium.woff') format('woff'),
     url('../Fonts/HindSiliguri-Medium.svg#HindSiliguri-Medium') format('svg');
-  font-weight: medium;
+  font-weight: bold;
   font-style: normal;
   font-display: swap;
-}
-
-@font-face {
-  font-family: 'Hind Siliguri';
-  src: url('../Fonts/Chiret-Regular.ttf');
-  font-style: normal;
-  unicode-range: U+120x-U+137x;
 }
 
 * {
@@ -361,7 +354,8 @@ nav {
   }
 
   .container {
-    width: 100%;
+    width: 96% !important;
+    margin: auto !important;
   }
 
   #main {
@@ -378,7 +372,7 @@ nav {
   }
 
   .app {
-    margin-top: 9vh;
+    margin-top: 9vh !important;
     padding: 2em;
     width: 100% !important;
   }

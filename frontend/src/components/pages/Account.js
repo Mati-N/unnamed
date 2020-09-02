@@ -70,7 +70,7 @@ const Account = () => {
       <div className="account-info">
         <div className="account-info-top">
           <span className="username" style={{ display: "block" }}>
-            {user_data.user.username}
+            {user_data.selfUser.username}
           </span>
         </div>
         <div className="info-mini">
@@ -91,7 +91,7 @@ const Account = () => {
               <path stroke="none" d="M0 0h24v24H0z" />
               <polyline points="9 6 15 12 9 18" />
             </svg>{" "}
-            {user_data.user.postCount}
+            {user_data.selfUser.postCount}
           </span>
           <span className="info">
             Followers
@@ -110,7 +110,7 @@ const Account = () => {
               <path stroke="none" d="M0 0h24v24H0z" />
               <polyline points="9 6 15 12 9 18" />
             </svg>{" "}
-            {user_data.user.followerCount}
+            {user_data.selfUser.followerCount}
           </span>
         </div>
         <div className="options-container">
