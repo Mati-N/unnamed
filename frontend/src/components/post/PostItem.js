@@ -24,7 +24,7 @@ const PostItem = ({
     likes: likeCount,
     hasMore: false,
     height: "32vh",
-    loading: false,
+    loading: true,
     comments: comment_count,
     expand: false,
   };
@@ -52,7 +52,7 @@ const PostItem = ({
       maxHeight: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
       height: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
     },
-    duration: "1s",
+    duration: "1.2s",
   });
 
   useEffect(() => {
