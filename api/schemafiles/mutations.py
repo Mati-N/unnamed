@@ -32,7 +32,7 @@ class CreateComment(graphene.relay.ClientIDMutation):
         return CreateComment(ok=ok, comment=comment_instance)
 
 # The mustation which creates a post
-class CreatePost(graphene.relay.ClinetIDMutation):
+class CreatePost(graphene.relay.ClientIDMutation):
     class Input:
         title = graphene.String()
         text = graphene.String()
@@ -51,7 +51,7 @@ class CreatePost(graphene.relay.ClinetIDMutation):
         return CreatePost(ok=ok, post=post_instance)
 
 
-class Follow(graphene.Mutation):
+class Follow(graphene.relay.ClientIDMutation):
     class Input:
         id = graphene.ID()
 
@@ -75,7 +75,7 @@ class Follow(graphene.Mutation):
         return Follow(ok=ok, user=user_instance, message="Followed")
 
 
-class LikePost(graphene.Mutation):
+class LikePost(graphene.relay.ClientIDMutation):
     class Input:
         post_id = graphene.ID()
 
