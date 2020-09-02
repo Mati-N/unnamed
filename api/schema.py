@@ -19,7 +19,7 @@ class Query(object):
     following_posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
     post = DjangoFilterConnectionField(PostNode, post_title=graphene.String(), post_text=graphene.String())
     user_post = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
-    user = graphene.relay.Node.Field(UserNode)
+    user = graphene.Field(UserNode)
     user_get = graphene.relay.Node.Field(UserNode, id=graphene.ID())
     comments = DjangoFilterConnectionField(CommentNode)
     post_comments = DjangoFilterConnectionField(CommentNode, id=graphene.ID())
@@ -41,9 +41,11 @@ class Query(object):
     def resolve_following_posts(self, info):
         return Post.objects.filter(user__followers__user=info.context.user)
 
+    @login_required
     def resolve_user_post(self, info, id, **kwargs):
         return Post.objects.filter(user=User.objects.get(id=id))
 
+    @login_required
     def resolve_user_get(self, info, id, **kwargs):
         return User.objects.get(id=id)
 
