@@ -24,7 +24,7 @@ class CreateComment(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, ***kwargs):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = True
         comment_instance = Comment(user=info.context.user, post=Post.objects.get(pk=post), content=content)
         comment_instance.save()
@@ -42,8 +42,9 @@ class CreatePost(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, ***kwargs):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = False
+        (title, text) = kwargs
         post_instance = Post(user=info.context.user, title=title, text=text)
         post_instance.save()
         ok = True
@@ -61,8 +62,9 @@ class Follow(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, ***kwargs):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = True
+        (id,) = kwargs
         user_instance = User.objects.get(id=id)
         follow_instance = Following.objects.filter(user=info.context.user, user_f=user_instance)
         if len(follow_instance) > 0:
@@ -85,8 +87,9 @@ class LikePost(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, ***kwargs):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = True
+        (post_id,) = kwargs
         post_instance = Post.objects.get(pk=post_id)
         like_instance = Like.objects.filter(user=info.context.user, post=post_instance)
         if len(like_instance) > 0:
@@ -111,8 +114,9 @@ class CreateUser(graphene.relay.ClientIDMutation):
 
 
     @classmethod
-    def mutate_and_get_payload(root, info, ***kwargs):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = False
+        (username, password) = kwargs
         if info.context.user.is_authenticated:
             return CreateUser(ok=ok, user=info.context.user, message="Already logged in")
 
@@ -139,7 +143,8 @@ class UpdateUser(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, ***kwargs):
+    def mutate_and_get_payload(root, info, **kwargs):
+        (password, username, newP) = kwargs
         ok = False
         user_instance = User.objects.get(id=info.context.user.id)
 
