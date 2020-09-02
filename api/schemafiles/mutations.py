@@ -5,6 +5,13 @@ from .Nodes import *
 
 
 # JSON Web token generator which stores the user object
+class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
+    user = graphene.Field(UserNode)
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        return cls(user=info.context.user)
+
 # The mutation which create a comment
 class CreateComment(graphene.relay.ClientIDMutation):
     class Input:

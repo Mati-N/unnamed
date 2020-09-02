@@ -11,12 +11,7 @@ from .schemafiles.mutations import *
 
 from .models import *
 
-class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
-    user = graphene.Field(UserNode)
 
-    @classmethod
-    def resolve(cls, root, info, **kwargs):
-        return cls(user=info.context.user)
 
 class Query(object):
     users = DjangoFilterConnectionField(UserNode, id=graphene.ID(), user_name=graphene.String())
@@ -30,9 +25,6 @@ class Query(object):
     post_comments = DjangoFilterConnectionField(CommentNode, id=graphene.ID())
     is_following = graphene.Boolean(id=graphene.ID())
     liked = graphene.Boolean(id=graphene.ID())
-    token_auth = ObtainJSONWebToken.Field()
-    verify_token = graphql_jwt.relay.Verify.Field()
-
 
     def resolve_post_comments(self, info, id, **kwargs):
         return Comment.objects.filter(post=Post.objects.get(id=id))
@@ -85,10 +77,10 @@ class Query(object):
 
 class Mutation(object):
     create_user = CreateUser.Field()
-    delete_token_cookie = graphql_jwt.relay.DeleteJSONWebTokenCookie.Field()
-    delete_refresh_token_cookie = graphql_jwt.relay.DeleteRefreshTokenCookie.Field()
     revoke_token = graphql_jwt.relay.Revoke.Field()
     refresh_token = graphql_jwt.relay.Refresh.Field()
+    token_auth = ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.relay.Verify.Field()
     update_user = UpdateUser.Field()
     create_post = CreatePost.Field()
     create_comment = CreateComment.Field()
