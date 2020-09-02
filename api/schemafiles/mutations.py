@@ -42,9 +42,9 @@ class CreatePost(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, input):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = False
-        post_instance = Post(user=info.context.user, title=input.title, text=input.text)
+        post_instance = Post(user=info.context.user, title=title, text=text)
         post_instance.save()
         ok = True
 
@@ -61,7 +61,7 @@ class Follow(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, id):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = True
         user_instance = User.objects.get(id=id)
         follow_instance = Following.objects.filter(user=info.context.user, user_f=user_instance)
@@ -85,9 +85,8 @@ class LikePost(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, input):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = True
-        post_id = input.post_id
         post_instance = Post.objects.get(pk=post_id)
         like_instance = Like.objects.filter(user=info.context.user, post=post_instance)
         if len(like_instance) > 0:
@@ -112,17 +111,17 @@ class CreateUser(graphene.relay.ClientIDMutation):
 
 
     @classmethod
-    def mutate_and_get_payload(root, info, input):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = False
         if info.context.user.is_authenticated:
             return CreateUser(ok=ok, user=info.context.user, message="Already logged in")
 
-        if User.objects.filter(username=input.username):
+        if User.objects.filter(username=username):
             return CreateUser(ok=ok, user=None, message="Username is already in use")
 
         ok = True
-        user_instance = User(username=input.username)
-        user_instance.set_password(input.password)
+        user_instance = User(username=username)
+        user_instance.set_password(password)
         user_instance.save()
 
         return CreateUser(ok=ok, user=user_instance)
@@ -140,16 +139,16 @@ class UpdateUser(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, newP=None, input=None):
+    def mutate_and_get_payload(root, info, **kwargs):
         ok = False
         user_instance = User.objects.get(id=info.context.user.id)
 
         if user_instance:
-            if not user_instance.check_password(input.password):
+            if not user_instance.check_password(password):
                 return UpdateUser(ok=ok, user=user_instance, message="Password is incorrect")
 
             ok = True
-            if input.username:
+            if username:
                 user_instance.username = input.username
 
             if newP is not None:
