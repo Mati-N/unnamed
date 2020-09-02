@@ -24,7 +24,7 @@ class CreateComment(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, **input):
+    def mutate_and_get_payload(cls, root, info, **input):
         ok = True
         comment_instance = Comment(user=info.context.user, post=Post.objects.get(pk=input.post), content=input.content)
         comment_instance.save()
@@ -42,7 +42,7 @@ class CreatePost(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, **input):
+    def mutate_and_get_payload(cls, root, info, **input):
         ok = False
         title = input.title
         text = input.text
@@ -63,7 +63,7 @@ class Follow(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, **input):
+    def mutate_and_get_payload(cls, root, info, **input):
         ok = True
         id = input.id
         user_instance = User.objects.get(id=id)
@@ -88,7 +88,7 @@ class LikePost(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, **input):
+    def mutate_and_get_payload(cls, root, info, **input):
         ok = True
         post_id = input.post_id
         post_instance = Post.objects.get(pk=post_id)
@@ -115,7 +115,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
 
 
     @classmethod
-    def mutate_and_get_payload(root, info, **input):
+    def mutate_and_get_payload(cls, root, info, **input):
         ok = False
         username = input.username
         password = input.username
@@ -145,7 +145,7 @@ class UpdateUser(graphene.relay.ClientIDMutation):
 
     @classmethod
     @login_required
-    def mutate_and_get_payload(root, info, **input):
+    def mutate_and_get_payload(cls, root, info, **input):
         password = input.password
         username = input.username
         newP = input.newP
