@@ -8,9 +8,10 @@ function Error({ error, componentStack, resetErrorBoundary }) {
           width: "40%",
           margin: "auto",
           padding: "8vh",
+          fontSize: "10em ",
         }}
       >
-        Something went wrong:
+        Something went wrong
       </p>
       {/*
       <pre>{componentStack}</pre>

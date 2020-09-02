@@ -50,7 +50,7 @@ class Query(object):
         return User.objects.get(id=id)
 
     @login_required
-    def resolve_user(self, info, **kwargs):
+    def resolve_self_user(self, info, **kwargs):
         return info.context.user
 
     def resolve_posts(self, info, **kwargs):
