@@ -81,8 +81,8 @@ class LikePost(graphene.Mutation):
         post_id = graphene.ID()
 
     ok = graphene.Boolean()
-    like = graphene.Field(LikeType)
-    post = graphene.Field(PostNode)
+    like = graphene.relay.Node.Field(LikeNode)
+    post = graphene.relay.Node.Field(PostNode)
 
     @staticmethod
     @login_required
@@ -107,7 +107,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
     password = graphene.String()
 
     ok = graphene.Boolean()
-    user = graphene.Field(UserNode)
+    user = graphene.relay.Node.Field(UserNode)
     message = graphene.String()
 
 
@@ -135,7 +135,7 @@ class UpdateUser(graphene.relay.ClientIDMutation):
         newP = graphene.String()
 
     ok = graphene.Boolean()
-    user = graphene.Field(UserNode)
+    user = graphene.relay.Node.Field(UserNode)
     message = graphene.String()
 
     @staticmethod

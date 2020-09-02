@@ -4,7 +4,7 @@ from graphene_django.types import DjangoObjectType
 from django_filters import OrderingFilter
 from ..models import *
 
-__all__ = ['UserNode', 'PostNode', 'CommentNode', 'FollowNode']
+__all__ = ['UserNode', 'PostNode', 'CommentNode', 'FollowNode', 'LikeNode']
 
 
 class UserFilter(django_filters.FilterSet):
@@ -27,6 +27,7 @@ class UserNode(DjangoObjectType):
     class Meta:
         model = User
         interfaces = (graphene.relay.Node,)
+        filterset_class = UserFilter
 
 class PostFilter(django_filters.FilterSet):
     class Meta:
@@ -66,4 +67,9 @@ class CommentNode(DjangoObjectType):
 class FollowNode(DjangoObjectType):
     class Meta:
         model = Following
+        interfaces = (graphene.relay.Node,)
+
+class LikeNode(DjangoObjectType):
+    class Meta:
+        model = Like
         interfaces = (graphene.relay.Node,)
