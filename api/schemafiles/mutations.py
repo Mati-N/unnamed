@@ -16,7 +16,7 @@ class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
 
 # The mutation which create a comment
 class CreateComment(graphene.relay.ClientIDMutation):
-    class Arguments:
+    class Input:
         post = graphene.ID()
         content = graphene.String()
 
@@ -34,7 +34,7 @@ class CreateComment(graphene.relay.ClientIDMutation):
 
 # The mustation which creates a post
 class CreatePost(graphene.realy.ClinetIDMutation):
-    class Arguments:
+    class Input:
         title = graphene.String()
         text = graphene.String()
 
@@ -53,7 +53,7 @@ class CreatePost(graphene.realy.ClinetIDMutation):
 
 
 class Follow(graphene.Mutation):
-    class Arguments:
+    class Input:
         id = graphene.ID()
 
     ok = graphene.Boolean()
@@ -77,7 +77,7 @@ class Follow(graphene.Mutation):
 
 
 class LikePost(graphene.Mutation):
-    class Arguments:
+    class Input:
         post_id = graphene.ID()
 
     ok = graphene.Boolean()
@@ -102,7 +102,7 @@ class LikePost(graphene.Mutation):
 
 # A mutation used to create a user
 class CreateUser(graphene.relay.ClientIDMutation):
-    class Arguments:
+    class Input:
         username = graphene.String()
     password = graphene.String()
 
@@ -129,7 +129,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
 
 # A mutation used to update a user's properties
 class UpdateUser(graphene.relay.ClientIDMutation):
-    class Arguments:
+    class Input:
         username = graphene.String()
         password = graphene.String()
         newP = graphene.String()
