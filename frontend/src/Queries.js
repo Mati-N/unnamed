@@ -117,7 +117,7 @@ export const LOGOUT_USER = gql `
 
 export const LIKE = gql `
   mutation like($post_id: ID!) {
-    likePost(input: {post: $post_id}) {
+    likePost(input: {post_id: $post_id}) {
       ok
       post {
         likeCount
