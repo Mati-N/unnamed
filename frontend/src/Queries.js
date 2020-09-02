@@ -112,6 +112,9 @@ export const LOGOUT_USER = gql `
     deleteTokenCookie(input: {}) {
       deleted
     }
+    deleteRefreshTokenCookie(input: {}) {
+      deleted
+    }
   }
 `;
 

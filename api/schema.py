@@ -88,3 +88,5 @@ class Mutation(object):
     create_comment = CreateComment.Field()
     like_post = LikePost.Field()
     followUser = Follow.Field()
+    delete_token_cookie = graphql_jwt.DeleteJSONWebTokenCookie.Field()
+    delete_refresh_token_cookie = graphql_jwt.DeleteRefreshTokenCookie.Field()
