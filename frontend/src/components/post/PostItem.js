@@ -52,7 +52,6 @@ const PostItem = ({
       maxHeight: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
       height: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
     },
-    duration: "0.9s",
   });
 
   useEffect(() => {
