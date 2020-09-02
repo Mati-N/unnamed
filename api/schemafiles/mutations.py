@@ -32,7 +32,7 @@ class CreateComment(graphene.relay.ClientIDMutation):
         return CreateComment(ok=ok, comment=comment_instance)
 
 # The mustation which creates a post
-class CreatePost(graphene.realy.ClinetIDMutation):
+class CreatePost(graphene.relay.ClinetIDMutation):
     class Input:
         title = graphene.String()
         text = graphene.String()
