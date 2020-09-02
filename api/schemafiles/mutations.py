@@ -79,7 +79,8 @@ class Follow(graphene.relay.ClientIDMutation):
 
 
 class LikePost(graphene.relay.ClientIDMutation):
-    class Input:
+    pass
+    """class Input:
         post_id = graphene.ID()
 
     ok = graphene.Boolean()
@@ -100,7 +101,7 @@ class LikePost(graphene.relay.ClientIDMutation):
         like_instance = Like(user=info.context.user, post=post_instance)
         like_instance.save()
 
-        return LikePost(ok=ok, post=post_instance,like=like_instance)
+        return LikePost(ok=ok, post=post_instance,like=like_instance)"""
 
 
 # A mutation used to create a user
