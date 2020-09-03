@@ -110,6 +110,7 @@ const AuthState = (props) => {
           if (d.data.tokenAuth !== null) {
             dispatch({
               type: LOGIN,
+              payload: d.data.tokenAuth,
             });
           }
         }
