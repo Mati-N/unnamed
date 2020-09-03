@@ -262,7 +262,6 @@ $light-color: rgb(238, 238, 238);
         display: flex;
         align-items: center;
         justify-content: space-around;
-        height: 7vh;
       }
     }
   }
@@ -274,8 +273,7 @@ $light-color: rgb(238, 238, 238);
 
 
 .svg {
-  height: 100%;
-  width: 100%;
+  transform: scale(2);
 }
 
 .btn-teal {
