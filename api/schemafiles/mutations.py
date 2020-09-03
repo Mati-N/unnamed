@@ -148,7 +148,7 @@ class UpdateUser(graphene.relay.ClientIDMutation):
     def mutate_and_get_payload(cls, root, info, **input):
         password = input["password"]
         username = input["username"]
-        newP = input.newP
+        newP = input["newP"]
         ok = False
         user_instance = User.objects.get(id=info.context.user.id)
 
