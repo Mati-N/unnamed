@@ -54,28 +54,31 @@ const AuthState = (props) => {
         .catch((error) => {
           doLogout();
         })
-        .then(({ data }) => {
-          if (data) {
-            if (data.verifyToken != null) {
-              refresh({
-                variables: {
-                  token: state.refreshToken,
-                },
-              }).then((d) => {
-                if (d.data.refreshToken !== null) {
-                  dispatch({
-                    type: LOGIN,
-                  });
-                } else {
-                  dispatch({
-                    type: LOGOUT,
-                  });
-                }
-              });
-            } else {
-              dispatch({
-                type: LOGOUT,
-              });
+        .then((d) => {
+          if (d) {
+            const { data } = d;
+            if (data) {
+              if (data.verifyToken != null) {
+                refresh({
+                  variables: {
+                    token: state.refreshToken,
+                  },
+                }).then((d) => {
+                  if (d.data.refreshToken !== null) {
+                    dispatch({
+                      type: LOGIN,
+                    });
+                  } else {
+                    dispatch({
+                      type: LOGOUT,
+                    });
+                  }
+                });
+              } else {
+                dispatch({
+                  type: LOGOUT,
+                });
+              }
             }
           }
         });
@@ -134,11 +137,13 @@ const AuthState = (props) => {
 
   const doLogout = () => {
     try {
-      revoke({
-        variables: {
-          token: state.refreshToken,
-        },
-      });
+      if (state.refreshToken) {
+        revoke({
+          variables: {
+            token: state.refreshToken,
+          },
+        });
+      }
       logout();
       setAlert("Logged out!", "primary");
 
