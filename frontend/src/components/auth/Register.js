@@ -49,7 +49,7 @@ function Register() {
     setDisabled({ disabled: true, loading: true });
 
     if (registerInfo.username !== "") {
-      Auth.Register(registerInfo.username, registerInfo.password);
+      Auth.doRegister(registerInfo.username, registerInfo.password);
     }
     setDisabled({ disabled: false, loading: false });
   };

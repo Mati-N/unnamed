@@ -13,14 +13,15 @@ import {
   REVOKE_TOKEN,
 } from "../../Queries";
 import AlertContext from "../alert/AlertContext";
+import Cookies from "js-cookie";
 
 const AuthState = (props) => {
   const initialState = {
     isAuthenticated: null,
     loading: true,
     logout: false,
-    token: localStorage.getItem("TOKEN"),
-    refreshToken: localStorage.getItem("REFRESH_TOKEN"),
+    token: Cookies.get("JWT"),
+    refreshToken: Cookies.get("JWT-refresh-token"),
     user: localStorage.getItem("USER"),
   };
 
@@ -34,7 +35,7 @@ const AuthState = (props) => {
   const [refresh] = useMutation(REFRESH_TOKEN);
 
   const loggedIn = () => {
-    if (localStorage.getItem("TOKEN") == null) {
+    if (state.token == null) {
       dispatch({
         type: LOGOUT,
       });
@@ -50,7 +51,7 @@ const AuthState = (props) => {
         },
       })
         .catch((error) => {
-          Logout();
+          doLogout();
         })
         .then(({ data }) => {
           if (data) {
@@ -61,11 +62,6 @@ const AuthState = (props) => {
                 },
               }).then((d) => {
                 if (d.data.refreshToken !== null) {
-                  localStorage.setItem("TOKEN", d.data.refreshToken.token);
-                  localStorage.setItem(
-                    "REFRESH_TOKEN",
-                    d.data.refreshToken.refreshToken
-                  );
                   dispatch({
                     type: LOGIN,
                   });
@@ -86,7 +82,7 @@ const AuthState = (props) => {
         type: SET_LOADING,
       });
     } catch {
-      Logout();
+      doLogout();
     }
   };
 
@@ -94,7 +90,7 @@ const AuthState = (props) => {
     loggedIn();
   }, []);
 
-  const Login = (username, password) => {
+  const doLogin = (username, password) => {
     login({
       variables: {
         username: username,
@@ -105,12 +101,6 @@ const AuthState = (props) => {
       .then((d) => {
         if (d) {
           if (d.data.tokenAuth !== null) {
-            localStorage.setItem("TOKEN", d.data.tokenAuth.token);
-            localStorage.setItem(
-              "REFRESH_TOKEN",
-              d.data.tokenAuth.refreshToken
-            );
-            localStorage.setItem("USER", d.data.tokenAuth.user.id);
             dispatch({
               type: LOGIN,
             });
@@ -119,7 +109,7 @@ const AuthState = (props) => {
       });
   };
 
-  const Register = (username, password) => {
+  const doRegister = (username, password) => {
     removeAlert();
     addUser({
       variables: {
@@ -131,7 +121,7 @@ const AuthState = (props) => {
       .then((d) => {
         if (d.data) {
           if (d.data.createUser.ok) {
-            Login(username, password);
+            doLogin(username, password);
             return true;
           } else {
             setAlert(d.data.createUser.message, "danger");
@@ -141,7 +131,7 @@ const AuthState = (props) => {
       });
   };
 
-  const Logout = () => {
+  const doLogout = () => {
     try {
       revoke({
         variables: {
@@ -164,9 +154,9 @@ const AuthState = (props) => {
       value={{
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
-        Login,
-        Register,
-        Logout,
+        Login: doLogin,
+        Register: doRegister,
+        Logout: doLogout,
         loggedIn,
         user: state.user,
       }}

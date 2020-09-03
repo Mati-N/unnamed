@@ -19,18 +19,20 @@ const CustomizeAccount = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    doCustomize({
-      variables: { newPassword: state.newPassword, password: state.password },
-    }).then(({ data }) => {
-      if (data) {
-        if (!d.data.updateUser.ok) {
-          setAlert(d.data.updateUser.message, "danger");
-        } else {
-          setState({ ...state, changed: true });
-          setAlert("PaSsWoRd ChAnGeD :}");
+    if (state.password != "") {
+      doCustomize({
+        variables: { newPassword: state.newPassword, password: state.password },
+      }).then(({ data }) => {
+        if (data) {
+          if (!d.data.updateUser.ok) {
+            setAlert(d.data.updateUser.message, "danger");
+          } else {
+            setState({ ...state, changed: true });
+            setAlert("PaSsWoRd ChAnGeD :}");
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   if (state.changed) return <Redirect to="/" />;

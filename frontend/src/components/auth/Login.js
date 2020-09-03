@@ -38,7 +38,7 @@ function Login() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    Auth.Login(loginInfo.username, loginInfo.password);
+    Auth.doLogin(loginInfo.username, loginInfo.password);
   };
 
   return (
