@@ -11,7 +11,7 @@ const CustomizeAccount = () => {
     disabled: false,
     change: true,
   });
-  const doCustomize = useMutation(UPDATE_USER);
+  const [doCustomize] = useMutation(UPDATE_USER);
   const { setAlert } = useContext(AlertContext);
   const onChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });

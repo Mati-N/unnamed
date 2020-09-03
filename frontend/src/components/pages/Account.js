@@ -7,6 +7,9 @@ import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import { Link } from "react-router-dom";
 const Posts = lazy(() => import("../post/Posts"));
+import ForwardPointer from "../SVG/ForwardPointer.svg";
+import LogoutSVG from "../SVG/Logout.svg";
+import Edit from "../SVG/Edit.svg";
 
 const Account = () => {
   const {
@@ -76,112 +79,34 @@ const Account = () => {
         <div className="info-mini">
           <span className="info">
             Posts
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-chevron-right"
-              width="34"
-              height="34"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#607D8B"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" />
-              <polyline points="9 6 15 12 9 18" />
-            </svg>{" "}
-            {user_data.selfUser.postCount}
+            <ForwardPointer /> {user_data.selfUser.postCount}
           </span>
           <span className="info">
             Followers
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-chevron-right"
-              width="34"
-              height="34"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#607D8B"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" />
-              <polyline points="9 6 15 12 9 18" />
-            </svg>{" "}
-            {user_data.selfUser.followerCount}
+            <ForwardPointer /> {user_data.selfUser.followerCount}
           </span>
         </div>
-        <div className="options-container">
-          <ul className="options">
-            <li className="option">
-              <button
-                style={{
-                  background: "none",
-                  border: "none",
-                }}
-                onClick={Logout}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-logout"
-                  width="45"
-                  height="45"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="#607D8B"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" />
-                  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
-                  <path d="M7 12h14l-3 -3m0 6l3 -3" />
-                </svg>{" "}
-                Logout
-              </button>
-            </li>
-            <li className="option">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-pencil"
-                width="45"
-                height="45"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="#607D8B"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
-                <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
-              </svg>
-              <Link to="/password">Change Password</Link>
-            </li>
-            <li className="option">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-pencil"
-                width="45"
-                height="45"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="#607D8B"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
-                <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
-              </svg>
-              <Link to="/username">Change Username</Link>
-            </li>
-          </ul>
-        </div>
+        <ul className="options">
+          <li className="option">
+            <button
+              style={{
+                background: "none",
+                border: "none",
+              }}
+              onClick={Logout}
+            >
+              <LogoutSVG /> Logout
+            </button>
+          </li>
+          <li className="option">
+            <Edit />
+            <Link to="/password">Change Password</Link>
+          </li>
+          <li className="option">
+            <Edit />
+            <Link to="/username">Change Username</Link>
+          </li>
+        </ul>
       </div>
       <div className="main">
         <Posts posts={post.edges} self={true} id={user} username="You" />
