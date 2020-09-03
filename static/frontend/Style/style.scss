@@ -239,6 +239,8 @@ $light-color: rgb(238, 238, 238);
 }
 
 .info {
+  display: flex;
+  align-items: center;
   padding: 0.15em;
   border-radius: 0.05em;
   margin: 0.15em;
