@@ -14,7 +14,7 @@ const CustomizeAccount = () => {
   const doCustomize = useMutation(UPDATE_USER);
   const { setAlert, removeAlert } = useContext(AlertContext);
   const onChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.name });
+    setState({ ...state, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
