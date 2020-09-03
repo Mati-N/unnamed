@@ -233,6 +233,9 @@ $light-color: rgb(238, 238, 238);
   .info-mini {
     padding: 0.4em;
     font-size: 1.4em;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
     .info {
       display: flex;
@@ -259,6 +262,7 @@ $light-color: rgb(238, 238, 238);
       border-bottom: 0.1em solid rgba(82, 82, 82, 0.5);
 
       button {
+        min-height: 1.5vh;
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -276,9 +280,8 @@ $light-color: rgb(238, 238, 238);
   transform: scale(1.4);
   padding: 0;
   margin: 0.01em;
-  height: 100%;
-  width: 100%;
-
+  min-height: 1vh;
+  min-width: 1vh;
 }
 
 .btn-teal {
