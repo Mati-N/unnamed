@@ -22,7 +22,7 @@ module.exports = {
   output: {
     publicPath: "/static/frontend/",
   },
-  devtool: "source-map",
+  //devtool: "source-map",
   watch: true,
   watchOptions: {
     ignored: /node_modules/,
