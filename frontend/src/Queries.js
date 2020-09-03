@@ -245,7 +245,7 @@ export const FOLLOW = gql `
 `;
 
 export const UPDATE_USER = gql `
-  mutation updateUser($password: String!, $username: String, $newP: String!) {
+  mutation updateUser($password: String!, $username: String, $newP: String) {
     updateUser(input: {
       password: $password,
       username: $username,

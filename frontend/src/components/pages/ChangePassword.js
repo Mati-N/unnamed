@@ -21,7 +21,7 @@ const CustomizeAccount = () => {
     e.preventDefault();
     if (state.password != "") {
       doCustomize({
-        variables: { newPassword: state.newPassword, password: state.password },
+        variables: { newP: state.newPassword, password: state.password },
       }).then(({ data }) => {
         if (data) {
           if (!d.data.updateUser.ok) {

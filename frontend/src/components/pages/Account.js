@@ -79,11 +79,12 @@ const Account = () => {
         <div className="info-mini">
           <span className="info">
             Posts
-            <ForwardPointer /> {user_data.selfUser.postCount}
+            <ForwardPointer className="svg" /> {user_data.selfUser.postCount}
           </span>
           <span className="info">
             Followers
-            <ForwardPointer /> {user_data.selfUser.followerCount}
+            <ForwardPointer className="svg" />{" "}
+            {user_data.selfUser.followerCount}
           </span>
         </div>
         <ul className="options">
@@ -95,15 +96,15 @@ const Account = () => {
               }}
               onClick={Logout}
             >
-              <LogoutSVG /> Logout
+              <LogoutSVG className="svg" /> Logout
             </button>
           </li>
           <li className="option">
-            <Edit />
+            <Edit className="svg" />
             <Link to="/password">Change Password</Link>
           </li>
           <li className="option">
-            <Edit />
+            <Edit className="svg" />
             <Link to="/username">Change Username</Link>
           </li>
         </ul>
