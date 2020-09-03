@@ -90,7 +90,6 @@ const AuthState = (props) => {
   };
 
   useEffect(() => {
-    console.log(Cookies.get("JWT"));
     loggedIn();
   }, []);
 

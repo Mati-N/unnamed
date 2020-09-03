@@ -10,6 +10,7 @@ export default (state, action) => {
     case LOGIN:
       Cookies.set("JWT", action.payload.token);
       Cookies.set("JWT-refresh-token", action.payload.refreshToken);
+      localStorage.setItem("USER", action.payload.user.id)
       return {
         ...state,
         isAuthenticated: true,
