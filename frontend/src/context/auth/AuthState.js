@@ -58,7 +58,7 @@ const AuthState = (props) => {
           if (d) {
             const { data } = d;
             if (data) {
-              if (data.verifyToken != null) {
+              if (data.verifyToken !== null) {
                 refresh({
                   variables: {
                     token: state.refreshToken,
