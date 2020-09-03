@@ -244,6 +244,19 @@ export const FOLLOW = gql `
   }
 `;
 
+export const UPDATE_USER = gql `
+  mutation updateUser($password: String!, $username: String, $newP: String!) {
+    updateUser(input: {
+      password: $password,
+      username: $username,
+      newP: $newP
+    }) {
+      ok
+      message
+    }
+  }
+`;
+
 export const CREATE_COMMENT = gql `
   mutation createComment($id: ID!, $comment: String!){
     createComment(input: {

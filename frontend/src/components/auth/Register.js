@@ -55,7 +55,7 @@ function Register() {
   };
 
   return (
-    <div className="main">
+    <>
       <form className="form-auth" method="post" onSubmit={onSubmit}>
         <p className="h2">Register</p>
         <div className="form-group">
@@ -104,7 +104,7 @@ function Register() {
           )}
         </button>
       </form>
-    </div>
+    </>
   );
 }
 

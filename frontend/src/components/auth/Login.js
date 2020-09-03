@@ -42,7 +42,7 @@ function Login() {
   };
 
   return (
-    <div className="main">
+    <>
       <form className="form-auth" method="post" onSubmit={onSubmit}>
         <p className="h2">Login</p>
         <div className="form-group">
@@ -77,7 +77,7 @@ function Login() {
           Login
         </button>
       </form>
-    </div>
+    </>
   );
 }
 

@@ -12,6 +12,7 @@ const Post = lazy(() => import("../post/Post"));
 const Home = lazy(() => import("../pages/Home"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
+const ChangePassword = lazy(() => import("../pages/ChangePassword"));
 const Login = lazy(() => import("../auth/Login"));
 const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -71,6 +72,11 @@ const Routes = () => {
                 <PrivateRoute exact path="/account" component={Account} />
                 <PrivateRoute exact path="/user/:id" component={User} />
                 <PrivateRoute exact path="/post/:id" component={Post} />
+                <PrivateRoute
+                  exact
+                  path="/password"
+                  component={ChangePassword}
+                />
                 <Route component={NotFound} />
               </Switch>
             </Suspense>
