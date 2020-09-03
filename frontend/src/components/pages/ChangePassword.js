@@ -12,7 +12,7 @@ const CustomizeAccount = () => {
     change: true,
   });
   const doCustomize = useMutation(UPDATE_USER);
-  const { setAlert, removeAlert } = useContext(AlertContext);
+  const { setAlert } = useContext(AlertContext);
   const onChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -27,6 +27,7 @@ const CustomizeAccount = () => {
           setAlert(d.data.updateUser.message, "danger");
         } else {
           setState({ ...state, changed: true });
+          setAlert("PaSsWoRd ChAnGeD :}");
         }
       }
     });
