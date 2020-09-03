@@ -154,9 +154,9 @@ const AuthState = (props) => {
       value={{
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
-        Login: doLogin,
-        Register: doRegister,
-        Logout: doLogout,
+        doLogin,
+        doRegister,
+        doLogout,
         loggedIn,
         user: state.user,
       }}

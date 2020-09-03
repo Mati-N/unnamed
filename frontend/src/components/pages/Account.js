@@ -15,7 +15,7 @@ const Account = () => {
     error: user_error,
   } = useQuery(SELF_USER);
   const { loading, data, error, fetchMore } = useQuery(SELF_POSTS);
-  const { Logout, user } = useContext(AuthContext);
+  const { doLogout: Logout, user } = useContext(AuthContext);
   const { removeAlert } = useContext(AlertContext);
   const [spin, setSpin] = useState(false);
 
