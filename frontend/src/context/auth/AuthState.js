@@ -35,10 +35,7 @@ const AuthState = (props) => {
   const [refresh] = useMutation(REFRESH_TOKEN);
 
   const loggedIn = () => {
-    console.log(Cookies.get("JWT"));
-    console.log(state.token);
     if (state.token == null) {
-      console.log(Cookies.get("JWT"));
       dispatch({
         type: LOGOUT,
       });
