@@ -22,8 +22,8 @@ const CustomizeAccount = () => {
     if (state.password != "") {
       doCustomize({
         variables: { newP: state.newPassword, password: state.password },
-      }).then(({ data }) => {
-        if (data) {
+      }).then((d) => {
+        if (d) {
           if (!d.data.updateUser.ok) {
             setAlert(d.data.updateUser.message, "danger");
           } else {

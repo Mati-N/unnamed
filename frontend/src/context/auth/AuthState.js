@@ -15,13 +15,15 @@ import {
 import AlertContext from "../alert/AlertContext";
 import Cookies from "js-cookie";
 
+const api = Cookies.withAttributes({ path: "/api" });
+
 const AuthState = (props) => {
   const initialState = {
     isAuthenticated: null,
     loading: true,
     logout: false,
-    token: Cookies.get("JWT"),
-    refreshToken: Cookies.get("JWT-refresh-token"),
+    token: api.get("JWT"),
+    refreshToken: api.get("JWT-refresh-token"),
     user: localStorage.getItem("USER"),
   };
 
