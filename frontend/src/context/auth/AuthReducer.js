@@ -17,7 +17,7 @@ export default (state, action) => {
       };
     case LOGOUT:
       Cookies.remove("JWT");
-      Cookies.return("JWT-refresh-token");
+      Cookies.remove("JWT-refresh-token");
       return {
         ...state,
         isAuthenticated: false,
