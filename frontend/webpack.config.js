@@ -23,7 +23,6 @@ module.exports = (env, argv) => {
     output: {
       publicPath: "/static/frontend/",
     },
-    devtool: "source-map",
     watch: true,
     watchOptions: {
       ignored: /node_modules/,
@@ -34,7 +33,7 @@ module.exports = (env, argv) => {
   }
 
   if (argv.mode === 'development') {
-    config.devtool = 'source-map';
+    config.devtool = 'eval';
   }
   return config;
 };
