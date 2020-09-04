@@ -34,7 +34,7 @@ const AuthState = (props) => {
   const [refresh] = useMutation(REFRESH_TOKEN);
 
   const loggedIn = () => {
-    console.log(state.token);
+    console.log(state);
     if (state.token == null) {
       dispatch({
         type: LOGOUT,
