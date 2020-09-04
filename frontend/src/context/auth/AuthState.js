@@ -6,7 +6,6 @@ import { useMutation, useLazyQuery } from "@apollo/client";
 import {
   ADD_USER,
   LOGIN_USER,
-  IS_LOGGED_IN,
   LOGOUT_USER,
   VERIFY_TOKEN,
   REFRESH_TOKEN,
@@ -143,9 +142,9 @@ const AuthState = (props) => {
             token: state.refreshToken,
           },
         });
+        setAlert("Logged out!", "primary");
       }
       logout();
-      setAlert("Logged out!", "primary");
 
       dispatch({
         type: LOGOUT,
