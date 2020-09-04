@@ -21,7 +21,7 @@ module.exports = (env, argv) => {
       ],
     },
     devtool: ((argv.mode == 'development') ?
-      'source-map' : false),
+      'eval' : false),
     output: {
       publicPath: "/static/frontend/",
     },
