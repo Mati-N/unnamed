@@ -20,6 +20,8 @@ module.exports = (env, argv) => {
         },
       ],
     },
+    devtool: (argv.mode == "development" ?
+      'eval' : false),
     output: {
       publicPath: "/static/frontend/",
     },
@@ -32,8 +34,5 @@ module.exports = (env, argv) => {
     }
   }
 
-  if (argv.mode == 'development') {
-    config.devtool = 'eval';
-  }
   return config;
 };
