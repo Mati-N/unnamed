@@ -66,6 +66,8 @@ const AuthState = (props) => {
                   if (d.data.refreshToken !== null) {
                     dispatch({
                       type: LOGIN,
+                      payload: refreshToken,
+                      refresh: true,
                     });
                   } else {
                     dispatch({
@@ -107,6 +109,7 @@ const AuthState = (props) => {
             dispatch({
               type: LOGIN,
               payload: d.data.tokenAuth,
+              refresh: false,
             });
           }
         }

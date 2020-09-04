@@ -8,9 +8,11 @@ import Cookies from "js-cookie";
 export default (state, action) => {
   switch (action.type) {
     case LOGIN:
-      Cookies.set("token", action.payload.token);
+      if (!action.refresh) {
+        Cookies.set("token", action.payload.token);
+        localStorage.setItem("USER", action.payload.user.id)
+      }
       Cookies.set("refresh-token", action.payload.refreshToken);
-      localStorage.setItem("USER", action.payload.user.id)
       return {
         ...state,
         isAuthenticated: true,

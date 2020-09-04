@@ -2,6 +2,15 @@ module.exports = (env, argv) => {
   let config = {
     entry: {
       main: ["core-js/stable", "regenerator-runtime/runtime", "src/main.js"],
+
+      vendor: [
+        "react",
+        "react-router-dom",
+        "react-dom",
+        "@apollo/client",
+        "graphql",
+        "react-spring",
+      ]
     },
     module: {
       rules: [{
@@ -21,7 +30,7 @@ module.exports = (env, argv) => {
       ],
     },
     devtool: ((argv.mode == 'development') ?
-      'eval' : false),
+      'source-map' : false),
     output: {
       publicPath: "/static/frontend/",
     },
