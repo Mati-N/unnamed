@@ -8,8 +8,8 @@ import Cookies from "js-cookie";
 export default (state, action) => {
   switch (action.type) {
     case LOGIN:
-      Cookies.set("JWT", action.payload.token);
-      Cookies.set("JWT-refresh-token", action.payload.refreshToken);
+      Cookies.set("token", action.payload.token);
+      Cookies.set("refresh-token", action.payload.refreshToken);
       localStorage.setItem("USER", action.payload.user.id)
       return {
         ...state,

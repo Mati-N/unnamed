@@ -32,7 +32,7 @@ module.exports = (env, argv) => {
     }
   }
 
-  if (argv.mode === 'development') {
+  if (argv.mode == 'development') {
     config.devtool = 'eval';
   }
   return config;

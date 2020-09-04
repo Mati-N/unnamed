@@ -19,8 +19,8 @@ const AuthState = (props) => {
     isAuthenticated: null,
     loading: true,
     logout: false,
-    token: Cookies.get("JWT"),
-    refreshToken: Cookies.get("JWT-refresh-token"),
+    token: Cookies.get("token"),
+    refreshToken: Cookies.get("refresh-token"),
     user: localStorage.getItem("USER"),
   };
 
