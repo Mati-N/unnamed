@@ -20,8 +20,8 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    devtool: (argv.mode == "development" ?
-      'eval' : false),
+    devtool: ((argv.mode == 'development') ?
+      'eval-source-map' : false),
     output: {
       publicPath: "/static/frontend/",
     },
