@@ -11,8 +11,6 @@ from .schemafiles.mutations import *
 
 from .models import *
 
-
-
 class Query(object):
     users = DjangoFilterConnectionField(UserNode, id=graphene.ID(), user_name=graphene.String())
     posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
@@ -20,7 +18,7 @@ class Query(object):
     post = DjangoFilterConnectionField(PostNode, post_title=graphene.String(), post_text=graphene.String())
     user_post = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
     self_user = graphene.Field(UserNode)
-    user_get = graphene.relay.Node.Field(UserNode, id=graphene.ID())
+    user_get = graphene.Field(UserNode, id=graphene.ID())
     comments = DjangoFilterConnectionField(CommentNode)
     post_comments = DjangoFilterConnectionField(CommentNode, id=graphene.ID())
     is_following = graphene.Boolean(id=graphene.ID())
@@ -33,6 +31,9 @@ class Query(object):
     def resolve_is_following(self, info, id, **kwargs):
         return len(Following.objects.filter(follower=info.context.user, target=User.objects.get(id=id))) > 0
 
+    def resolve_user_get(self, info, id, **kwargs):
+        return User.objects.get(id=id)
+
     @login_required
     def resolve_post(self, info, **kwargs):
         return info.context.user.posts
@@ -44,9 +45,6 @@ class Query(object):
     @login_required
     def resolve_user_post(self, info, id, **kwargs):
         return Post.objects.filter(user=User.objects.get(id=id))
-
-    def resolve_user_get(self, info, id, **kwargs):
-        return User.objects.get(id=id)
 
     @login_required
     def resolve_self_user(self, info, **kwargs):
