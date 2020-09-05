@@ -157,7 +157,7 @@ const User = ({ match }) => {
         </button>
         <div className="info-mini">
           <span className="info">{user_data.userGet.postCount} Posts</span>
-          <span className="info">{following.followerCount} Followers</span>
+          <span className="info">{following.followers} Followers</span>
         </div>
         <Posts
           posts={userPost.edges}
