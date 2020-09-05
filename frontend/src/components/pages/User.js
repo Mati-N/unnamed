@@ -156,13 +156,10 @@ const User = ({ match }) => {
           {following.following ? "Unfollow" : "Follow"}
         </button>
         <div className="info-mini">
+          <span className="info">{user_data.userGet.postCount} Posts</span>
           <span className="info">
-            Posts
-            <ForwardPointer /> {user_data.userGet.posts.edges.length}
-          </span>
-          <span className="info">
-            Followers
-            <ForwardPointer /> {following.followerCount}
+            {following.followerCount} Followers
+            <ForwardPointer />
           </span>
         </div>
         <Posts

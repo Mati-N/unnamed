@@ -98,8 +98,8 @@ const AuthState = (props) => {
   const doLogin = (username, password) => {
     login({
       variables: {
-        username: username,
-        password: password,
+        username,
+        password,
       },
     })
       .catch((error) => setAlert(error.message, "danger"))
@@ -120,8 +120,8 @@ const AuthState = (props) => {
     removeAlert();
     addUser({
       variables: {
-        username: username,
-        password: password,
+        username,
+        password,
       },
     })
       .catch((error) => `${error}`)

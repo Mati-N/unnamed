@@ -118,7 +118,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
     def mutate_and_get_payload(cls, root, info, **input):
         ok = False
         username = input["username"]
-        password = input["username"]
+        password = input["password"]
         if info.context.user.is_authenticated:
             return CreateUser(ok=ok, user=info.context.user, message="Already logged in")
 

@@ -11,6 +11,7 @@ export default (state, action) => {
       if (!action.refresh) {
         Cookies.set("token", action.payload.token);
         localStorage.setItem("USER", action.payload.user.id)
+        console.log(action.payload.user.id);
       }
       Cookies.set("refresh-token", action.payload.refreshToken);
       return {
@@ -18,8 +19,8 @@ export default (state, action) => {
         isAuthenticated: true,
       };
     case LOGOUT:
-      Cookies.remove("JWT");
-      Cookies.remove("JWT-refresh-token");
+      Cookies.remove("token");
+      Cookies.remove("refresh-token");
       return {
         ...state,
         isAuthenticated: false,

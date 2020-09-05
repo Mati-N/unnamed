@@ -77,14 +77,9 @@ const Account = () => {
           </span>
         </div>
         <div className="info-mini">
+          <span className="info">{user_data.selfUser.postCount} Posts</span>
           <span className="info">
-            Posts
-            <ForwardPointer className="svg" /> {user_data.selfUser.postCount}
-          </span>
-          <span className="info">
-            Followers
-            <ForwardPointer className="svg" />{" "}
-            {user_data.selfUser.followerCount}
+            {user_data.selfUser.followerCount} Followers
           </span>
         </div>
         <ul className="options">

@@ -213,29 +213,41 @@ $light-color: rgb(238, 238, 238);
 .account-info {
   display: block;
   width: 95%;
-  background-color: $light-color;
-  opacity: 1;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.95;
   border-radius: 0.2em;
   padding: 0.8em;
   height: 40% !important;
-  border: 0.1em solid rgba(82, 82, 82, 0.5);
+  border: 0.1em solid rgba(150, 147, 147, 0.5);
+
+  .svg {
+    transform: scale(1.1);
+    padding: 0;
+    display: inline-block;
+    margin: auto;
+    height: fit-content;
+    width: fit-content;
+  }
 
   .account-info-top {
+    margin-bottom: 0.45em;
+    border-bottom: 0.1em solid rgba(82, 82, 82, 0.5);
+
     .username {
       font-size: 1.7em;
-      margin-bottom: 1.4em;
-      border-bottom: 0.1em solid rgba(82, 82, 82, 0.5);
       width: 90%;
       overflow: hidden;
     }
   }
 
   .info-mini {
-    padding: 0.4em;
+    padding: 0.1em;
     font-size: 1.4em;
     display: flex;
-    justify-content: space-around;
+    justify-content: start;
     align-items: center;
+    width: 40%;
+    margin: 0.04em;
 
     .info {
       display: flex;
@@ -243,8 +255,8 @@ $light-color: rgb(238, 238, 238);
       padding: 0.15em;
       border-radius: 0.05em;
       margin: 0.15em;
-      border-bottom: 0.1em solid rgba(82, 82, 82, 0.5);
       min-width: 10%;
+      min-height: fit-content;
     }
 
     .info:hover {
@@ -275,14 +287,6 @@ $light-color: rgb(238, 238, 238);
   opacity: 0.9;
 }
 
-
-.svg {
-  transform: scale(1.4);
-  padding: 0;
-  margin: 0.01em;
-  min-height: 1vh;
-  min-width: 1vh;
-}
 
 .btn-teal {
   background-color: $teal-color !important;
