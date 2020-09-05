@@ -31,7 +31,7 @@ class Query(object):
 
     @login_required
     def resolve_is_following(self, info, id, **kwargs):
-        return len(Following.objects.filter(user=info.context.user, user_f=User.objects.get(id=id))) > 0
+        return len(Following.objects.filter(follower=info.context.user, target=User.objects.get(id=id))) > 0
 
     @login_required
     def resolve_post(self, info, **kwargs):
@@ -45,7 +45,6 @@ class Query(object):
     def resolve_user_post(self, info, id, **kwargs):
         return Post.objects.filter(user=User.objects.get(id=id))
 
-    @login_required
     def resolve_user_get(self, info, id, **kwargs):
         return User.objects.get(id=id)
 
