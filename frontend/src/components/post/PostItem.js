@@ -186,6 +186,7 @@ const PostItem = ({
               }}
               onMouseOver={() => setHovered(true)}
               onMouseOut={() => setHovered(false)}
+              onMouseLeave={() => setHovered(false)}
             >
               {!hovered ? (
                 state.liked ? (
