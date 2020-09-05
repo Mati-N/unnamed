@@ -115,47 +115,48 @@ const User = ({ match }) => {
             {user_data.userGet.username}
           </span>
         </div>
-        <button className="btn btn-teal" onClick={followIt}>
-          {!following.following ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-user-plus"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="rgb(248, 248, 248)"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-              <path d="M16 11h6m-3 -3v6" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-user-minus"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="rgb(248, 248, 248)"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-              <line x1="16" y1="11" x2="22" y2="11" />
-            </svg>
-          )}{" "}
-          {following.following ? "Unfollow" : "Follow"}
-        </button>
+
         <div className="info-mini">
+          <button className="btn btn-teal" onClick={followIt}>
+            {!following.following ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-user-plus"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="rgb(248, 248, 248)"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                <path d="M16 11h6m-3 -3v6" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-user-minus"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="rgb(248, 248, 248)"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                <line x1="16" y1="11" x2="22" y2="11" />
+              </svg>
+            )}{" "}
+            {following.following ? "Unfollow" : "Follow"}
+          </button>
           <span className="info">{user_data.userGet.postCount} Posts</span>
           <span className="info">{following.followers} Followers</span>
         </div>
