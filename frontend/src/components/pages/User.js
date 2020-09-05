@@ -24,7 +24,7 @@ const User = ({ match }) => {
   const [spin, setSpin] = useState(false);
   const [following, setFollowing] = useState({
     first: true,
-    following: false,
+    following: null,
     followers: "",
   });
   const [follow] = useMutation(FOLLOW);
@@ -157,10 +157,7 @@ const User = ({ match }) => {
         </button>
         <div className="info-mini">
           <span className="info">{user_data.userGet.postCount} Posts</span>
-          <span className="info">
-            {following.followerCount} Followers
-            <ForwardPointer />
-          </span>
+          <span className="info">{following.followerCount} Followers</span>
         </div>
         <Posts
           posts={userPost.edges}
@@ -168,14 +165,14 @@ const User = ({ match }) => {
           username={user_data.userGet.username}
           id={match.params.id}
         />
-        <Waypoint
-          onEnter={() => {
-            more();
-          }}
-        >
-          <div className="spinner">{spin && <Spinner size={40} />}</div>
-        </Waypoint>
       </div>
+      <Waypoint
+        onEnter={() => {
+          more();
+        }}
+      >
+        <div className="spinner">{spin && <Spinner size={40} />}</div>
+      </Waypoint>
     </>
   );
 };
