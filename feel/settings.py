@@ -34,6 +34,8 @@ if os.environ.get('LOCAL'):
 else:
     DEBUG = False
     SECURE_SSL_REDIRECT = True
+    
+DEBUG = True
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
 
