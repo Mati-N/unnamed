@@ -4,7 +4,8 @@ import {
   SET_LOADING
 } from "../types";
 import Cookies from "js-cookie";
-/* fklfdsskflj;da */
+
+
 export default (state, action) => {
   switch (action.type) {
     case LOGIN:
@@ -17,6 +18,7 @@ export default (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
+          user: !action.refresh ? action.payload.user.id : state.user,
       };
     case LOGOUT:
       Cookies.remove("token");

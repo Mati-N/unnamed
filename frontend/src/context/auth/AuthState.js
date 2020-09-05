@@ -140,14 +140,14 @@ const AuthState = (props) => {
 
   const doLogout = () => {
     try {
-      if (state.refreshToken) {
-        revoke({
-          variables: {
-            token: state.refreshToken,
-          },
-        });
+      if (state.refreshToken != null) {
         setAlert("Logged out!", "primary");
       }
+      revoke({
+        variables: {
+          token: state.refreshToken,
+        },
+      });
       logout();
 
       dispatch({
