@@ -67,12 +67,12 @@ class Follow(graphene.relay.ClientIDMutation):
         ok = True
         id = input["id"]
         user_instance = User.objects.get(id=id)
-        follow_instance = Following.objects.filter(user=info.context.user, user_f=user_instance)
+        follow_instance = Following.objects.filter(follower=info.context.user, target=user_instance)
         if len(follow_instance) > 0:
             follow_instance[0].delete()
             return Follow(ok=ok, user=user_instance, message="Unfollowed")
 
-        follow_instance = Following(user=info.context.user, user_f=User.objects.get(id=id))
+        follow_instance = Following(follower=info.context.user, target=User.objects.get(id=id))
         follow_instance.save()
 
         return Follow(ok=ok, user=user_instance, message="Followed")
