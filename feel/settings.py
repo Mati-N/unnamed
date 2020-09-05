@@ -35,7 +35,7 @@ else:
     DEBUG = False
     SECURE_SSL_REDIRECT = True
     
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
 
