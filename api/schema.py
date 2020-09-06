@@ -23,6 +23,10 @@ class Query(object):
     post_comments = DjangoFilterConnectionField(CommentNode, id=graphene.ID())
     is_following = graphene.Boolean(id=graphene.ID())
     liked = graphene.Boolean(id=graphene.ID())
+    notification = graphene.Field(NotifNode)
+
+    def resolve_notification(self, info):
+        return Notification.object.all()
 
     def resolve_post_comments(self, info, id, **kwargs):
         return Comment.objects.filter(post=Post.objects.get(id=id))
