@@ -108,13 +108,18 @@ export const VERIFY_TOKEN = gql `
 `;
 
 export const LOGOUT_USER = gql `
-  mutation {
+  mutation($token: String!) {
     deleteTokenCookie(input: {}) {
       deleted
     }
     deleteRefreshTokenCookie(input: {}) {
       deleted
     }
+     revokeToken(input: {
+       refreshToken: $token
+     }) {
+       revoked
+     }
   }
 `;
 
@@ -154,14 +159,6 @@ export const REFRESH_TOKEN = gql `
     refreshToken(input: { refreshToken: $token }) {
       token
       refreshToken
-    }
-  }
-`;
-
-export const REVOKE_TOKEN = gql `
-  mutation revokeToken($token: String!) {
-    revokeToken(input: { refreshToken: $token }) {
-      revoked
     }
   }
 `;
@@ -285,7 +282,7 @@ export const GET_NOTIFICATIONS = gql `
         hasNextPage
         endCursor
       }
-      
+
       edges {
         node {
           createdAt

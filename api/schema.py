@@ -8,7 +8,7 @@ from django_filters import OrderingFilter
 from django.db.models import Count, IntegerField
 from .schemafiles.Nodes import *
 from .schemafiles.mutations import *
-
+from .signals import *
 from .models import *
 
 class Query(object):
@@ -25,7 +25,7 @@ class Query(object):
     self_notification = DjangoFilterConnectionField(NotificationNode)
 
     def resolve_self_notifications(self, info,**kwargs):
-        return Notification.objects.filter(user=info.context.user)
+        return Notification.objects.filter(recipient=info.context.user)
 
     def resolve_post_comments(self, info, id, **kwargs):
         return Comment.objects.filter(post=Post.objects.get(id=id))

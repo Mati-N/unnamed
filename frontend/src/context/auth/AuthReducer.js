@@ -12,7 +12,6 @@ export default (state, action) => {
       if (!action.refresh) {
         Cookies.set("token", action.payload.token);
         localStorage.setItem("USER", action.payload.user.id)
-        console.log(action.payload.user.id);
       }
       Cookies.set("refresh-token", action.payload.refreshToken);
       return {

@@ -9,7 +9,6 @@ import {
   LOGOUT_USER,
   VERIFY_TOKEN,
   REFRESH_TOKEN,
-  REVOKE_TOKEN,
 } from "../../Queries";
 import AlertContext from "../alert/AlertContext";
 import Cookies from "js-cookie";
@@ -29,7 +28,6 @@ const AuthState = (props) => {
   const [addUser] = useMutation(ADD_USER);
   const [login] = useMutation(LOGIN_USER);
   const [logout] = useMutation(LOGOUT_USER);
-  const [revoke] = useMutation(REVOKE_TOKEN);
   const [verify] = useMutation(VERIFY_TOKEN);
   const [refresh] = useMutation(REFRESH_TOKEN);
 
@@ -138,17 +136,16 @@ const AuthState = (props) => {
   };
 
   const doLogout = () => {
-    props.client.clearStore();
     try {
       if (state.refreshToken != null) {
         setAlert("Logged out!", "primary");
       }
-      revoke({
+      console.log(state.refreshToken);
+      logout({
         variables: {
           token: state.refreshToken,
         },
       });
-      logout();
 
       dispatch({
         type: LOGOUT,
@@ -156,6 +153,7 @@ const AuthState = (props) => {
     } catch {
       dispatch({ type: LOGOUT });
     }
+    props.client.clearStore();
   };
 
   return (
