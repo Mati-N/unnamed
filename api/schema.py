@@ -24,7 +24,7 @@ class Query(object):
     liked = graphene.Boolean(id=graphene.ID())
     self_notification = DjangoFilterConnectionField(NotificationNode)
 
-    def resolve_self_notifications(self, info,**kwargs):
+    def resolve_self_notifications(self, info, **kwargs):
         return Notification.objects.filter(recipient=info.context.user)
 
     def resolve_post_comments(self, info, id, **kwargs):
@@ -35,7 +35,10 @@ class Query(object):
         return len(Following.objects.filter(follower=info.context.user, target=User.objects.get(id=id))) > 0
 
     def resolve_user_get(self, info, id, **kwargs):
-        return User.objects.get(id=id)
+        try:
+            return User.objects.get(id=id)
+        except User.mode.DoesNotExist:
+            return None
 
     @login_required
     def resolve_self_post(self, info, **kwargs):

@@ -83,6 +83,10 @@ const User = ({ match }) => {
     });
   };
 
+  if (user_data.userGet == null) {
+    return <h1>User Does Not Exist</h1>;
+  }
+
   const followIt = () => {
     follow({ variables: { id: match.params.id } }).then(
       ({ data: { followUser } }) => {
