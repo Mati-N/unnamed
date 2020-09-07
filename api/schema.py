@@ -25,6 +25,7 @@ class Query(object):
     self_notification = DjangoFilterConnectionField(NotificationNode)
 
     # Get notifications for currently logged in user
+    @login_required
     def resolve_self_notification(self, info, **kwargs):
         return Notification.objects.filter(recipient=info.context.user)
 
