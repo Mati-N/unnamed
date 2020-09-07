@@ -34,7 +34,6 @@ const AuthState = (props) => {
   const [refresh] = useMutation(REFRESH_TOKEN);
 
   const loggedIn = () => {
-    console.log(state);
     if (state.token == null) {
       dispatch({
         type: LOGOUT,
@@ -139,6 +138,7 @@ const AuthState = (props) => {
   };
 
   const doLogout = () => {
+    props.client.clearStore();
     try {
       if (state.refreshToken != null) {
         setAlert("Logged out!", "primary");
@@ -170,8 +170,7 @@ const AuthState = (props) => {
         user: state.user,
       }}
     >
-      {" "}
-      {props.children}{" "}
+      {props.children}
     </AuthContext.Provider>
   );
 };

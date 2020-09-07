@@ -22,7 +22,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <AlertState>
+      <AlertState client={client}>
         <AuthState>
           <Suspense
             fallback={
