@@ -24,7 +24,8 @@ class Query(object):
     liked = graphene.Boolean(id=graphene.ID())
     self_notification = DjangoFilterConnectionField(NotificationNode)
 
-    def resolve_self_notifications(self, info, **kwargs):
+    # Get notifications for currently logged in user
+    def resolve_self_notification(self, info, **kwargs):
         return Notification.objects.filter(recipient=info.context.user)
 
     def resolve_post_comments(self, info, id, **kwargs):
