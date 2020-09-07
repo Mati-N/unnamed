@@ -22,8 +22,8 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <AlertState client={client}>
-        <AuthState>
+      <AlertState>
+        <AuthState client={client}>
           <Suspense
             fallback={
               <main className="app">
