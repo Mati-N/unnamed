@@ -2,8 +2,6 @@ from django.db import models
 import pytz
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 
 from utils.models import AutoTimeStamped
 utc = pytz.UTC
@@ -60,14 +58,9 @@ class Following(models.Model):
 
 class Notification(AutoTimeStamped):
     verb = models.TextField()
-    recipient = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="notifications")
-    sender = models.ForeignKey('api.User', on_delete=models.CASCADE, related_name="sent_notifications")
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_notifications")
     category = models.TextField()
     post = models.ForeignKey('api.Post', on_delete=models.CASCADE, null=True, blank=True)
     comment = models.ForeignKey('api.Comment', on_delete=models.CASCADE, null=True, blank=True)
     read = models.BooleanField(default=False)
-
-
-@receiver(pre_save, sender=Following)
-def my_handler(sender, instance, **kwargs):
-    Notification.objects.create(verb="followed you", sender=instance.follower, recipient=instance.target, category="new_follow")

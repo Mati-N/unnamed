@@ -43,22 +43,23 @@ const Account = () => {
   const more = () => {
     fetchMore({
       query: SELF_POSTS,
-      variables: { cursor: data.post.pageInfo.endCursor },
+      variables: { cursor: data.selfPost.pageInfo.endCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);
-        const newEdges = fetchMoreResult.post.edges;
-        const pageInfo = fetchMoreResult.post.pageInfo;
+        console.log(fetchMoreResult);
+        const newEdges = fetchMoreResult.selfPost.edges;
+        const pageInfo = fetchMoreResult.selfPost.pageInfo;
 
-        if (!previousResult.post.pageInfo.hasNextPage) {
+        if (!previousResult.selfPost.pageInfo.hasNextPage) {
           setSpin(false);
           return previousResult;
         }
 
         return newEdges.length
           ? {
-              post: {
-                __typename: previousResult.post.__typename,
-                edges: [...previousResult.post.edges, ...newEdges],
+              selfPost: {
+                __typename: previousResult.selfPost.__typename,
+                edges: [...previousResult.selfPost.edges, ...newEdges],
                 pageInfo,
               },
             }
@@ -67,7 +68,7 @@ const Account = () => {
     });
   };
 
-  const { post } = data;
+  const { selfPost: post } = data;
   return (
     <>
       <div className="account-info">

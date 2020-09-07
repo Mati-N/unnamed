@@ -179,7 +179,7 @@ export const SELF_USER = gql `
 
 export const SELF_POSTS = gql `
   query self_posts($cursor: String) {
-    post(first: 20, orderBy: "created_at", after: $cursor) {
+    selfPost(first: 20, orderBy: "created_at", after: $cursor) {
       edges {
         node {
           id
@@ -274,6 +274,40 @@ export const CREATE_COMMENT = gql `
         createdAt
       }
       __typename
+    }
+  }
+`;
+
+export const GET_NOTIFICATIONS = gql `
+  query($cursor: String) {
+    selfNotification(orderBy: "created_at", after: $cursor, first: 10) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      
+      edges {
+        node {
+          createdAt
+          category
+          sender {
+            id
+            username
+          }
+          post {
+            id
+            title
+          }
+          comment {
+            id
+            content
+            post {
+              title
+            }
+          }
+          read
+        }
+      }
     }
   }
 `;

@@ -12,10 +12,9 @@ from .schemafiles.mutations import *
 from .models import *
 
 class Query(object):
-    users = DjangoFilterConnectionField(UserNode, id=graphene.ID(), user_name=graphene.String())
     posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
     following_posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
-    post = DjangoFilterConnectionField(PostNode, post_title=graphene.String(), post_text=graphene.String())
+    self_post = DjangoFilterConnectionField(PostNode, post_title=graphene.String(), post_text=graphene.String())
     user_post = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
     self_user = graphene.Field(UserNode)
     user_get = graphene.Field(UserNode, id=graphene.ID())
@@ -23,10 +22,10 @@ class Query(object):
     post_comments = DjangoFilterConnectionField(CommentNode, id=graphene.ID())
     is_following = graphene.Boolean(id=graphene.ID())
     liked = graphene.Boolean(id=graphene.ID())
-    notification = graphene.Field(NotifNode)
+    self_notification = DjangoFilterConnectionField(NotificationNode)
 
-    def resolve_notification(self, info):
-        return Notification.object.all()
+    def resolve_self_notifications(self, info,**kwargs):
+        return Notification.objects.filter(user=info.context.user)
 
     def resolve_post_comments(self, info, id, **kwargs):
         return Comment.objects.filter(post=Post.objects.get(id=id))
@@ -39,7 +38,7 @@ class Query(object):
         return User.objects.get(id=id)
 
     @login_required
-    def resolve_post(self, info, **kwargs):
+    def resolve_self_post(self, info, **kwargs):
         return info.context.user.posts
 
     @login_required

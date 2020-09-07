@@ -4,13 +4,13 @@ from graphene_django.types import DjangoObjectType
 from django_filters import OrderingFilter
 from ..models import *
 
-__all__ = ['UserNode', 'PostNode', 'CommentNode', 'FollowNode', 'LikeNode', 'NotifNode']
+__all__ = ['UserNode', 'PostNode', 'CommentNode', 'FollowNode', 'LikeNode', 'NotificationNode']
 
 
 class UserFilter(django_filters.FilterSet):
     class Meta:
         model = User
-        fields = {'username': ['exact', 'icontains', 'istartswith']}
+        fields = {'username': ['exact', 'icontains', 'istartswith'], 'id': ['exact']}
 
     order_by = OrderingFilter(
         fields=(
@@ -74,7 +74,19 @@ class LikeNode(DjangoObjectType):
         model = Like
         interfaces = (graphene.relay.Node,)
 
-class NotifNode(DjangoObjectType):
+class NotificationFilter(django_filters.FilterSet):
+    class Meta:
+       model = Notification
+       fields = {'id': ['exact']}
+
+    order_by = OrderingFilter(
+        fields=(
+            ('-created_at', 'created_at')
+        )
+    )
+
+class NotificationNode(DjangoObjectType):
     class Meta:
         model = Notification
         interfaces = (graphene.relay.Node,)
+        filterset_class = NotificationFilter

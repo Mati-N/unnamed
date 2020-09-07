@@ -17,6 +17,7 @@ const Login = lazy(() => import("../auth/Login"));
 const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const User = lazy(() => import("../pages/User"));
+const Notifications = lazy(() => import("../pages/Notifications"));
 
 const Routes = () => {
   const { loggedIn } = useContext(AuthContext);
@@ -76,6 +77,11 @@ const Routes = () => {
                   exact
                   path="/password"
                   component={ChangePassword}
+                />
+                <PrivateRoute
+                  exact
+                  path="/notifications"
+                  component={Notifications}
                 />
                 <Route component={NotFound} />
               </Switch>
