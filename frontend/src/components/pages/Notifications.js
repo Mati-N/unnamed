@@ -99,7 +99,7 @@ const Notifications = () => {
                   Commented on your post{" "}
                   <Link
                     className="notification-post"
-                    to={`post/${node.post.id}`}
+                    to={`post/${node.comment.post.id}`}
                     className="notification-post-comment"
                   >
                     {node.comment.post.title}
