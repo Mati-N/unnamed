@@ -299,6 +299,7 @@ export const GET_NOTIFICATIONS = gql `
             id
             content
             post {
+              id
               title
             }
           }
