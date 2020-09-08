@@ -59,6 +59,8 @@ class CommentFilter(django_filters.FilterSet):
 
 # The comment model's type
 class CommentNode(DjangoObjectType):
+    id = graphene.ID(source="pk", required=True)
+
     class Meta:
         model = Comment
         interfaces = (graphene.relay.Node,)
