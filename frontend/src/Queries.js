@@ -277,7 +277,7 @@ export const CREATE_COMMENT = gql `
 
 export const GET_NOTIFICATIONS = gql `
   query($cursor: String) {
-    selfNotification(orderBy: "created_at", after: $cursor, first: 10) {
+    selfNotification(orderBy: "-created_at", after: $cursor, first: 10) {
       pageInfo {
         hasNextPage
         endCursor
