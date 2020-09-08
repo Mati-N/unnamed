@@ -10,6 +10,7 @@ from .schemafiles.Nodes import *
 from .schemafiles.mutations import *
 from .signals import *
 from .models import *
+from django.db.models import Q
 
 class Query(object):
     posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
@@ -47,8 +48,8 @@ class Query(object):
         return info.context.user.posts
 
     @login_required
-    def resolve_following_posts(self, info):
-        return Post.objects.filter(user__followers__user=info.context.user)
+    def resolve_following_posts(self, info, **kwargs):
+        return Post.objects.filter(Q(user__followers__follower=info.context.user) | Q(user=info.context.user))
 
     @login_required
     def resolve_user_post(self, info, id, **kwargs):

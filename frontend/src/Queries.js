@@ -55,6 +55,31 @@ export const GET_POSTS = gql `
   }
 `;
 
+export const FOLLOWING_POSTS = gql `
+  query followingPosts($cursor: String) {
+    followingPosts(first: 45, after: $cursor, orderBy: "created_at") {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          title
+          text
+          likeCount
+          commentCount
+          createdAt
+          user {
+            username
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_POST = gql `
   query post($id: ID!, $cursor: String) {
     posts(id: $id) {

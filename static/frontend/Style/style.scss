@@ -35,6 +35,25 @@ $light-color: rgb(238, 238, 238);
   margin: 0em;
 }
 
+.home-pages {
+  list-style-type: none;
+  width: 27.5%;
+  margin: auto;
+  min-height: 6vh;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.26em;
+
+  .link {
+    font-size: 1.5em;
+    color: $teal-color !important;
+  }
+
+  .active {
+    color: rgb(124, 124, 124) !important;
+  }
+}
+
 .form-auth {
   padding: 3em;
   height: 100%;
@@ -331,12 +350,12 @@ $light-color: rgb(238, 238, 238);
 }
 
 .main {
-  margin-top: 12vh;
+  margin-top: 9vh;
 }
 
 nav {
   z-index: 100000000;
-  font-weight: 200;
+  font-weight: 240;
   height: 12vh;
   display: block;
   background-color: $teal-color;

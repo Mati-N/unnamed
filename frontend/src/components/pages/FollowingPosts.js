@@ -1,14 +1,16 @@
 import React, { useState, lazy } from "react";
-import { GET_POSTS } from "../../Queries";
 import { Link } from "react-router-dom";
+import { FOLLOWING_POSTS } from "../../Queries";
 import { useQuery } from "@apollo/client";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const Offline = lazy(() => import("./Offline"));
 const Posts = lazy(() => import("../post/Posts"));
 
-function Home() {
-  const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS);
+function FollowingPosts() {
+  const { loading, data, error, fetchMore, refetch } = useQuery(
+    FOLLOWING_POSTS
+  );
   const [spin, setSpin] = useState(true);
 
   if (loading || !data)
@@ -19,7 +21,7 @@ function Home() {
           style={{
             margin: "auto",
           }}
-        />
+        />{" "}
       </div>
     );
 
@@ -28,30 +30,32 @@ function Home() {
       <>
         <Offline />
         <button className="btn btn-teal" onClick={refetch}>
-          Refresh
-        </button>
+          Refresh{" "}
+        </button>{" "}
       </>
     );
   }
 
   const more = () => {
     fetchMore({
-      query: GET_POSTS,
-      variables: { cursor: data.posts.pageInfo.endCursor },
+      query: FOLLOWING_POSTS,
+      variables: {
+        cursor: data.followingPosts.pageInfo.endCursor,
+      },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);
-        if (!previousResult.posts.pageInfo.hasNextPage) {
+        if (!previousResult.followingPosts.pageInfo.hasNextPage) {
           setSpin(false);
           return previousResult;
         }
-        const newEdges = fetchMoreResult.posts.edges;
-        const pageInfo = fetchMoreResult.posts.pageInfo;
+        const newEdges = fetchMoreResult.followingPosts.edges;
+        const pageInfo = fetchMoreResult.followingPosts.pageInfo;
 
         return newEdges.length
           ? {
-              posts: {
-                __typename: previousResult.posts.__typename,
-                edges: [...previousResult.posts.edges, ...newEdges],
+              followingPosts: {
+                __typename: previousResult.followingPosts.__typename,
+                edges: [...previousResult.followingPosts.edges, ...newEdges],
                 pageInfo,
               },
             }
@@ -63,17 +67,17 @@ function Home() {
   return (
     <>
       <ul className="home-pages">
-        <li className="active link">All Posts</li>
         <li className="link">
-          <Link to="/">Following</Link>
+          <Link to="/all">All Posts</Link>
         </li>
+        <li className="active link">Following</li>
       </ul>
-      <Posts posts={data.posts.edges} self={false} id={null} />
+      <Posts posts={data.followingPosts.edges} self={false} id={null} />{" "}
       <Waypoint onEnter={more}>
-        <div className="spinner">{spin && <Spinner size={40} />}</div>
-      </Waypoint>
+        <div className="spinner"> {spin && <Spinner size={40} />}</div>
+      </Waypoint>{" "}
     </>
   );
 }
 
-export default Home;
+export default FollowingPosts;

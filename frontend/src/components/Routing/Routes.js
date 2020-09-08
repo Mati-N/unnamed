@@ -10,6 +10,7 @@ import Error from "../layout/Error";
 
 const Post = lazy(() => import("../post/Post"));
 const Home = lazy(() => import("../pages/Home"));
+const FollowingPosts = lazy(() => import("../pages/FollowingPosts"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword"));
@@ -68,7 +69,8 @@ const Routes = () => {
                   component={Register}
                 />
 
-                <PrivateRoute exact path="/" component={Home} />
+                <PrivateRoute exact path="/all" component={Home} />
+                <PrivateRoute exact path="/" component={FollowingPosts} />
                 <PrivateRoute exact path="/add-post" component={NewPost} />
                 <PrivateRoute exact path="/account" component={Account} />
                 <PrivateRoute exact path="/user/:id" component={User} />
