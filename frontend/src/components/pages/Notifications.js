@@ -108,7 +108,7 @@ const Notifications = () => {
                     className="notification-post"
                     to={`post/${node.comment.post.id}/#${node.comment.id}`}
                   >
-                    {node.comment.title.substr(0, 60)}
+                    {node.comment.content.substr(0, 60)}
                   </Link>
                 </div>
               );
