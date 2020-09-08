@@ -26,38 +26,33 @@ function App() {
         <AuthState client={client}>
           <Suspense
             fallback={
-              <main className="app">
-                <div className="main">
-                  <div className="spinner">
-                    <Spinner
-                      size={50}
-                      style={{
-                        margin: "auto",
-                      }}
-                    />
-                  </div>
-                </div>
-              </main>
+              <div className="spinner">
+                <Spinner
+                  size={50}
+                  style={{
+                    margin: "auto",
+                  }}
+                />
+              </div>
             }
           >
             <Router>
               <Navbar />
-
-              <main className="app" id="main">
+              <main className="main">
                 <Alert />
                 <Routes />
+                <footer>
+                  <a
+                    style={{
+                      opacity: 0,
+                    }}
+                    className="skip-link"
+                    href="#root"
+                  >
+                    Skip to main
+                  </a>
+                </footer>
               </main>
-              <footer>
-                <a
-                  style={{
-                    opacity: 0,
-                  }}
-                  className="skip-link"
-                  href="#main"
-                >
-                  Skip to main
-                </a>
-              </footer>
             </Router>
           </Suspense>
         </AuthState>

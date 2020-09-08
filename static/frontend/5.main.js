@@ -18,5 +18,5 @@
 /*!****************************************!*\
   !*** ./src/components/layout/Error.js ***!
   \****************************************/
-/*! exports provided: default */function(e,t,n){"use strict";n.r(t);var r=n(/*! react */"./node_modules/react/index.js"),a=n.n(r);t.default=function(e){return e.error,e.componentStack,e.resetErrorBoundary,a.a.createElement("div",{role:"alert"},a.a.createElement("p",{style:{width:"40%",margin:"auto",padding:"8vh",fontSize:"10em "}},"Something went wrong"))}}}]);
+/*! exports provided: default */function(e,t,n){"use strict";n.r(t);var r=n(/*! react */"./node_modules/react/index.js"),a=n.n(r);t.default=function(e){return e.error,e.componentStack,e.resetErrorBoundary,a.a.createElement("div",{role:"alert"},a.a.createElement("p",{style:{width:"40%",margin:"auto",padding:"8vh",fontSize:"5em "}},"Something went wrong"))}}}]);
 //# sourceMappingURL=5.main.js.map

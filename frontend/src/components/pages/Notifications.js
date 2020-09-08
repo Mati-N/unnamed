@@ -93,7 +93,23 @@ const Notifications = () => {
             case "new_comment":
               return (
                 <div key={node.id} className="notification">
-                  Cnew commment111!
+                  <Link to={`user/${node.sender.id}`}>
+                    {node.sender.username}
+                  </Link>{" "}
+                  Commented on your post{" "}
+                  <Link
+                    className="notification-post"
+                    to={`post/${node.post.id}`}
+                    className="notification-post-comment"
+                  >
+                    {node.comment.post.title}
+                  </Link>
+                  <Link
+                    className="notification-post"
+                    to={`post/${node.post.id}/#${node.comment.id}`}
+                  >
+                    {node.comment.title.substr(0, 60)}
+                  </Link>
                 </div>
               );
           }

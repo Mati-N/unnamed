@@ -8,7 +8,7 @@ function Error({ error, componentStack, resetErrorBoundary }) {
           width: "40%",
           margin: "auto",
           padding: "8vh",
-          fontSize: "10em ",
+          fontSize: "5em ",
         }}
       >
         Something went wrong
