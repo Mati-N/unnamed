@@ -49,7 +49,7 @@ class Query(object):
 
     @login_required
     def resolve_following_posts(self, info, **kwargs):
-        return Post.objects.filter(Q(user__followers__follower=info.context.user) | Q(user=info.context.user))
+        return Post.objects.filter(Q(user__followers__follower=info.context.user) | Q(user=info.context.user)).distinct()
 
     @login_required
     def resolve_user_post(self, info, id, **kwargs):

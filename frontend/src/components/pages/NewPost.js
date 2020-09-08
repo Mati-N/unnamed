@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect, lazy } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_POST, GET_POSTS } from "../../Queries";
 import AlertContext from "../../context/alert/AlertContext";
-//const { Redirect } = lazy(() => import("react-router-dom"));
 import { Redirect } from "react-router-dom";
 
 const NewPost = () => {

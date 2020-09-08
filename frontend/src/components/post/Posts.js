@@ -6,7 +6,7 @@ const Posts = ({ posts, self, username, id }) => {
     <div>
       {posts.map(({ node }) => (
         <PostItem
-          key={node.id}
+          key={`${node.id}p`}
           {...node}
           user_id={self ? id : node.user.id}
           username={self ? username : node.user.username}
