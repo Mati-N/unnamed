@@ -33,7 +33,7 @@ if os.environ.get('LOCAL') == 1:
     SECURE_SSL_REDIRECT = False
 else:
     DEBUG = False
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
 
@@ -144,40 +144,6 @@ GRAPHENE = {
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ],
 }
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
-                       'pathname=%(pathname)s lineno=%(lineno)s ' +
-                       'funcname=%(funcName)s %(message)s'),
-            'datefmt': '%Y-%m-%d %H:%M:%S'
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        }
-    },
-    'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'logging.NullHandler',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
-        }
-    },
-    'loggers': {
-        'testlogger': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        }
-    }
-}
-
 # Internationalization
 
 LANGUAGE_CODE = 'en-us'
@@ -190,6 +156,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
