@@ -41,15 +41,19 @@ $light-color: rgb(238, 238, 238);
   margin: auto;
   min-height: 6vh;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 0.26em;
+  position: sticky;
+  top: 0;
 
   .link {
     font-size: 1.5em;
-    color: $teal-color !important;
+
   }
 
   .active {
+    color: rgb(124, 124, 124) !important;
+
     a {
       color: rgb(124, 124, 124) !important;
     }
@@ -228,6 +232,7 @@ $light-color: rgb(238, 238, 238);
     color: rgb(29, 29, 29);
     text-decoration: none;
     transition: all 0.1s;
+    overflow: hidden;
   }
 
   .notification-post-comment {
@@ -304,7 +309,7 @@ $light-color: rgb(238, 238, 238);
     display: flex;
     justify-content: start;
     align-items: center;
-    width: 40%;
+    width: 55%;
     margin: 0.04em;
 
     .info {
@@ -454,13 +459,19 @@ nav {
 
   .notification {
     width: 99%;
+    font-size: 0.95em;
+
+    .notification-post {
+      font-size: 1.1em;
+      padding: 0.6em;
+    }
   }
 
   .home-pages {
     width: 70%;
 
     .link {
-      font-size: 0.9em;
+      font-size: 1.28em;
     }
   }
 
@@ -468,11 +479,11 @@ nav {
   .account-info {
     .info-mini {
       padding: 0.1em;
-      font-size: 1em;
+      font-size: 1.23em;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
+      width: 98%;
       margin: 0.04em;
 
       .info {
@@ -480,7 +491,6 @@ nav {
         align-items: center;
         padding: 0.1em;
         border-radius: 0.05em;
-        margin: 0.09m;
         min-width: 10%;
         min-height: fit-content;
       }
@@ -635,19 +645,5 @@ nav {
         }
       }
     }
-  }
-}
-
-@keyframes navCome {
-  from {
-    display: none;
-    opacity: 0;
-    transform: translateX(100%);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0%);
-    display: flex;
   }
 }

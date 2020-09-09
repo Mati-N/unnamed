@@ -161,16 +161,24 @@ const User = ({ match }) => {
             )}{" "}
             {following.following ? "Unfollow" : "Follow"}
           </button>
-          <span className="info">{user_data.userGet.postCount} Posts</span>
-          <span className="info">{following.followers} Followers</span>
+          <span className="info">
+            {user_data.userGet.postCount > 0
+              ? user_data.userGet.postCount
+              : "No"}{" "}
+            Post{user_data.userGet.postCount > 1 ? "s" : ""}
+          </span>
+          <span className="info">
+            {following.followers > 0 ? following.followers : "No"} Follower
+            {following.followers > 1 ? "s" : ""}
+          </span>
         </div>
-        <Posts
-          posts={userPost.edges}
-          self={true}
-          username={user_data.userGet.username}
-          id={match.params.id}
-        />
       </div>
+      <Posts
+        posts={userPost.edges}
+        self={true}
+        username={user_data.userGet.username}
+        id={match.params.id}
+      />
       <Waypoint
         onEnter={() => {
           more();
