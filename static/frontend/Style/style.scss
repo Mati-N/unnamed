@@ -50,7 +50,9 @@ $light-color: rgb(238, 238, 238);
   }
 
   .active {
-    color: rgb(124, 124, 124) !important;
+    a {
+      color: rgb(124, 124, 124) !important;
+    }
   }
 }
 
@@ -422,7 +424,7 @@ nav {
   }
 
   .home-pages {
-    width: 33%;
+    width: 36%;
   }
 
   nav {
@@ -455,7 +457,38 @@ nav {
   }
 
   .home-pages {
-    width: 55%;
+    width: 70%;
+
+    .link {
+      font-size: 0.9em;
+    }
+  }
+
+
+  .account-info {
+    .info-mini {
+      padding: 0.1em;
+      font-size: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin: 0.04em;
+
+      .info {
+        display: flex;
+        align-items: center;
+        padding: 0.1em;
+        border-radius: 0.05em;
+        margin: 0.09m;
+        min-width: 10%;
+        min-height: fit-content;
+      }
+
+      .info:hover {
+        opacity: 0.9;
+      }
+    }
   }
 
   .post,
