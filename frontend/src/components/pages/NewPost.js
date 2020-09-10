@@ -1,6 +1,11 @@
 import React, { useState, useContext, useEffect, lazy } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_POST, GET_POSTS } from "../../Queries";
+import {
+  CREATE_POST,
+  GET_POSTS,
+  FOLLOWING_POSTS,
+  SELF_POSTS,
+} from "../../Queries";
 import AlertContext from "../../context/alert/AlertContext";
 import { Redirect } from "react-router-dom";
 
@@ -52,24 +57,69 @@ const NewPost = () => {
       variables: { title: state.title, text: state.content },
       update: (cache, { data }) => {
         if (cache) {
-          let { posts } = cache.readQuery({ query: GET_POSTS });
-          console.log(posts);
-          const newData = {
-            ...posts,
-            edges: [
-              {
-                __typename: "PostNodeEdge",
-                node: data.createPost.post,
-              },
-              ...posts.edges,
-            ],
-          };
-          cache.writeQuery({
-            query: GET_POSTS,
-            data: {
-              posts: newData,
-            },
+          let { posts: all_posts } = cache.readQuery({ query: GET_POSTS });
+          let { followingPosts } = cache.readQuery({
+            query: FOLLOWING_POSTS,
           });
+          let { selfPost } = cache.readQuery({ query: SELF_POSTS });
+
+          if (followingPosts) {
+            const newFollowingData = {
+              ...followingPosts,
+              edges: [
+                {
+                  __typename: "PostNodeEdge",
+                  node: data.createPost.post,
+                },
+                ...followingPosts.edges,
+              ],
+            };
+
+            cache.writeQuery({
+              query: FOLLOWING_POSTS,
+              data: {
+                followingPosts: newFollowingData,
+              },
+            });
+          }
+
+          if (all_posts) {
+            const newPostsData = {
+              ...all_posts,
+              edges: [
+                {
+                  __typename: "PostNodeEdge",
+                  node: data.createPost.post,
+                },
+                ...all_posts.edges,
+              ],
+            };
+            cache.writeQuery({
+              query: GET_POSTS,
+              data: {
+                posts: newPostsData,
+              },
+            });
+          }
+
+          if (selfPost) {
+            const newSelfData = {
+              ...selfPost,
+              edges: [
+                {
+                  __typename: "PostNodeEdge",
+                  node: data.createPost.post,
+                },
+                ...selfPost.edges,
+              ],
+            };
+            cache.writeQuery({
+              query: SELF_POSTS,
+              data: {
+                selfPost: newSelfData,
+              },
+            });
+          }
         }
       },
     })
