@@ -1,15 +1,11 @@
 import React, { useState, useContext, useEffect, lazy } from "react";
 import { SELF_POSTS, SELF_USER } from "../../Queries";
 import { useQuery } from "@apollo/client";
-import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
-import { Link } from "react-router-dom";
 const Posts = lazy(() => import("../post/Posts"));
-import ForwardPointer from "../SVG/ForwardPointer.svg";
-import LogoutSVG from "../SVG/Logout.svg";
-import Edit from "../SVG/Edit.svg";
+const AccountInfo = lazy(() => import("../layout/AccountInfo"));
 
 const Account = () => {
   const {
@@ -71,50 +67,15 @@ const Account = () => {
   const { selfPost: post } = data;
   return (
     <>
-      <div className="account-info">
-        <div className="account-info-top">
-          <span className="username" style={{ display: "block" }}>
-            {user_data.selfUser.username}
-          </span>
-        </div>
-        <div className="info-mini">
-          <span className="info">{user_data.selfUser.postCount} Posts</span>
-          <span className="info">
-            {user_data.selfUser.followerCount} Followers
-          </span>
-        </div>
-        <ul className="options">
-          <li className="option">
-            <button
-              style={{
-                background: "none",
-                border: "none",
-              }}
-              onClick={Logout}
-            >
-              <LogoutSVG className="svg" /> Logout
-            </button>
-          </li>
-          <li className="option">
-            <Edit className="svg" />
-            <Link to="/password">Change Password</Link>
-          </li>
-          <li className="option">
-            <Edit className="svg" />
-            <Link to="/username">Change Username</Link>
-          </li>
-        </ul>
-      </div>
-      <div className="main">
-        <Posts posts={post.edges} self={true} id={user} username="You" />
-        <Waypoint
-          onEnter={() => {
-            more();
-          }}
-        >
-          <div className="spinner">{spin && <Spinner size={40} />}</div>
-        </Waypoint>
-      </div>
+      <AccountInfo user_data={user_data} Logout={Logout} />
+      <Posts
+        posts={post.edges}
+        self={true}
+        id={user}
+        username="You"
+        more={more}
+        spin={spin}
+      />
     </>
   );
 };

@@ -39,6 +39,7 @@ function App() {
             <Router>
               <Navbar />
               <main className="main">
+                <br />
                 <Alert />
                 <Routes />
                 <footer>

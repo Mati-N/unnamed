@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect, lazy } from "react";
 import { GET_USER, USER_POSTS, FOLLOW } from "../../Queries";
 import { useQuery, useMutation } from "@apollo/client";
-import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import { Redirect } from "react-router-dom";
-import ForwardPointer from "../SVG/ForwardPointer.svg";
 const Offline = lazy(() => import("./Offline"));
 const Posts = lazy(() => import("../post/Posts"));
 
@@ -178,14 +176,9 @@ const User = ({ match }) => {
         self={true}
         username={user_data.userGet.username}
         id={match.params.id}
+        more={more}
+        spin={spin}
       />
-      <Waypoint
-        onEnter={() => {
-          more();
-        }}
-      >
-        <div className="spinner">{spin && <Spinner size={40} />}</div>
-      </Waypoint>
     </>
   );
 };

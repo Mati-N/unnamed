@@ -8,13 +8,43 @@ const CustomizeAccount = () => {
   const [state, setState] = useState({
     password: "",
     newPassword: "",
-    disabled: false,
-    change: true,
   });
+  const [disabled, setDisabled] = useState(true);
   const [doCustomize] = useMutation(UPDATE_USER);
-  const { setAlert } = useContext(AlertContext);
+  const { setAlert, removeAlert } = useContext(AlertContext);
   const onChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
+    const name = e.target.name;
+    setState({ ...state, [name]: e.target.value }, Verify(name, e));
+  };
+
+  const Verify = (name, e) => {
+    switch (name) {
+      case "password":
+        if (e.target.value.length < 8) {
+          setAlert("Password too short", "warning");
+          setDisabled(true);
+        } else if (
+          state.newPassword.length >= 8 &&
+          e.target.value.length >= 8
+        ) {
+          removeAlert();
+          setDisabled(false);
+        } else {
+          removeAlert();
+        }
+        break;
+      case "newPassword":
+        if (e.target.value.length < 8) {
+          setAlert("New Password too short", "warning");
+          setDisabled(true);
+        } else if (state.password.length >= 8 && e.target.value.length >= 8) {
+          removeAlert();
+          setDisabled(false);
+        } else {
+          removeAlert();
+        }
+        break;
+    }
   };
 
   const onSubmit = (e) => {
@@ -28,7 +58,7 @@ const CustomizeAccount = () => {
             setAlert(d.data.updateUser.message, "danger");
           } else {
             setState({ ...state, changed: true });
-            setAlert("PaSsWoRd ChAnGeD :}");
+            setAlert("Password Changed :}", "primary");
           }
         }
       });
@@ -68,7 +98,7 @@ const CustomizeAccount = () => {
           id="newPassword"
         />
       </div>
-      <button type="submit" className="btn btn-teal" disabled={state.disabled}>
+      <button type="submit" className="btn btn-teal" disabled={disabled}>
         Change
       </button>
     </form>

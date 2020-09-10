@@ -33,7 +33,7 @@ const Alert = () => {
             <line x1="12" y1="8" x2="12" y2="12" />
             <line x1="12" y1="16" x2="12.01" y2="16" />
           </svg>
-          <h1 style={{ display: "inline" }}>{alert_info.msg}</h1>
+          <h1 className="alert-text">{alert_info.msg}</h1>
         </animated.div>
       </>
     );

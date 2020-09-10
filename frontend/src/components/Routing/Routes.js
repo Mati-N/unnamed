@@ -14,6 +14,7 @@ const FollowingPosts = lazy(() => import("../pages/FollowingPosts"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword"));
+const ChangeUsername = lazy(() => import("../pages/ChangeUsername"));
 const Login = lazy(() => import("../auth/Login"));
 const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -79,6 +80,11 @@ const Routes = () => {
                   exact
                   path="/password"
                   component={ChangePassword}
+                />
+                <PrivateRoute
+                  exact
+                  path="/username"
+                  component={ChangeUsername}
                 />
                 <PrivateRoute
                   exact

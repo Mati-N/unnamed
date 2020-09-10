@@ -70,13 +70,27 @@ $light-color: rgb(238, 238, 238);
   border: 1em 0;
 }
 
+
+.seen-post {
+  transform: scale(1.05);
+}
+
 .app-alert {
   font-size: 1.5em !important;
   margin: auto;
   width: 70%;
   padding: 0.15em;
   border-radius: 0.1em;
-  box-shadow: 0.007em 0 0.07em $light-color;
+  box-shadow: 0.07em 0 0.07em $light-color;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  .alert-text {
+    font-size: 1.4em !important;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .container {
@@ -357,7 +371,7 @@ $light-color: rgb(238, 238, 238);
 }
 
 .main {
-  margin-top: 9vh;
+  margin-top: 12.2vh;
 }
 
 nav {
@@ -553,6 +567,18 @@ nav {
     transform: rotate(0deg);
     transform-origin: left bottom;
     transition: all 0.2s;
+  }
+
+  .app-alert {
+    margin: auto;
+    width: 80%;
+    padding: 0.1em;
+    border-radius: 0.1em;
+    box-shadow: 0.007em 0 0.07em $light-color;
+
+    .alert-text {
+      font-size: 1.25em !important;
+    }
   }
 
   nav {

@@ -2,7 +2,6 @@ import React, { useState, lazy } from "react";
 import { Link } from "react-router-dom";
 import { FOLLOWING_POSTS } from "../../Queries";
 import { useQuery } from "@apollo/client";
-import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const Offline = lazy(() => import("./Offline"));
 const Posts = lazy(() => import("../post/Posts"));
@@ -72,10 +71,13 @@ function FollowingPosts() {
         </li>
         <li className="active link">Following</li>
       </ul>
-      <Posts posts={data.followingPosts.edges} self={false} id={null} />{" "}
-      <Waypoint onEnter={more}>
-        <div className="spinner"> {spin && <Spinner size={40} />}</div>
-      </Waypoint>{" "}
+      <Posts
+        posts={data.followingPosts.edges}
+        self={false}
+        id={null}
+        spin={spin}
+        more={more}
+      />
     </>
   );
 }
