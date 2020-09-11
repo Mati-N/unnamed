@@ -57,69 +57,76 @@ const NewPost = () => {
       variables: { title: state.title, text: state.content },
       update: (cache, { data }) => {
         if (cache) {
-          let { posts: all_posts } = cache.readQuery({ query: GET_POSTS });
-          let { followingPosts } = cache.readQuery({
-            query: FOLLOWING_POSTS,
-          });
-          let { selfPost } = cache.readQuery({ query: SELF_POSTS });
-
-          if (followingPosts) {
-            const newFollowingData = {
-              ...followingPosts,
-              edges: [
-                {
-                  __typename: "PostNodeEdge",
-                  node: data.createPost.post,
-                },
-                ...followingPosts.edges,
-              ],
-            };
-
-            cache.writeQuery({
+          try {
+            let { followingPosts } = cache.readQuery({
               query: FOLLOWING_POSTS,
-              data: {
-                followingPosts: newFollowingData,
-              },
             });
-          }
+            if (followingPosts) {
+              const newFollowingData = {
+                ...followingPosts,
+                edges: [
+                  {
+                    __typename: "PostNodeEdge",
+                    node: data.createPost.post,
+                  },
+                  ...followingPosts.edges,
+                ],
+              };
 
-          if (all_posts) {
-            const newPostsData = {
-              ...all_posts,
-              edges: [
-                {
-                  __typename: "PostNodeEdge",
-                  node: data.createPost.post,
+              cache.writeQuery({
+                query: FOLLOWING_POSTS,
+                data: {
+                  followingPosts: newFollowingData,
                 },
-                ...all_posts.edges,
-              ],
-            };
-            cache.writeQuery({
-              query: GET_POSTS,
-              data: {
-                posts: newPostsData,
-              },
-            });
-          }
+              });
+            }
+          } catch (e) {}
 
-          if (selfPost) {
-            const newSelfData = {
-              ...selfPost,
-              edges: [
-                {
-                  __typename: "PostNodeEdge",
-                  node: data.createPost.post,
+          try {
+            let { posts: all_posts } = cache.readQuery({ query: GET_POSTS });
+
+            if (all_posts) {
+              const newPostsData = {
+                ...all_posts,
+                edges: [
+                  {
+                    __typename: "PostNodeEdge",
+                    node: data.createPost.post,
+                  },
+                  ...all_posts.edges,
+                ],
+              };
+              cache.writeQuery({
+                query: GET_POSTS,
+                data: {
+                  posts: newPostsData,
                 },
-                ...selfPost.edges,
-              ],
-            };
-            cache.writeQuery({
-              query: SELF_POSTS,
-              data: {
-                selfPost: newSelfData,
-              },
-            });
-          }
+              });
+            }
+          } catch (e) {}
+
+          try {
+            let { selfPost } = cache.readQuery({ query: SELF_POSTS });
+
+            if (selfPost) {
+              const newSelfData = {
+                ...selfPost,
+                edges: [
+                  {
+                    __typename: "PostNodeEdge",
+                    node: data.createPost.post,
+                  },
+                  ...selfPost.edges,
+                ],
+              };
+              cache.writeQuery({
+                query: SELF_POSTS,
+                data: {
+                  selfPost: newSelfData,
+                },
+              });
+            }
+          } catch (e) {}
         }
       },
     })

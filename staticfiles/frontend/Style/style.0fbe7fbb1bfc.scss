@@ -16,6 +16,11 @@ $light-color: rgb(238, 238, 238);
 * {
   font-family: "Hind Siliguri",
     sans-serif;
+  transition: all 1s;
+}
+
+*:not(.container, .post-text) {
+  transition: all 1s;
 }
 
 .root {
