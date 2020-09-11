@@ -42,7 +42,6 @@ const Account = () => {
       variables: { cursor: data.selfPost.pageInfo.endCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);
-        console.log(fetchMoreResult);
         const newEdges = fetchMoreResult.selfPost.edges;
         const pageInfo = fetchMoreResult.selfPost.pageInfo;
 

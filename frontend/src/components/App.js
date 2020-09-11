@@ -38,7 +38,7 @@ function App() {
           >
             <Router>
               <Navbar />
-              <main className="main">
+              <main className="main-main">
                 <br />
                 <Alert />
                 <Routes />
