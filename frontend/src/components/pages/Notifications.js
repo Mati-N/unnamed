@@ -96,7 +96,7 @@ const Notifications = () => {
                   <Link to={`user/${node.sender.id}`}>
                     {node.sender.username}
                   </Link>{" "}
-                  Commented on your post{" "}
+                  Commented on your post "
                   <Link
                     className="notification-post"
                     to={`post/${node.comment.post.id}`}
@@ -104,6 +104,7 @@ const Notifications = () => {
                   >
                     {node.comment.post.title}
                   </Link>
+                  "
                   <Link
                     className="notification-post"
                     to={`post/${node.comment.post.id}/#${node.comment.id}c`}

@@ -27,13 +27,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('LOCAL') == 1:
-    DEBUG = True
-    SECURE_SSL_REDIRECT = False
-else:
-    DEBUG = False
-    SECURE_SSL_REDIRECT = False
+DEBUG = os.environ.get('LOCAL') == 1
+SECURE_SSL_REDIRECT = not DEBUG
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
 
@@ -113,8 +108,8 @@ DATABASES = {
 GRAPHQL_JWT = {
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
-    'JWT_EXPIRATION_DELTA': timedelta(days=5),
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=6),
+    'JWT_EXPIRATION_DELTA': timedelta(days=20),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=20),
 }
 
 

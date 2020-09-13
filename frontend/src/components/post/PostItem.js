@@ -45,11 +45,9 @@ const PostItem = ({
 
   const expandText = useSpring({
     to: {
-      maxHeight: state.expand ? `${self.current.scrollHeight}px` : "230px",
       height: state.expand ? `${self.current.scrollHeight}px` : "230px",
     },
     from: {
-      maxHeight: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
       height: !state.expand ? "230px" : `${self.current.scrollHeight}px`,
     },
     duration: "0.9s",
@@ -57,9 +55,14 @@ const PostItem = ({
 
   useEffect(() => {
     liked();
+    const hasMore = self.current.scrollHeight > self.current.clientHeight;
+    if (hasMore) {
+      self.current.style.maxHeight = "none";
+      self.current.style.height = "230px";
+    }
     setState({
       ...state,
-      hasMore: self.current.scrollHeight > self.current.clientHeight,
+      hasMore,
       loading: false,
     });
   }, []);
