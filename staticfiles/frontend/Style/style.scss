@@ -18,6 +18,10 @@ $light-color: rgb(238, 238, 238);
     sans-serif;
 }
 
+::-webkit-scrollbar-thumb {
+  background-color: $teal-color;
+}
+
 .root {
   padding: 0em;
   margin: 0em;
@@ -66,11 +70,6 @@ $light-color: rgb(238, 238, 238);
   border: 1em 0;
 }
 
-
-.seen-post {
-  transform: scale(1.05);
-}
-
 .app-alert {
   font-size: 1.5em !important;
   margin: auto;
@@ -90,7 +89,8 @@ $light-color: rgb(238, 238, 238);
 }
 
 .container {
-  width: 70%;
+  width: 75%;
+  margin: auto;
 }
 
 .nav-bar {
@@ -118,14 +118,22 @@ $light-color: rgb(238, 238, 238);
   overflow: hidden;
 }
 
+.post:hover {
+  margin-bottom: 1.8em;
+  background: rgb(249, 249, 249);
+}
+
+
 .post,
 .card {
-  width: 90%;
-  padding: 0.7em;
+  width: 95%;
+  padding: 0.9em;
   margin: 0.5em;
   border-radius: 0.4em;
-  border: 0.03em solid $light-color !important;
+  border: 0.01em solid $light-color !important;
   box-shadow: 0.01em 0 0.1em rgb(159, 158, 158);
+  transition: 0.07s;
+  background-color: rgb(253, 253, 253) !important;
 
   .comment-form {
     width: 100%;
@@ -148,11 +156,18 @@ $light-color: rgb(238, 238, 238);
   }
 
   &-top {
+    width: 98%;
+    margin: auto;
+
     .post-info-top {
-      display: block;
-      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-width: 70%;
+      overflow: auto;
       font-size: 0.85em;
       border-radius: 0.5em;
+      height: fit-content;
 
       .post-user {
         display: inline;
@@ -168,14 +183,17 @@ $light-color: rgb(238, 238, 238);
       padding: 0.2em;
       width: 100%;
       margin: 0;
+      display: block;
     }
+
+    padding: 0.045em;
   }
 
   .post-text {
-    padding: 0.4em;
+    padding: 0.52em 0.4em;
     margin: 0.1em;
-    border-top: 0.06em solid rgb(159, 158, 158);
-    border-bottom: 0.06em solid rgb(159, 158, 158);
+    border-top: 0.01em solid rgb(240, 240, 240);
+    border-bottom: 0.01em solid rgb(240, 240, 240);
     max-height: 32vh;
     overflow: hidden;
     width: 100%;
@@ -186,7 +204,7 @@ $light-color: rgb(238, 238, 238);
     .more {
       z-index: 1000001;
       position: absolute;
-      background: rgba(0, 0, 0, 0);
+      background: none;
       color: blue;
       border: none;
       right: 5em;
@@ -205,6 +223,11 @@ $light-color: rgb(238, 238, 238);
     width: 17%;
 
     .like {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 45%;
+
       .like-icon {
         display: inline-block;
         padding: 0.2em;
@@ -217,7 +240,7 @@ $light-color: rgb(238, 238, 238);
 
       .like-icon:hover {
         opacity: 0.5;
-        transform: scale(0.75);
+        transform: scale(0.8);
       }
     }
   }

@@ -4,7 +4,6 @@ from graphql_jwt.decorators import login_required
 from ..models import *
 from .Nodes import *
 
-
 # JSON Web token generator which stores the user object
 class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
     user = graphene.Field(UserNode)
@@ -43,14 +42,14 @@ class CreatePost(graphene.relay.ClientIDMutation):
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, root, info, **input):
-        ok = False
+        ጥሩ = False
         title = input["title"]
         text = input["text"]
         post_instance = Post(user=info.context.user, title=title, text=text)
         post_instance.save()
-        ok = True
+        ጥሩ = True
 
-        return CreatePost(ok=ok, post=post_instance)
+        return CreatePost(ok=ጥሩ, post=post_instance)
 
 
 class Follow(graphene.relay.ClientIDMutation):

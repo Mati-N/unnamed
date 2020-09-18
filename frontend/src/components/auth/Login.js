@@ -8,7 +8,6 @@ function Login() {
     password: "",
   });
   const [disabled, setDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
   const Auth = useContext(AuthContext);
   const { setAlert, removeAlert } = useContext(AlertContext);
   useEffect(() => {
@@ -38,7 +37,9 @@ function Login() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setDisabled(true);
     Auth.doLogin(loginInfo.username, loginInfo.password);
+    setDisabled(false);
   };
 
   return (

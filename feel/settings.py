@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = os.environ.get('LOCAL') == 1
+DEBUG = not os.environ.get('LOCAL') == 1
 SECURE_SSL_REDIRECT = not DEBUG
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
@@ -37,7 +37,6 @@ ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'api',
     'frontend',
