@@ -38,22 +38,20 @@ function App() {
           >
             <Router>
               <Navbar />
-              <main className="main-main">
-                <br />
-                <Alert />
-                <Routes />
-                <footer>
-                  <a
-                    style={{
-                      opacity: 0,
-                    }}
-                    className="skip-link"
-                    href="#root"
-                  >
-                    Skip to main
-                  </a>
-                </footer>
-              </main>
+              <br className="break" />
+              <Alert />
+              <Routes />
+              <footer>
+                <a
+                  style={{
+                    opacity: 0,
+                  }}
+                  className="skip-link"
+                  href="#root"
+                >
+                  Skip to main
+                </a>
+              </footer>
             </Router>
           </Suspense>
         </AuthState>

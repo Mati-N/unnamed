@@ -393,6 +393,10 @@ $light-color: rgb(238, 238, 238);
   margin-top: 12.1vh;
 }
 
+.break {
+  margin-top: 12.5vh !important;
+}
+
 nav {
   z-index: 100000000;
   font-weight: 240;
@@ -545,7 +549,6 @@ nav {
 
 
   .container {
-    margin-top: 9.1vh !important;
     width: 100% !important;
   }
 
@@ -594,6 +597,11 @@ nav {
     .alert-text {
       font-size: 1.25em !important;
     }
+  }
+
+
+  .break {
+    margin-top: 10vh !important;
   }
 
   nav {
