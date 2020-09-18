@@ -39,8 +39,10 @@ function App() {
             <Router>
               <Navbar />
               <br className="break" />
-              <Alert />
-              <Routes />
+              <main>
+                <Alert />
+                <Routes />
+              </main>
               <footer>
                 <a
                   style={{
