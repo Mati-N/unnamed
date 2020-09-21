@@ -2,20 +2,20 @@ $teal-color: #3d9970;
 $light-color: rgb(238, 238, 238);
 
 @font-face {
-  font-family: 'Hind Siliguri';
-  src: url('../Fonts/HindSiliguri-Medium.eot');
-  src: url('../Fonts/HindSiliguri-Medium.eot?#iefix') format('embedded-opentype'),
-    url('../Fonts/HindSiliguri-Medium.woff2') format('woff2'),
-    url('../Fonts/HindSiliguri-Medium.woff') format('woff'),
-    url('../Fonts/HindSiliguri-Medium.svg#HindSiliguri-Medium') format('svg');
+  font-family: "Hind Siliguri";
+  src: url("../Fonts/HindSiliguri-Medium.eot");
+  src: url("../Fonts/HindSiliguri-Medium.eot?#iefix")
+      format("embedded-opentype"),
+    url("../Fonts/HindSiliguri-Medium.woff2") format("woff2"),
+    url("../Fonts/HindSiliguri-Medium.woff") format("woff"),
+    url("../Fonts/HindSiliguri-Medium.svg#HindSiliguri-Medium") format("svg");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
 
 * {
-  font-family: "Hind Siliguri",
-    sans-serif;
+  font-family: "Hind Siliguri", sans-serif;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -48,7 +48,6 @@ $light-color: rgb(238, 238, 238);
 
   .link {
     font-size: 1.5em;
-
   }
 
   .active {
@@ -122,7 +121,6 @@ $light-color: rgb(238, 238, 238);
   margin-bottom: 1.8em;
   background: rgb(249, 249, 249);
 }
-
 
 .post,
 .card {
@@ -304,8 +302,6 @@ $light-color: rgb(238, 238, 238);
   outline: none;
 }
 
-
-
 .account-info {
   display: block;
   width: 95%;
@@ -382,7 +378,6 @@ $light-color: rgb(238, 238, 238);
 .account-info:hover {
   opacity: 0.9;
 }
-
 
 .btn-teal {
   background-color: $teal-color !important;
@@ -491,7 +486,6 @@ nav {
     margin: auto;
   }
 
-
   .notification {
     width: 99%;
     font-size: 0.95em;
@@ -509,7 +503,6 @@ nav {
       font-size: 1.28em;
     }
   }
-
 
   .account-info {
     .info-mini {
@@ -544,7 +537,6 @@ nav {
       width: 40%;
     }
   }
-
 
   .container {
     width: 100% !important;
