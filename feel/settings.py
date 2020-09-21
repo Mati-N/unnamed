@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = not os.environ.get('LOCAL') == 1
+DEBUG = os.environ.get('LOCAL') == "LOCAL"
 SECURE_SSL_REDIRECT = not DEBUG
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
