@@ -14,8 +14,6 @@ import os
 from datetime import timedelta
 import dj_database_url
 import django_heroku
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
 
 
 
