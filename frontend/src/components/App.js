@@ -43,17 +43,7 @@ function App() {
                 <Alert />
                 <Routes />
               </main>
-              <footer>
-                <a
-                  style={{
-                    opacity: 0,
-                  }}
-                  className="skip-link"
-                  href="#root"
-                >
-                  Skip to main
-                </a>
-              </footer>
+              <footer>Made by me</footer>
             </Router>
           </Suspense>
         </AuthState>

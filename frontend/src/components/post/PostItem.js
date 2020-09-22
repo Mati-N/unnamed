@@ -152,7 +152,7 @@ const PostItem = ({
     <div className="post card">
       <div className="post-top card-top">
         <div className="post-info-top">
-          <Link to={`user/${user_id}`} className="post-user">
+          <Link to={`/user/${user_id}`} className="post-user">
             {" "}
             {username}{" "}
           </Link>
