@@ -1,6 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{"./src/components/post/Posts.js":
-/*!**************************************!*\
-  !*** ./src/components/post/Posts.js ***!
-  \**************************************/
-/*! exports provided: default */function(e,n,t){"use strict";t.r(n);var s=t(/*! react */"./node_modules/react/index.js"),r=t.n(s),o=t(/*! react-waypoint */"./node_modules/react-waypoint/es/index.js"),a=t(/*! react-spinners-kit */"./node_modules/react-spinners-kit/lib/index.js");function i(){return(i=Object.assign||function(e){for(var n=1;n<arguments.length;n++){var t=arguments[n];for(var s in t)Object.prototype.hasOwnProperty.call(t,s)&&(e[s]=t[s])}return e}).apply(this,arguments)}var c=Object(s.lazy)((function(){return t.e(/*! import() */3).then(t.bind(null,/*! ./PostItem */"./src/components/post/PostItem.js"))}));n.default=function(e){var n=e.posts,t=e.self,s=e.username,u=e.id,p=e.more,l=e.spin;return r.a.createElement("div",null,n.edges.map((function(e){var n=e.node;return r.a.createElement(c,i({key:"".concat(n.id,"p")},n,{user_id:t?u:n.user.id,username:t?s:n.user.username,show_comment:!1}))})),r.a.createElement(o.Waypoint,{onEnter:p},r.a.createElement("div",{className:"spinner"},l&&r.a.createElement(a.ImpulseSpinner,{size:40}))))}}}]);
-//# sourceMappingURL=2.main.js.map

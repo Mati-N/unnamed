@@ -1,6 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{"./src/components/post/Posts.js":
-/*!**************************************!*\
-  !*** ./src/components/post/Posts.js ***!
-  \**************************************/
-/*! exports provided: default */function(e,n,t){"use strict";t.r(n);var r=t(/*! react */"./node_modules/react/index.js"),s=t.n(r),a=t(/*! react-waypoint */"./node_modules/react-waypoint/es/index.js");function o(){return(o=Object.assign||function(e){for(var n=1;n<arguments.length;n++){var t=arguments[n];for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(e[r]=t[r])}return e}).apply(this,arguments)}var c=Object(r.lazy)((function(){return t.e(/*! import() */3).then(t.bind(null,/*! ./PostItem */"./src/components/post/PostItem.js"))}));n.default=function(e){var n=e.posts,t=e.self,r=e.username,i=e.id,u=e.more,p=e.spin;return s.a.createElement("div",null,n.map((function(e){var n=e.node;return s.a.createElement(c,o({key:"".concat(n.id,"p")},n,{user_id:t?i:n.user.id,username:t?r:n.user.username,show_comment:!1}))})),s.a.createElement(a.Waypoint,{onEnter:u},s.a.createElement("div",{className:"spinner"},p&&s.a.createElement(Spinner,{size:40}))))}}}]);
-//# sourceMappingURL=2.main.js.map
