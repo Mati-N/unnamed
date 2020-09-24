@@ -65,11 +65,15 @@ function FollowingPosts() {
 
   return (
     <>
-      <ul className="home-pages">
-        <li className="link">
-          <Link to="/all">All Posts</Link>
+      <ul className="nav nav-pills nav-fill home-pages">
+        <li className="nav-item">
+          <Link to="/all" className="nav-link">
+            All Posts
+          </Link>
         </li>
-        <li className="active link">Following</li>
+        <li className="nav-item">
+          <a className="nav-link active">Following</a>
+        </li>
       </ul>
       <Posts
         posts={data.followingPosts.edges}

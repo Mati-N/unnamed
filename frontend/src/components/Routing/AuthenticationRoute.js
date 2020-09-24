@@ -12,7 +12,7 @@ const AuthenticationRoute = ({ component: Component, auth, ...rest }) => {
       render={(props) => {
         if (loading || isAuthenticated == null)
           return (
-            <div className="main">
+            <div className="page">
               <div className="spinner">
                 <Spinner size={60} style={{}} />
               </div>
@@ -22,18 +22,16 @@ const AuthenticationRoute = ({ component: Component, auth, ...rest }) => {
           return <Redirect to="/" />;
         } else {
           return (
-            <div className="main">
+            <div className="page">
               <Suspense
                 fallback={
-                  <div className="main">
-                    <div className="spinner">
-                      <Spinner
-                        size={50}
-                        style={{
-                          margin: "auto",
-                        }}
-                      />
-                    </div>
+                  <div className="spinner">
+                    <Spinner
+                      size={50}
+                      style={{
+                        margin: "auto",
+                      }}
+                    />
                   </div>
                 }
               >

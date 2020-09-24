@@ -123,7 +123,6 @@ const PostItem = ({
             query: GET_POST,
             variables: { id },
           });
-          console.log(postComments);
           if (postComments) {
             const newData = {
               ...postComments,

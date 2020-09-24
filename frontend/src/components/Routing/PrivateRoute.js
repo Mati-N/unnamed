@@ -12,7 +12,7 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
       render={(props) => {
         if (loading || isAuthenticated == null)
           return (
-            <div className="main">
+            <div className="page">
               <div className="spinner">
                 <Spinner size={68} />
               </div>
@@ -22,9 +22,9 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
           return <Redirect to="/login" />;
         } else {
           return (
-            <Suspense
-              fallback={
-                <div className="main">
+            <div className="page">
+              <Suspense
+                fallback={
                   <div className="spinner">
                     <Spinner
                       size={50}
@@ -33,13 +33,11 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
                       }}
                     />
                   </div>
-                </div>
-              }
-            >
-              <div className="main">
+                }
+              >
                 <Component {...props} />
-              </div>
-            </Suspense>
+              </Suspense>
+            </div>
           );
         }
       }}

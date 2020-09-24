@@ -8,6 +8,7 @@ import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const Navbar = lazy(() => import("./layout/Navbar"));
 const Alert = lazy(() => import("./layout/Alert"));
 const Routes = lazy(() => import("./Routing/Routes"));
+const Footer = lazy(() => import("./layout/Footer"));
 
 const client = new ApolloClient({
   uri: "/api/",
@@ -26,24 +27,27 @@ function App() {
         <AuthState client={client}>
           <Suspense
             fallback={
-              <div className="spinner">
-                <Spinner
-                  size={50}
-                  style={{
-                    margin: "auto",
-                  }}
-                />
+              <div className="page">
+                <div className="spinner">
+                  <Spinner
+                    size={50}
+                    style={{
+                      margin: "auto",
+                    }}
+                  />
+                </div>
               </div>
             }
           >
             <Router>
               <Navbar />
-              <br className="break" />
-              <main>
-                <Alert />
-                <Routes />
-              </main>
-              <footer>Made by me</footer>
+              <div className="app-elements">
+                <main>
+                  <Alert />
+                  <Routes />
+                </main>
+                <Footer />
+              </div>
             </Router>
           </Suspense>
         </AuthState>

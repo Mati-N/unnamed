@@ -5,7 +5,7 @@ const PostItem = lazy(() => import("./PostItem"));
 
 const Posts = ({ posts, self, username, id, more, spin }) => {
   return (
-    <div>
+    <div className="posts">
       {posts.map(({ node }) => (
         <PostItem
           key={`${node.id}p`}

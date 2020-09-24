@@ -61,10 +61,14 @@ function Home() {
 
   return (
     <>
-      <ul className="home-pages">
-        <li className="active link">All Posts</li>
-        <li className="link">
-          <Link to="/">Following</Link>
+      <ul className="nav nav-pills nav-fill home-pages">
+        <li className="nav-item">
+          <a className="nav-link active">All Posts</a>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/">
+            Following
+          </Link>
         </li>
       </ul>
       <Posts

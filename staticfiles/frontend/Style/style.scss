@@ -17,19 +17,29 @@ $light-color: rgb(238, 238, 238);
   font-family: "Hind Siliguri", sans-serif;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: $teal-color;
+.app-elements {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 88vh;
+  height: auto;
+  margin-top: 12vh;
+}
+
+.page {
+  position: absolute;
+  display: block;
+  width: 100%;
 }
 
 footer {
-  width: 100%;
-  margin: 0;
+  width: fit-content;
+  margin: auto;
   padding: 1em;
-  display: flex;
-  align-items: center;
-  min-height: 14vh;
-  background-color: $teal-color;
-  bottom: 0;
+  color: rgb(26, 25, 25);
+  text-align: center;
+  font-style: italic;
+  font-size: 0.8em;
 }
 
 .root {
@@ -46,25 +56,20 @@ footer {
 }
 
 .home-pages {
-  list-style-type: none;
-  width: 27.5%;
   margin: auto;
-  min-height: 6vh;
-  display: flex;
-  justify-content: space-between;
-  padding: 0.26em;
-  position: sticky;
-  top: 0;
+  padding: 0em !important;
+  margin-bottom: 1.5em !important;
+  margin-top: 1em !important;
+  border: 0.15em solid $teal-color;
+  border-radius: 0.45em;
+  width: 97% !important;
 
-  .link {
-    font-size: 1.5em;
-  }
 
-  .active {
-    color: rgb(124, 124, 124) !important;
+  .nav-item {
+    margin: 0.06em !important;
 
-    a {
-      color: rgb(124, 124, 124) !important;
+    .active {
+      background-color: $teal-color !important;
     }
   }
 }
@@ -97,11 +102,6 @@ footer {
   }
 }
 
-.container {
-  width: 70%;
-  margin-top: 12vh;
-}
-
 .nav-bar {
   top: 0;
   position: sticky !important;
@@ -109,13 +109,12 @@ footer {
 }
 
 .spinner {
-  height: 100%;
-  width: 100%;
-  margin: auto;
-  align-items: center;
   display: flex;
+  align-items: center;
   justify-content: space-around;
-  padding: 10vh;
+  margin: auto;
+  padding: 8em;
+  overflow: visible;
 }
 
 .card-text-expanded {
@@ -127,16 +126,22 @@ footer {
   overflow: hidden;
 }
 
-.post:hover {
-  margin-bottom: 1.8em;
-  background: rgb(249, 249, 249);
+
+.posts {
+  margin: auto;
+  width: 95%;
+
+  .post:hover {
+    margin-bottom: 1.8em;
+    background: rgb(249, 249, 249);
+  }
 }
 
 .post,
 .card {
-  width: 95%;
+  width: 100%;
   padding: 0.9em;
-  margin: 0.5em;
+  margin-bottom: 0.5em;
   border-radius: 0.4em;
   border: 0.01em solid $light-color !important;
   box-shadow: 0.01em 0 0.1em rgb(159, 158, 158);
@@ -254,6 +259,7 @@ footer {
   }
 }
 
+
 .notification {
   display: block;
   padding: 0.7em;
@@ -286,23 +292,6 @@ footer {
   }
 }
 
-@keyframes likeAnimation {
-  0% {
-    width: 9%;
-    transform: scale(1.5);
-  }
-
-  45% {
-    width: 6%;
-    transform: scale(0.9);
-  }
-
-  100% {
-    width: initial;
-    transform: scale(1);
-  }
-}
-
 .to-up {
   border: none;
   background: none;
@@ -321,6 +310,7 @@ footer {
   padding: 0.8em;
   height: 40% !important;
   border: 0.1em solid rgba(150, 147, 147, 0.5);
+  margin: auto;
 
   .svg {
     transform: scale(1.1);
@@ -395,10 +385,12 @@ footer {
 }
 
 main {
-  margin-top: 12.2vh;
-  display: block;
-  margin: auto;
+  width: 78%;
+  padding: 0.45em;
+  height: 100%;
+  flex: 1;
 }
+
 
 nav {
   z-index: 100000000;
@@ -407,7 +399,7 @@ nav {
   display: block;
   background-color: $teal-color;
   align-items: center;
-  margin-bottom: auto;
+  margin-bottom: 2em;
 
   .nav-top {
     .navbar-brand {
@@ -464,12 +456,8 @@ nav {
 }
 
 @media only screen and (max-width: 1420px) {
-  .container {
+  main {
     width: 80%;
-  }
-
-  .home-pages {
-    width: 36%;
   }
 
   nav {
@@ -506,14 +494,6 @@ nav {
     }
   }
 
-  .home-pages {
-    width: 70%;
-
-    .link {
-      font-size: 1.28em;
-    }
-  }
-
   .account-info {
     .info-mini {
       padding: 0.1em;
@@ -539,21 +519,18 @@ nav {
     }
   }
 
-  .post,
-  .card {
-    width: 95%;
+  .posts {
+    width: 100%;
 
-    .info-bottom {
-      width: 40%;
+    .post,
+    .card {
+      .info-bottom {
+        width: 40%;
+      }
     }
   }
 
-  .container {
-    width: 100% !important;
-  }
-
   main {
-    margin-top: 9vh !important;
     width: 100% !important;
   }
 
@@ -602,6 +579,10 @@ nav {
     .alert-text {
       font-size: 1.25em !important;
     }
+  }
+
+  .app-elements {
+    margin-top: 9vh !important;
   }
 
   nav {
@@ -692,6 +673,22 @@ nav {
           line-height: 18.2vh;
           height: 18.2vh;
         }
+      }
+    }
+  }
+}
+
+@media (hover: none) {
+
+  .posts {
+    .post:hover {
+      margin-bottom: 0.5em;
+    }
+
+    .post {
+      .like-icon:hover {
+        opacity: inherit;
+        transform: inherit;
       }
     }
   }

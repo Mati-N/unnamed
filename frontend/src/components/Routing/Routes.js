@@ -40,13 +40,14 @@ const Routes = () => {
     config: config.stiff,
   });
 
-  useEffect(() => {
-    loggedIn();
-  }, []);
   return (
-    <React.Fragment>
+    <>
       {transitions.map(({ item, props, key }) => (
-        <animated.div key={`${key}anim`} style={props} className="container">
+        <animated.div
+          className="transition-page"
+          key={`${key}anim`}
+          style={props}
+        >
           <ErrorBoundary FallbackComponent={Error}>
             <Suspense
               fallback={
@@ -97,7 +98,7 @@ const Routes = () => {
           </ErrorBoundary>
         </animated.div>
       ))}
-    </React.Fragment>
+    </>
   );
 };
 
