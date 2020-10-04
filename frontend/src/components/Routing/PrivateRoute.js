@@ -5,39 +5,34 @@ import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
 const PrivateRoute = ({ component: Component, auth, ...rest }) => {
   const { isAuthenticated, loading } = useContext(AuthContext);
-
   return (
     <Route
       {...rest}
       render={(props) => {
         if (loading || isAuthenticated == null)
           return (
-            <div className="page">
-              <div className="spinner">
-                <Spinner size={68} />
-              </div>
+            <div className="spinner">
+              <Spinner size={68} />
             </div>
           );
         else if (!isAuthenticated) {
           return <Redirect to="/login" />;
         } else {
           return (
-            <div className="page">
-              <Suspense
-                fallback={
-                  <div className="spinner">
-                    <Spinner
-                      size={50}
-                      style={{
-                        margin: "auto",
-                      }}
-                    />
-                  </div>
-                }
-              >
-                <Component {...props} />
-              </Suspense>
-            </div>
+            <Suspense
+              fallback={
+                <div className="spinner">
+                  <Spinner
+                    size={50}
+                    style={{
+                      margin: "auto",
+                    }}
+                  />
+                </div>
+              }
+            >
+              <Component {...props} />
+            </Suspense>
           );
         }
       }}

@@ -18,16 +18,8 @@ const AccountInfo = ({ user_data, Logout }) => {
         </span>
       </div>
       <ul className="options">
-        <li className="option">
-          <button
-            style={{
-              background: "none",
-              border: "none",
-            }}
-            onClick={Logout}
-          >
-            <LogoutSVG className="svg" /> Logout
-          </button>
+        <li className="option" onClick={Logout}>
+          <LogoutSVG className="svg" /> <a>Logout</a>
         </li>
         <li className="option">
           <Edit className="svg" />

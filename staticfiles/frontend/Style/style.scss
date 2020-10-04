@@ -4,7 +4,8 @@ $light-color: rgb(238, 238, 238);
 @font-face {
   font-family: "Hind Siliguri";
   src: url("../Fonts/HindSiliguri-Medium.eot");
-  src: url("../Fonts/HindSiliguri-Medium.eot?#iefix") format("embedded-opentype"),
+  src: url("../Fonts/HindSiliguri-Medium.eot?#iefix")
+      format("embedded-opentype"),
     url("../Fonts/HindSiliguri-Medium.woff2") format("woff2"),
     url("../Fonts/HindSiliguri-Medium.woff") format("woff"),
     url("../Fonts/HindSiliguri-Medium.svg#HindSiliguri-Medium") format("svg");
@@ -21,25 +22,26 @@ $light-color: rgb(238, 238, 238);
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 88vh;
   height: auto;
   margin-top: 12vh;
+  transition: 0.1s;
 }
 
 .page {
   position: absolute;
-  display: block;
   width: 100%;
+  display: block;
 }
 
 footer {
-  width: fit-content;
+  min-width: 30%;
   margin: auto;
   padding: 1em;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
   color: rgb(26, 25, 25);
-  text-align: center;
-  font-style: italic;
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 
 .root {
@@ -64,7 +66,6 @@ footer {
   border-radius: 0.45em;
   width: 97% !important;
 
-
   .nav-item {
     margin: 0.06em !important;
 
@@ -87,18 +88,19 @@ footer {
 .app-alert {
   font-size: 1.5em !important;
   margin: auto;
-  width: 70%;
+  width: 75%;
   padding: 0.15em;
   border-radius: 0.1em;
   box-shadow: 0.07em 0 0.07em $light-color;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
 
   .alert-text {
     font-size: 1.4em !important;
     margin: 0;
     padding: 0;
+    width: 70%;
   }
 }
 
@@ -125,7 +127,6 @@ footer {
   max-height: 40vh;
   overflow: hidden;
 }
-
 
 .posts {
   margin: auto;
@@ -259,7 +260,6 @@ footer {
   }
 }
 
-
 .notification {
   display: block;
   padding: 0.7em;
@@ -292,15 +292,6 @@ footer {
   }
 }
 
-.to-up {
-  border: none;
-  background: none;
-}
-
-.to-up:focus {
-  outline: none;
-}
-
 .account-info {
   display: block;
   width: 95%;
@@ -310,15 +301,11 @@ footer {
   padding: 0.8em;
   height: 40% !important;
   border: 0.1em solid rgba(150, 147, 147, 0.5);
-  margin: auto;
+  margin: 0.4em auto;
 
   .svg {
-    transform: scale(1.1);
     padding: 0;
-    display: inline-block;
-    margin: auto;
-    height: fit-content;
-    width: fit-content;
+    margin: 0;
   }
 
   .account-info-top {
@@ -361,15 +348,18 @@ footer {
     list-style-type: none;
 
     .option {
-      padding: 0.1em;
-      font-size: 1.5em;
+      padding: 0.2em;
+      font-size: 1.35em;
+      display: flex;
+      align-items: center;
+
+      width: 100%;
       border-bottom: 0.1em solid rgba(82, 82, 82, 0.5);
 
-      button {
-        min-height: 1.5vh;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
+      a {
+        display: inline-block;
+        width: auto;
+        color: rgb(32, 32, 32);
       }
     }
   }
@@ -385,12 +375,13 @@ footer {
 }
 
 main {
-  width: 78%;
+  width: 82%;
   padding: 0.45em;
-  height: 100%;
-  flex: 1;
+  flex-grow: 1;
+  min-height: 88vh;
+  height: auto;
+  transition: 0.1s;
 }
-
 
 nav {
   z-index: 100000000;
@@ -457,7 +448,7 @@ nav {
 
 @media only screen and (max-width: 1420px) {
   main {
-    width: 80%;
+    width: 85%;
   }
 
   nav {
@@ -515,6 +506,13 @@ nav {
 
       .info:hover {
         opacity: 0.9;
+      }
+    }
+
+    .options {
+      .option {
+        width: 100%;
+        font-size: 1em;
       }
     }
   }
@@ -583,6 +581,10 @@ nav {
 
   .app-elements {
     margin-top: 9vh !important;
+  }
+
+  footer {
+    width: 75%;
   }
 
   nav {
@@ -679,7 +681,6 @@ nav {
 }
 
 @media (hover: none) {
-
   .posts {
     .post:hover {
       margin-bottom: 0.5em;

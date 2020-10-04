@@ -140,7 +140,6 @@ const AuthState = (props) => {
       if (state.refreshToken != null) {
         setAlert("Logged out!", "primary");
       }
-      console.log(state.refreshToken);
       logout({
         variables: {
           token: state.refreshToken,

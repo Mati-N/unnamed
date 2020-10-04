@@ -106,29 +106,31 @@ function Navbar() {
             </li>
             <li className="right">
               <span className="navItem">
-                <button
-                  className="to-up"
+                <a
+                  className="nav-link"
                   onClick={() =>
                     window.scrollTo({ top: 0, behavior: "smooth" })
                   }
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="icon icon-tabler icon-tabler-chevron-up"
+                    className="icon icon-tabler icon-tabler-arrow-up-circle"
                     width="44"
                     height="44"
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
-                    stroke="rgb(248, 248, 248)"
+                    stroke="#fff"
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    onClick={hide}
                   >
-                    <path stroke="none" d="M0 0h24v24H0z" />
-                    <polyline points="6 15 12 9 18 15" />
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <circle cx="12" cy="12" r="9" />
+                    <line x1="12" y1="8" x2="8" y2="12" />
+                    <line x1="12" y1="8" x2="12" y2="16" />
+                    <line x1="16" y1="12" x2="12" y2="8" />
                   </svg>
-                </button>
+                </a>
               </span>
               <span className="navItem">
                 <Link className="nav-link" to="/account" onClick={hide}>

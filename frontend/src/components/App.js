@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useRef } from "react";
 import { HashRouter as Router } from "react-router-dom";
 import AuthState from "../context/auth/AuthState";
 import AlertState from "../context/alert/AlertState";
@@ -20,7 +20,8 @@ const client = new ApolloClient({
   },
 });
 
-function App() {
+const App = () => {
+  const main = useRef(null);
   return (
     <ApolloProvider client={client}>
       <AlertState>
@@ -42,9 +43,9 @@ function App() {
             <Router>
               <Navbar />
               <div className="app-elements">
-                <main>
+                <main ref={main}>
                   <Alert />
-                  <Routes />
+                  <Routes main={main} />
                 </main>
                 <Footer />
               </div>
@@ -54,6 +55,6 @@ function App() {
       </AlertState>
     </ApolloProvider>
   );
-}
+};
 
 export default App;

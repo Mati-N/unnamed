@@ -2,5 +2,5 @@
 /*!*****************************************!*\
   !*** ./src/components/layout/Footer.js ***!
   \*****************************************/
-/*! exports provided: default */function(e,t,o){"use strict";o.r(t);var n=o(/*! react */"./node_modules/react/index.js"),r=o.n(n),u=(o(/*! react-router-dom */"./node_modules/react-router-dom/esm/react-router-dom.js"),o(/*! ../../context/auth/AuthContext */"./src/context/auth/AuthContext.js"));t.default=function(){var e=Object(n.useContext)(u.default),t=e.isAuthenticated;return e.loading||null==t?"":r.a.createElement("footer",null,"Made by me")}}}]);
+/*! exports provided: default */function(e,t,n){"use strict";n.r(t);var a=n(/*! react */"./node_modules/react/index.js"),o=n.n(a),r=(n(/*! react-router-dom */"./node_modules/react-router-dom/esm/react-router-dom.js"),n(/*! ../../context/auth/AuthContext */"./src/context/auth/AuthContext.js"));t.default=function(){var e=Object(a.useContext)(r.default),t=e.isAuthenticated;return e.loading||null==t?"":o.a.createElement("footer",null,o.a.createElement("span",null,"A Social Media App."),o.a.createElement("span",null,"UNNAMED."),o.a.createElement("a",{href:"https://github.com/Mati-N/unnamed"},"GITHUB."))}}}]);
 //# sourceMappingURL=15.main.js.map

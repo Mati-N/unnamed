@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import AlertContext from "../../context/alert/AlertContext";
 import { useSpring, animated } from "react-spring";
+import X from "../SVG/X.svg";
+import { remove } from "js-cookie";
 
 const Alert = () => {
-  const { alert_info } = useContext(AlertContext);
+  const { alert_info, removeAlert } = useContext(AlertContext);
   const animation = useSpring({
     from: { opacity: 0, transform: "scale(0)" },
     to: { opacity: 1, transform: "scale(1)" },
@@ -34,6 +36,7 @@ const Alert = () => {
             <line x1="12" y1="16" x2="12.01" y2="16" />
           </svg>
           <h1 className="alert-text">{alert_info.msg}</h1>
+          <X onClick={removeAlert} />
         </animated.div>
       </>
     );

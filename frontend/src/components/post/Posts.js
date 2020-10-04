@@ -16,7 +16,14 @@ const Posts = ({ posts, self, username, id, more, spin }) => {
         />
       ))}
       <Waypoint onEnter={more}>
-        <div className="spinner">{spin && <Spinner size={40} />}</div>
+        <div>
+          <br />
+          {spin && (
+            <div className={`spinner ${spin ? "spinning" : ""}`}>
+              <Spinner size={40} />
+            </div>
+          )}
+        </div>
       </Waypoint>
     </div>
   );

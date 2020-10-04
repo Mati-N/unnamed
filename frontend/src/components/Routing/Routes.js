@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, lazy, Suspense } from "react";
+import React, { useContext, lazy, Suspense, useRef, useState } from "react";
 import { Switch, useLocation, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import AuthenticationRoute from "./AuthenticationRoute";
@@ -21,9 +21,24 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 const User = lazy(() => import("../pages/User"));
 const Notifications = lazy(() => import("../pages/Notifications"));
 
-const Routes = () => {
+const Routes = ({ main }) => {
   const { loggedIn } = useContext(AuthContext);
   const location = useLocation();
+  const [height, setHeight] = useState(0);
+  const page = useRef(null);
+
+  setInterval(() => {
+    if (main != null && page != null) {
+      const Page = page.current;
+      try {
+        if (height != Page.offsetHeight) {
+          main.current.style.height = Page.offsetHeight + "px";
+          setHeight(Page.offsetHeight);
+        }
+      } catch {}
+    }
+  }, 180);
+
   const transitions = useTransition(location, (location) => location.pathname, {
     from: {
       opacity: 0,
@@ -48,54 +63,62 @@ const Routes = () => {
           key={`${key}anim`}
           style={props}
         >
-          <ErrorBoundary FallbackComponent={Error}>
-            <Suspense
-              fallback={
-                <div className="main">
-                  <div className="spinner">
-                    <Spinner
-                      size={50}
-                      style={{
-                        margin: "auto",
-                      }}
-                    />
+          <div
+            className="page"
+            ref={page}
+            onLoad={(e) => {
+              setHeight(e.target.offsetHeight);
+            }}
+          >
+            <ErrorBoundary FallbackComponent={Error}>
+              <Suspense
+                fallback={
+                  <div className="main">
+                    <div className="spinner">
+                      <Spinner
+                        size={50}
+                        style={{
+                          margin: "auto",
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              }
-            >
-              <Switch location={item}>
-                <AuthenticationRoute exact path="/login" component={Login} />
-                <AuthenticationRoute
-                  exact
-                  path="/register"
-                  component={Register}
-                />
+                }
+              >
+                <Switch location={item}>
+                  <AuthenticationRoute exact path="/login" component={Login} />
+                  <AuthenticationRoute
+                    exact
+                    path="/register"
+                    component={Register}
+                  />
 
-                <PrivateRoute exact path="/all" component={Home} />
-                <PrivateRoute exact path="/" component={FollowingPosts} />
-                <PrivateRoute exact path="/add-post" component={NewPost} />
-                <PrivateRoute exact path="/account" component={Account} />
-                <PrivateRoute exact path="/user/:id" component={User} />
-                <PrivateRoute exact path="/post/:id" component={Post} />
-                <PrivateRoute
-                  exact
-                  path="/password"
-                  component={ChangePassword}
-                />
-                <PrivateRoute
-                  exact
-                  path="/username"
-                  component={ChangeUsername}
-                />
-                <PrivateRoute
-                  exact
-                  path="/notifications"
-                  component={Notifications}
-                />
-                <Route component={NotFound} />
-              </Switch>
-            </Suspense>
-          </ErrorBoundary>
+                  <PrivateRoute exact path="/all" component={Home} />
+                  <PrivateRoute exact path="/" component={FollowingPosts} />
+                  <PrivateRoute exact path="/add-post" component={NewPost} />
+                  <PrivateRoute exact path="/account" component={Account} />
+                  <PrivateRoute exact path="/user/:id" component={User} />
+                  <PrivateRoute exact path="/post/:id" component={Post} />
+                  <PrivateRoute
+                    exact
+                    path="/password"
+                    component={ChangePassword}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/username"
+                    component={ChangeUsername}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/notifications"
+                    component={Notifications}
+                  />
+                  <Route component={NotFound} />
+                </Switch>
+              </Suspense>
+            </ErrorBoundary>
+          </div>
         </animated.div>
       ))}
     </>
