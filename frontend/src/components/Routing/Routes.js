@@ -1,4 +1,4 @@
-import React, { useContext, lazy, Suspense, useRef, useState } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 import { Switch, useLocation, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import AuthenticationRoute from "./AuthenticationRoute";
@@ -21,23 +21,9 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 const User = lazy(() => import("../pages/User"));
 const Notifications = lazy(() => import("../pages/Notifications"));
 
-const Routes = ({ main }) => {
+const Routes = () => {
   const { loggedIn } = useContext(AuthContext);
   const location = useLocation();
-  const [height, setHeight] = useState(0);
-  const page = useRef(null);
-
-  setInterval(() => {
-    if (main != null && page != null) {
-      const Page = page.current;
-      try {
-        if (height != Page.offsetHeight) {
-          main.current.style.height = Page.offsetHeight + "px";
-          setHeight(Page.offsetHeight);
-        }
-      } catch {}
-    }
-  }, 180);
 
   const transitions = useTransition(location, (location) => location.pathname, {
     from: {
@@ -63,13 +49,7 @@ const Routes = ({ main }) => {
           key={`${key}anim`}
           style={props}
         >
-          <div
-            className="page"
-            ref={page}
-            onLoad={(e) => {
-              setHeight(e.target.offsetHeight);
-            }}
-          >
+          <div className="page">
             <ErrorBoundary FallbackComponent={Error}>
               <Suspense
                 fallback={

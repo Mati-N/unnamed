@@ -55,6 +55,22 @@
   <div id="root">
     <div style="opacity: 0">...</div>
   </div>
+  <script>
+    let height = 0;
+    setInterval(() => {
+      const main = document.querySelector("main");
+      const page = document.querySelector(".page");
+      if (main != null && page != null) {
+        try {
+          if (height != page.offsetHeight) {
+            const pageHeight = page.offsetHeight;
+            main.style.height = pageHeight + "px";
+            height = pageHeight;
+          }
+        } catch {}
+      }
+    }, 180);
+  </script>
   <script defer async src="{% static 'frontend/main.js' %}"></script>
 </body>
 
