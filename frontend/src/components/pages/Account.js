@@ -13,7 +13,7 @@ const Account = () => {
     data: user_data,
     error: user_error,
   } = useQuery(SELF_USER);
-  const { loading, data, error, fetchMore } = useQuery(SELF_POSTS);
+  const { loading, data, error, fetchMore, refetch } = useQuery(SELF_POSTS);
   const { doLogout: Logout, user } = useContext(AuthContext);
   const { removeAlert } = useContext(AlertContext);
   const [spin, setSpin] = useState(false);
@@ -74,6 +74,7 @@ const Account = () => {
         username="You"
         more={more}
         spin={spin}
+        refetch={refetch}
       />
     </>
   );

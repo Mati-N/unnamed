@@ -2,10 +2,16 @@ import React, { lazy } from "react";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 const PostItem = lazy(() => import("./PostItem"));
+const Box = lazy(() => import("../SVG/Box.svg"));
 
-const Posts = ({ posts, self, username, id, more, spin }) => {
+const Posts = ({ posts, self, username, id, more, spin, refetch }) => {
   return (
     <div className="posts">
+      {posts.length == 0 && (
+        <div className="empty-box-holder">
+          <Box />
+        </div>
+      )}
       {posts.map(({ node }) => (
         <PostItem
           key={`${node.id}p`}
@@ -16,10 +22,12 @@ const Posts = ({ posts, self, username, id, more, spin }) => {
         />
       ))}
       <Waypoint onEnter={more}>
-        <div>
-          <br />
+        <div className="refetch-and-spinner">
+          <button className="btn btn-teal" onClick={() => refetch()}>
+            Refetch
+          </button>
           {spin && (
-            <div className={`spinner ${spin ? "spinning" : ""}`}>
+            <div className="spinner">
               <Spinner size={40} />
             </div>
           )}

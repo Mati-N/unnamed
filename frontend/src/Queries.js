@@ -148,6 +148,17 @@ export const LOGOUT_USER = gql `
   }
 `;
 
+export const LOGOUT_LOGGED_OUT = gql `
+  mutation logoutLoggedOut {
+    deleteTokenCookie(input: {}) {
+      deleted
+    }
+    deleteRefreshTokenCookie(input: {}) {
+      deleted
+    }
+  }
+`;
+
 export const LIKE = gql `
   mutation like($post_id: ID!) {
     likePost(input: {postId: $post_id}) {

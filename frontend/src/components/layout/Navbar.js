@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 import Notifications from "../SVG/Notifications.svg";
 import Settings from "../SVG/Settings.svg";
@@ -7,6 +7,7 @@ import Settings from "../SVG/Settings.svg";
 function Navbar() {
   const { isAuthenticated, loading } = useContext(AuthContext);
   const navItems = useRef(null);
+  const location = useLocation();
   const [state, setState] = useState({ displayed: false });
 
   if (loading || isAuthenticated == null) return "";
@@ -23,7 +24,7 @@ function Navbar() {
 
   return (
     <nav
-      className="nav"
+      className="main=nav nav"
       style={{
         position: "fixed",
         top: 0,
@@ -78,12 +79,20 @@ function Navbar() {
       >
         {!isAuthenticated && (
           <li className="right" id="right">
-            <span className="navItem">
+            <span
+              className={`navItem ${
+                location.pathname == "/login" ? "active-navItem" : ""
+              }`}
+            >
               <Link to="/login" className="nav-link" onClick={hide}>
                 Login
               </Link>
             </span>
-            <span className="navItem">
+            <span
+              className={`navItem ${
+                location.pathname == "/register" ? "active-navItem" : ""
+              }`}
+            >
               <Link className="nav-link" to="/register" onClick={hide}>
                 Register
               </Link>
@@ -93,12 +102,20 @@ function Navbar() {
         {isAuthenticated && (
           <>
             <li className="left">
-              <span className="navItem">
+              <span
+                className={`navItem ${
+                  location.pathname == "/" ? "active-navItem" : ""
+                }`}
+              >
                 <Link className="nav-link" to="/" onClick={hide}>
                   Home
                 </Link>
               </span>
-              <span className="navItem">
+              <span
+                className={`navItem ${
+                  location.pathname == "/add-post" ? "active-navItem" : ""
+                }`}
+              >
                 <Link className="nav-link" to="/add-post" onClick={hide}>
                   New Post
                 </Link>
@@ -132,12 +149,20 @@ function Navbar() {
                   </svg>
                 </a>
               </span>
-              <span className="navItem">
+              <span
+                className={`navItem ${
+                  location.pathname == "/account" ? "active-navItem" : ""
+                }`}
+              >
                 <Link className="nav-link" to="/account" onClick={hide}>
                   <Settings />
                 </Link>
               </span>
-              <span className="navItem">
+              <span
+                className={`navItem ${
+                  location.pathname == "/notifications" ? "active-navItem" : ""
+                }`}
+              >
                 <Link className="nav-link" to="/notifications" onClick={hide}>
                   <Notifications />
                 </Link>

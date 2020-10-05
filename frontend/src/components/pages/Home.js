@@ -77,6 +77,7 @@ function Home() {
         id={null}
         more={more}
         spin={spin}
+        refetch={refetch}
       />
     </>
   );

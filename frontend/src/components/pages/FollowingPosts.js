@@ -81,6 +81,7 @@ function FollowingPosts() {
         id={null}
         spin={spin}
         more={more}
+        refetch={refetch}
       />
     </>
   );

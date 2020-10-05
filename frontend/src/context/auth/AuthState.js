@@ -9,6 +9,7 @@ import {
   LOGOUT_USER,
   VERIFY_TOKEN,
   REFRESH_TOKEN,
+  LOGOUT_LOGGED_OUT,
 } from "../../Queries";
 import AlertContext from "../alert/AlertContext";
 import Cookies from "js-cookie";
@@ -30,12 +31,14 @@ const AuthState = (props) => {
   const [logout] = useMutation(LOGOUT_USER);
   const [verify] = useMutation(VERIFY_TOKEN);
   const [refresh] = useMutation(REFRESH_TOKEN);
+  const [logoutLoggedOut] = useMutation(LOGOUT_LOGGED_OUT);
 
   const loggedIn = () => {
     if (state.token == null) {
       dispatch({
         type: LOGOUT,
       });
+      logoutLoggedOut();
       dispatch({
         type: SET_LOADING,
       });
@@ -84,7 +87,7 @@ const AuthState = (props) => {
         type: SET_LOADING,
       });
     } catch {
-      doLogout();
+      logoutLoggedOut();
     }
   };
 

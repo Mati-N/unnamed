@@ -14,7 +14,7 @@ const User = ({ match }) => {
     data: user_data,
     error: user_error,
   } = useQuery(GET_USER, { variables: { id: match.params.id } });
-  const { loading, data, error, fetchMore } = useQuery(USER_POSTS, {
+  const { loading, data, error, fetchMore, refetch } = useQuery(USER_POSTS, {
     variables: { id: match.params.id },
   });
   const { Logout, user } = useContext(AuthContext);
@@ -178,6 +178,7 @@ const User = ({ match }) => {
         id={match.params.id}
         more={more}
         spin={spin}
+        refetch={refetch}
       />
     </>
   );

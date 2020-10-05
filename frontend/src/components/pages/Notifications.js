@@ -3,8 +3,10 @@ import { GET_NOTIFICATIONS } from "../../Queries";
 import { useQuery } from "@apollo/client";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
-const Offline = lazy(() => import("./Offline"));
 import { Link } from "react-router-dom";
+
+const Offline = lazy(() => import("./Offline"));
+const Box = lazy(() => import("../SVG/Box.svg"));
 
 const Notifications = () => {
   const { loading, data, error, fetchMore, refetch } = useQuery(
@@ -63,6 +65,11 @@ const Notifications = () => {
 
   return (
     <>
+      {data.selfNotification.edges.length == 0 && (
+        <div className="empty-box-holder">
+          <Box />
+        </div>
+      )}
       {data.selfNotification.edges.map(({ node }) => {
         {
           switch (node.category) {
@@ -117,7 +124,16 @@ const Notifications = () => {
         }
       })}
       <Waypoint onEnter={more}>
-        <div className="spinner">{spin && <Spinner size={40} />}</div>
+        <div className="refetch-and-spinner">
+          <button className="btn btn-teal" onClick={() => refetch()}>
+            Refetch
+          </button>
+          {spin && (
+            <div className="spinner">
+              <Spinner size={40} />
+            </div>
+          )}
+        </div>
       </Waypoint>
     </>
   );
