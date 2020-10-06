@@ -24,11 +24,15 @@ class Query(object):
     is_following = graphene.Boolean(id=graphene.ID())
     liked = graphene.Boolean(id=graphene.ID())
     self_notification = DjangoFilterConnectionField(NotificationNode)
+    notification_number = graphene.Int()
 
+    @login_required
+    def resolve_notification_number(self, info):
+        return Notification.objects.filter(read=False, recipient=info.context.user).distinct().count()
     # Get notifications for currently logged in user
     @login_required
     def resolve_self_notification(self, info, **kwargs):
-        return Notification.objects.filter(recipient=info.context.user)
+        return Notification.objects.filter(recipient=info.context.user).distinct()
 
     def resolve_post_comments(self, info, id, **kwargs):
         return Comment.objects.filter(post=Post.objects.get(id=id))
@@ -94,5 +98,6 @@ class Mutation(object):
     create_comment = CreateComment.Field()
     like_post = LikePost.Field()
     followUser = Follow.Field()
+    read_notification = ReadNotification.Field()
     delete_token_cookie = graphql_jwt.relay.DeleteJSONWebTokenCookie.Field()
     delete_refresh_token_cookie = graphql_jwt.relay.DeleteRefreshTokenCookie.Field()

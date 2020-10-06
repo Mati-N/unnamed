@@ -88,6 +88,8 @@ class NotificationFilter(django_filters.FilterSet):
     )
 
 class NotificationNode(DjangoObjectType):
+    id = graphene.ID(source='pk', required=True)
+
     class Meta:
         model = Notification
         interfaces = (graphene.relay.Node,)

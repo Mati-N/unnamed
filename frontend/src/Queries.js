@@ -311,9 +311,15 @@ export const CREATE_COMMENT = gql `
   }
 `;
 
+export const NOTIFICATION_NUMBER = gql `
+  query noftificationNumber  {
+    notificationNumber
+  }
+`;
+
 export const GET_NOTIFICATIONS = gql `
   query($cursor: String) {
-    selfNotification(orderBy: "-created_at", after: $cursor, first: 10) {
+    selfNotification(orderBy: "-created_at", after: $cursor, first: 18) {
       pageInfo {
         hasNextPage
         endCursor
@@ -342,6 +348,14 @@ export const GET_NOTIFICATIONS = gql `
           read
         }
       }
+    }
+  }
+`;
+
+export const READ_NOTIFICATION = gql `
+  mutation readNotification($id: ID) {
+    readNotification(input: {id: $id}) {
+      ok
     }
   }
 `;

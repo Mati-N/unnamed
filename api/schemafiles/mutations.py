@@ -63,9 +63,12 @@ class Follow(graphene.relay.ClientIDMutation):
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, root, info, **input):
-        ok = True
+        ok = False
         id = input["id"]
         user_instance = User.objects.get(id=id)
+        if (user_instance == info.context.user):
+            return Follow(ok=ok, user=info.context.user, message="Can't follow your self")
+        ok = True
         follow_instance = Following.objects.filter(follower=info.context.user, target=user_instance)
         if len(follow_instance) > 0:
             follow_instance[0].delete()
@@ -130,6 +133,32 @@ class CreateUser(graphene.relay.ClientIDMutation):
         user_instance.save()
 
         return CreateUser(ok=ok, user=user_instance)
+
+class ReadNotification(graphene.relay.ClientIDMutation):
+    class Input:
+        id = graphene.ID()
+
+    ok = graphene.Boolean()
+
+    @classmethod
+    @login_required
+    def mutate_and_get_payload(cls, root, info, **input):
+        id = input["id"]
+        ok = True
+        
+        if id:
+            try:
+                notif = Notification.objects.get(pk=id, recipient=info.context.user)
+                notif.read = True
+                notif.save()
+            except Notification.DoesNotExist:
+                ok = False
+        else:
+            notif = Notification.objects.filter(recipient=info.context.user)
+            notif.update(read=True)
+
+        return ReadNotification(ok=ok)
+
 
 # A mutation used to update a user's properties
 class UpdateUser(graphene.relay.ClientIDMutation):

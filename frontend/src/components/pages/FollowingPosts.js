@@ -8,7 +8,10 @@ const Posts = lazy(() => import("../post/Posts"));
 
 function FollowingPosts() {
   const { loading, data, error, fetchMore, refetch } = useQuery(
-    FOLLOWING_POSTS
+    FOLLOWING_POSTS,
+    {
+      pollInterval: 100000,
+    }
   );
   const [spin, setSpin] = useState(true);
 

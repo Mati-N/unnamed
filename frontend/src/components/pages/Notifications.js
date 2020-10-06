@@ -1,6 +1,6 @@
 import React, { useState, lazy } from "react";
-import { GET_NOTIFICATIONS } from "../../Queries";
-import { useQuery } from "@apollo/client";
+import { GET_NOTIFICATIONS, READ_NOTIFICATION } from "../../Queries";
+import { useQuery, useMutation } from "@apollo/client";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { Link } from "react-router-dom";
@@ -10,16 +10,13 @@ const Box = lazy(() => import("../SVG/Box.svg"));
 
 const Notifications = () => {
   const { loading, data, error, fetchMore, refetch } = useQuery(
-    GET_NOTIFICATIONS
-  );
-  const [spin, setSpin] = useState(true);
-  const [first, setFirst] = useState(true);
-  setInterval(() => {
-    if (!loading && !first) {
-      refetch();
+    GET_NOTIFICATIONS,
+    {
+      pollInterval: 600,
     }
-    setFirst(false);
-  }, 5000);
+  );
+  const [readNotif] = useMutation(READ_NOTIFICATION);
+  const [spin, setSpin] = useState(true);
 
   if (loading || !data)
     return (
@@ -72,6 +69,9 @@ const Notifications = () => {
 
   return (
     <>
+      <button className="btn read-all" onClick={() => readNotif()}>
+        Read All
+      </button>
       {data.selfNotification.edges.length == 0 && (
         <div className="empty-box-holder">
           <Box />
@@ -82,8 +82,18 @@ const Notifications = () => {
           switch (node.category) {
             case "new_follow":
               return (
-                <div key={node.id} className="notification">
-                  <Link to={`user/${node.sender.id}`}>
+                <div
+                  key={node.id}
+                  className={`notification ${node.read && "notification-read"}`}
+                >
+                  <Link
+                    to={`user/${node.sender.id}`}
+                    onClick={() =>
+                      node.read
+                        ? false
+                        : readNotif({ variables: { id: node.id } })
+                    }
+                  >
                     {node.sender.username}
                   </Link>{" "}
                   Followed You!
@@ -91,14 +101,29 @@ const Notifications = () => {
               );
             case "new_like":
               return (
-                <div key={node.id} className="notification">
-                  <Link to={`user/${node.sender.id}`}>
+                <div
+                  key={node.id}
+                  className={`notification ${node.read && "notification-read"}`}
+                >
+                  <Link
+                    to={`user/${node.sender.id}`}
+                    onClick={() =>
+                      node.read
+                        ? false
+                        : readNotif({ variables: { id: node.id } })
+                    }
+                  >
                     {node.sender.username}
                   </Link>{" "}
                   Liked your post{" "}
                   <Link
                     className="notification-post"
                     to={`post/${node.post.id}`}
+                    onClick={() =>
+                      node.read
+                        ? false
+                        : readNotif({ variables: { id: node.id } })
+                    }
                   >
                     {node.post.title}
                   </Link>
@@ -106,8 +131,18 @@ const Notifications = () => {
               );
             case "new_comment":
               return (
-                <div key={node.id} className="notification">
-                  <Link to={`user/${node.sender.id}`}>
+                <div
+                  key={node.id}
+                  className={`notification ${node.read && "notification-read"}`}
+                >
+                  <Link
+                    to={`user/${node.sender.id}`}
+                    onClick={() =>
+                      node.read
+                        ? false
+                        : readNotif({ variables: { id: node.id } })
+                    }
+                  >
                     {node.sender.username}
                   </Link>{" "}
                   Commented on your post "
@@ -115,6 +150,11 @@ const Notifications = () => {
                     className="notification-post"
                     to={`post/${node.comment.post.id}`}
                     className="notification-post-comment"
+                    onClick={() =>
+                      node.read
+                        ? false
+                        : readNotif({ variables: { id: node.id } })
+                    }
                   >
                     {node.comment.post.title}
                   </Link>
@@ -122,6 +162,11 @@ const Notifications = () => {
                   <Link
                     className="notification-post"
                     to={`post/${node.comment.post.id}/#${node.comment.id}c`}
+                    onClick={() =>
+                      node.read
+                        ? false
+                        : readNotif({ variables: { id: node.id } })
+                    }
                   >
                     {node.comment.content.substr(0, 60)}
                   </Link>

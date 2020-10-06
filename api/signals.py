@@ -5,14 +5,14 @@ from .models import *
 
 @receiver(post_save, sender=Following)
 def follow_handler(sender, instance, **kwargs):
-    Notification.objects.create(verb="followed you", sender=instance.follower, recipient=instance.target, category="new_follow")
+    Notification.objects.create(sender=instance.follower, recipient=instance.target, category="new_follow")
 
 @receiver(post_save, sender=Like)
 def like_handler(sender, instance, **kwargs):
     if (instance.post.user != instance.user):
-        Notification.objects.create(verb="liked", sender=instance.user, recipient=instance.post.user, post=instance.post, category="new_like",)
+        Notification.objects.create(sender=instance.user, recipient=instance.post.user, post=instance.post, category="new_like",)
     
 @receiver(post_save, sender=Comment)
 def comment_handler(sender, instance, **kwargs):
     if (instance.post.user != instance.user):
-        Notification.objects.create(verb="commented", sender=instance.user, recipient=instance.post.user, category="new_comment", comment=instance)
+        Notification.objects.create(sender=instance.user, recipient=instance.post.user, category="new_comment", comment=instance)

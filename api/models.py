@@ -57,7 +57,6 @@ class Following(models.Model):
 
 
 class Notification(AutoTimeStamped):
-    verb = models.TextField()
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_notifications")
     category = models.TextField()

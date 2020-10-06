@@ -23,6 +23,7 @@
     "compression-webpack-plugin": "^5.0.1",
     "core-js": "^3.6.5",
     "graphql": "^15.3.0",
+    "jwt-decode": "^3.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-error-boundary": "^2.3.1",

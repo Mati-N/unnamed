@@ -7,7 +7,9 @@ const Offline = lazy(() => import("./Offline"));
 const Posts = lazy(() => import("../post/Posts"));
 
 function Home() {
-  const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS);
+  const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS, {
+    pollInterval: 100000,
+  });
   const [spin, setSpin] = useState(true);
 
   if (loading || !data)

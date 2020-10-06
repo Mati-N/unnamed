@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useContext } from "react";
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
 import { LOGIN, LOGOUT, SET_LOADING } from "../types";
-import { useMutation, useLazyQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
   ADD_USER,
   LOGIN_USER,
@@ -21,7 +21,7 @@ const AuthState = (props) => {
     logout: false,
     token: Cookies.get("token"),
     refreshToken: Cookies.get("refresh-token"),
-    user: localStorage.getItem("USER"),
+    user: Cookies.get("USER-ID"),
   };
 
   const { setAlert, removeAlert } = useContext(AlertContext);
