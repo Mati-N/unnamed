@@ -13,6 +13,13 @@ const Notifications = () => {
     GET_NOTIFICATIONS
   );
   const [spin, setSpin] = useState(true);
+  const [first, setFirst] = useState(true);
+  setInterval(() => {
+    if (!loading && !first) {
+      refetch();
+    }
+    setFirst(false);
+  }, 5000);
 
   if (loading || !data)
     return (

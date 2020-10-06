@@ -104,7 +104,9 @@ function Navbar() {
             <li className="left">
               <span
                 className={`navItem ${
-                  location.pathname == "/" ? "active-navItem" : ""
+                  location.pathname == "/" || location.pathname == "/all"
+                    ? "active-navItem"
+                    : ""
                 }`}
               >
                 <Link className="nav-link" to="/" onClick={hide}>

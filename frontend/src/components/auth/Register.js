@@ -22,9 +22,13 @@ function Register() {
       if (e.target.value.length < 1) {
         setAlert("Username too short", "warning");
         setDisabled(true);
+      } else if (e.target.value.length > 8) {
+        setAlert("Username too long", "warning");
+        setDisabled(true);
       } else if (
         registerInfo.password.length > 8 &&
-        e.target.value.length > 0
+        e.target.value.length > 0 &&
+        e.target.value.length < 9
       ) {
         removeAlert();
         setDisabled(false);
@@ -35,7 +39,8 @@ function Register() {
         setDisabled(true);
       } else if (
         registerInfo.username.length > 0 &&
-        e.target.value.length > 8
+        e.target.value.length > 8 &&
+        registerInfo.username.length < 9
       ) {
         removeAlert();
         setDisabled(false);

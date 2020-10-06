@@ -95,6 +95,9 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.1s;
+  opacity: 1;
+  height: 7.5vh;
 
   .alert-text {
     font-size: 1.4em !important;
@@ -102,6 +105,11 @@ footer {
     padding: 0;
     width: 70%;
   }
+}
+
+.alert-none {
+  height: 0 !important;
+  opacity: 0;
 }
 
 .nav-bar {
