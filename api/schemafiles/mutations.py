@@ -146,7 +146,7 @@ class ReadNotification(graphene.relay.ClientIDMutation):
         id = input["id"]
         ok = True
         
-        if id:
+        if id is not None:
             try:
                 notif = Notification.objects.get(pk=id, recipient=info.context.user)
                 notif.read = True

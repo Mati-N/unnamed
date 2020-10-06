@@ -346,6 +346,7 @@ export const GET_NOTIFICATIONS = gql `
             }
           }
           read
+          id
         }
       }
     }
