@@ -37,7 +37,7 @@ function Navbar() {
   const { loading, data, startPolling, stopPolling } = useQuery(
     NOTIFICATION_NUMBER,
     {
-      pollInterval: 600,
+      pollInterval: 900,
     }
   );
 
