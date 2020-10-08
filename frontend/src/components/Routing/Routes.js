@@ -7,14 +7,13 @@ import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "../layout/Error";
+import Edit from "../pages/Edit";
 
 const Post = lazy(() => import("../post/Post"));
 const Home = lazy(() => import("../pages/Home"));
 const FollowingPosts = lazy(() => import("../pages/FollowingPosts"));
 const Account = lazy(() => import("../pages/Account"));
 const NewPost = lazy(() => import("../pages/NewPost"));
-const ChangePassword = lazy(() => import("../pages/ChangePassword"));
-const ChangeUsername = lazy(() => import("../pages/ChangeUsername"));
 const Login = lazy(() => import("../auth/Login"));
 const Register = lazy(() => import("../auth/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -79,21 +78,13 @@ const Routes = () => {
                   <PrivateRoute exact path="/account" component={Account} />
                   <PrivateRoute exact path="/user/:id" component={User} />
                   <PrivateRoute exact path="/post/:id" component={Post} />
-                  <PrivateRoute
-                    exact
-                    path="/password"
-                    component={ChangePassword}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/username"
-                    component={ChangeUsername}
-                  />
+
                   <PrivateRoute
                     exact
                     path="/notifications"
                     component={Notifications}
                   />
+                  <PrivateRoute exact path="/edit" component={Edit} />
                   <Route component={NotFound} />
                 </Switch>
               </Suspense>

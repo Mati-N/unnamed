@@ -102,10 +102,11 @@ const AuthState = (props) => {
         password,
       },
     })
-      .catch((error) => setAlert(error.message, "danger"))
+      .catch((error) => setAlert(error.message, "warning"))
       .then((d) => {
         if (d) {
           if (d.data.tokenAuth !== null) {
+            removeAlert();
             dispatch({
               type: LOGIN,
               payload: d.data.tokenAuth,
@@ -131,7 +132,7 @@ const AuthState = (props) => {
             doLogin(username, password);
             return true;
           } else {
-            setAlert(d.data.createUser.message, "danger");
+            setAlert(d.data.createUser.message, "warning");
             return false;
           }
         }
@@ -141,7 +142,7 @@ const AuthState = (props) => {
   const doLogout = () => {
     try {
       if (state.refreshToken != null) {
-        setAlert("Logged out!", "primary");
+        setAlert("Logged out!", "info");
       }
       logout({
         variables: {

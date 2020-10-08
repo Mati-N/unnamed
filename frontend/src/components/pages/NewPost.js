@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, lazy } from "react";
+import React, { useContext, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import {
   CREATE_POST,
@@ -7,52 +7,53 @@ import {
   SELF_POSTS,
 } from "../../Queries";
 import AlertContext from "../../context/alert/AlertContext";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Formik, Field, ErrorMessage, Form } from "formik";
+import {
+  TextField,
+  FormControl,
+  makeStyles,
+  FormHelperText,
+} from "@material-ui/core";
+import * as Yup from "yup";
+
+const useStyles = makeStyles((theme) => ({
+  form: {
+    marginTop: theme.spacing(15),
+    width: "75%", // Fix IE 11 issue.
+    margin: "auto",
+    [theme.breakpoints.up("sm")]: {
+      width: "90%",
+    },
+  },
+  formField: {
+    padding: "0.2em",
+  },
+  formControl: {
+    margin: "0.1em",
+    padding: "0.1em",
+  },
+  formLabel: {
+    margin: "auto",
+    width: "auto",
+    fontSize: "2.5em",
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 const NewPost = () => {
-  const [state, setState] = useState({ title: "", content: "" });
-  const [disabled, setDisabled] = useState(true);
-  const [sent, setSent] = useState(false);
+  const classes = useStyles();
   const [addPost] = useMutation(CREATE_POST);
+  const history = useHistory();
   const { setAlert, removeAlert } = useContext(AlertContext);
-
-  const onChange = (e) => {
-    let name = e.target.name;
-    setState({ ...state, [name]: e.target.value });
-    switch (name) {
-      case "title":
-        if (e.target.value.length < 1) {
-          setAlert("Title too short", "warning");
-          setDisabled(true);
-        } else if (e.target.value.length > 260) {
-          setAlert("Title too long", "warning");
-          setState({ ...state, title: state.title.substring(0, 260) });
-          setDisabled(true);
-        } else if (state.content.length > 0 && state.content.length <= 5500) {
-          removeAlert();
-          setDisabled(false);
-        }
-      case "content":
-        if (e.target.value.length < 1) {
-          setAlert("Content too short", "warning");
-          setDisabled(true);
-        } else if (e.target.value.length > 5500) {
-          setAlert("Content too long", "warning");
-          setState({ ...state, content: state.content.substring(0, 5500) });
-          setDisabled(true);
-        } else if (state.title.length > 0 && state.title.length <= 260) {
-          removeAlert();
-          setDisabled(false);
-        }
-    }
-  };
 
   useEffect(() => {
     removeAlert();
   }, []);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (state) => {
     addPost({
       variables: { title: state.title, text: state.content },
       update: (cache, { data }) => {
@@ -134,8 +135,8 @@ const NewPost = () => {
       .then((data) => {
         if (data) {
           if (data !== null && data.data.createPost.ok) {
-            setAlert("Post Sent", "primary");
-            setSent(true);
+            setAlert("Post Sent", "success");
+            history.push("/");
           } else {
             setAlert("Something went wrong", "warning");
           }
@@ -143,43 +144,72 @@ const NewPost = () => {
       });
   };
 
-  if (sent) return <Redirect to="/" />;
-
   return (
-    <>
-      <form onSubmit={onSubmit} method="post" className="form-auth">
-        <div className="form-group">
-          <label className="label-hide" htmlFor="title">
-            Title
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="title"
-            placeholder="Title"
-            aria-describedby="emailHelp"
-            value={state.title}
-            onChange={onChange}
-            name="title"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="content">Content</label>
-          <textarea
-            name="content"
-            value={state.text}
-            className="form-control"
-            name="content"
-            rows="3"
-            onChange={onChange}
-            id="content"
-          ></textarea>
-        </div>
-        <button disabled={disabled} type="submit" className="btn btn-teal">
-          Submit
-        </button>
-      </form>
-    </>
+    <Formik
+      initialValues={{ title: "", content: "" }}
+      validationSchema={Yup.object({
+        title: Yup.string()
+          .max(30, "Must be 30 characters or less")
+          .required("Required"),
+        content: Yup.string()
+          .min(20, "Must be 20 characters or more")
+          .required("Required"),
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        setSubmitting(true);
+        onSubmit(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ isSubmitting, isValid, dirty }) => (
+        <Form className={classes.form}>
+          <p className={classes.formLabel}>New Post</p>
+          <FormControl className={classes.formControl} fullWidth>
+            <Field
+              type="text"
+              name="title"
+              as={TextField}
+              label="Title"
+              className={classes.formField}
+              fullWidth
+            />
+            <ErrorMessage
+              name="title"
+              component={FormHelperText}
+              error={true}
+            />
+          </FormControl>
+          <FormControl className={classes.formControl} fullWidth>
+            <Field
+              type="text"
+              name="content"
+              as={TextField}
+              label="Content"
+              className={classes.formField}
+              multiline
+              variant="outlined"
+              fullWidth
+              rows={10}
+              rowsMax={35}
+            />
+            <ErrorMessage
+              name="content"
+              component={FormHelperText}
+              error={true}
+            />
+          </FormControl>
+          <FormControl className={classes.formControl} fullWidth>
+            <button
+              type="submit"
+              className="btn btn-teal"
+              disabled={isSubmitting || !isValid || !dirty}
+            >
+              Submit
+            </button>
+          </FormControl>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

@@ -1,36 +1,15 @@
 import React, { useContext } from "react";
 import AlertContext from "../../context/alert/AlertContext";
-import X from "../SVG/X.svg";
-import { remove } from "js-cookie";
+import { Alert as AlertThing } from "@material-ui/lab";
 
 const Alert = () => {
   const { alert_info, removeAlert } = useContext(AlertContext);
   return (
-    <div
-      className={`app-alert alert-${
-        alert_info != null ? alert_info.alert_type : "none"
-      }`}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="icon icon-tabler icon-tabler-alert-circle"
-        width="44"
-        height="44"
-        viewBox="0 0 24 24"
-        strokeWidth="1.5"
-        stroke="#607D8B"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" />
-        <circle cx="12" cy="12" r="9" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12.01" y2="16" />
-      </svg>
-      {alert_info && <h1 className="alert-text">{alert_info.msg}</h1>}
-      <X onClick={removeAlert} />
-    </div>
+    alert_info && (
+      <AlertThing onClose={removeAlert} severity={alert_info.alert_type}>
+        {alert_info && alert_info.msg}
+      </AlertThing>
+    )
   );
 };
 

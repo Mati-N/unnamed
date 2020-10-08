@@ -33,6 +33,7 @@ const PostItem = ({
     onCompleted: (data) => {
       setState({ ...state, liked: data.liked });
     },
+    pollInterval: 2000,
   });
 
   const [hovered, setHovered] = useState(false);

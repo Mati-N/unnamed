@@ -23,11 +23,7 @@ const AccountInfo = ({ user_data, Logout }) => {
         </li>
         <li className="option">
           <Edit className="svg" />
-          <Link to="/password">Change Password</Link>
-        </li>
-        <li className="option">
-          <Edit className="svg" />
-          <Link to="/username">Change Username</Link>
+          <Link to="/edit">Edit Account</Link>
         </li>
       </ul>
     </div>

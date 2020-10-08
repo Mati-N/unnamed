@@ -18,15 +18,6 @@ $light-color: rgb(238, 238, 238);
   font-family: "Hind Siliguri", sans-serif;
 }
 
-.app-elements {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: auto;
-  margin-top: 12vh;
-  transition: 0.1s;
-}
-
 .page {
   position: absolute;
   width: 100%;
@@ -74,6 +65,7 @@ footer {
     }
   }
 }
+
 
 .form-auth {
   padding: 3em;
@@ -294,6 +286,11 @@ footer {
   padding: 0.22em !important;
 }
 
+.post-input {
+  padding: 0.7em;
+  border: 0.2em solid beige;
+}
+
 .read-all {
   width: auto;
   margin-left: 25%;
@@ -424,105 +421,15 @@ footer {
 main {
   width: 82%;
   padding: 0.45em;
-  flex-grow: 1;
-  min-height: 88vh;
+  min-height: 90vh;
   height: auto;
+  margin: auto;
   transition: 0.1s;
-}
-
-.main-nav {
-  padding: 0.8em 0;
-}
-
-nav {
-  z-index: 100000000;
-  font-weight: 240;
-  height: 12vh;
-  display: block;
-  background-color: $teal-color;
-  align-items: center;
-  margin-bottom: 2em;
-
-  .nav-top {
-    .navbar-brand {
-      color: $light-color;
-      padding: 0.4em;
-      font-size: 1.9em !important;
-    }
-
-    .navbar-brand:hover {
-      color: $light-color;
-    }
-
-    .fa {
-      display: none;
-    }
-  }
-
-  .navbar-items {
-    width: 85%;
-    padding: 0.2em;
-    list-style-type: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 8vh;
-    margin: 0;
-    right: 5;
-
-    .right {
-      right: 0;
-      display: flex;
-      justify-content: space-around;
-      width: 22%;
-    }
-
-    .left {
-      left: 0;
-      display: flex;
-      justify-content: space-around;
-      width: 15%;
-    }
-
-    .navItem {
-      transition: all 0.25s;
-
-      .nav-link {
-        color: rgb(248, 248, 248);
-        font-weight: 520;
-        text-decoration: none !important;
-      }
-
-      .nav-link:hover {
-        text-decoration: none !important;
-      }
-    }
-
-    .active-navItem {
-      transform: scale(0.92);
-      pointer-events: none;
-      filter: invert(25%) !important;
-    }
-  }
 }
 
 @media only screen and (max-width: 1420px) {
   main {
     width: 85%;
-  }
-
-  nav {
-    .navbar-items {
-      width: 74%;
-
-      .right {
-        width: 25%;
-      }
-
-      .left {
-        width: 32%;
-      }
-    }
   }
 }
 
@@ -639,106 +546,13 @@ nav {
     }
   }
 
-  .app-elements {
-    margin-top: 9vh !important;
-  }
-
   footer {
-    width: 75%;
-  }
-
-  nav {
-    height: 9vh;
-
-    .nav-top {
-      display: block;
-      width: 100%;
-      height: 9vh;
-      display: flex;
-      align-items: center;
-
-      .navbar-brand {
-        width: 70%;
-        text-align: center;
-        display: inline-block;
-      }
-
-      .fa {
-        width: 20%;
-        display: inline-block;
-        transition: all 0.5s;
-        padding: 0.1em;
-        overflow: visible;
-      }
-
-      #fa {
-        transform: scale(0.8);
-        padding: 0.2em;
-      }
-    }
-
-    #navitems-block {
-      transform: translateX(0%) scale(1);
-      opacity: 0.9;
-    }
-
-    #navitems-none {
-      transform: translateX(100%) scale(0.9);
-      opacity: 0;
-    }
-
-    .navbar-items {
-      background-color: $teal-color;
-      width: 100%;
-      flex-direction: column;
-      height: 91vh;
-      transform: translateX(100%);
-      display: flex;
-      opacity: 0;
-      transition: all 0.2s;
-
-      #right {
-        height: 68.5vh;
-
-        .nav-link {
-          line-height: 34.25vh;
-        }
-      }
-
-      .left {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-        height: 36.4vh;
-        width: 100%;
-
-        .nav-link {
-          width: 100%;
-          line-height: 18.2vh;
-          text-align: center;
-          height: 18.2vh;
-        }
-      }
-
-      .right {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-        height: 54.6vh;
-        width: 100%;
-
-        .nav-link {
-          width: 100%;
-          text-align: center;
-          line-height: 18.2vh;
-          height: 18.2vh;
-        }
-      }
-    }
+    width: 80%;
+    font-size: 0.8em;
   }
 }
+
+@media only screen and (max-width: 860) {}
 
 @media (hover: none) {
   .posts {

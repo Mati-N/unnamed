@@ -12,7 +12,9 @@ const Account = () => {
     loading: user_loading,
     data: user_data,
     error: user_error,
-  } = useQuery(SELF_USER);
+  } = useQuery(SELF_USER, {
+    pollInterval: 3000,
+  });
   const { loading, data, error, fetchMore, refetch } = useQuery(SELF_POSTS);
   const { doLogout: Logout, user } = useContext(AuthContext);
   const { removeAlert } = useContext(AlertContext);

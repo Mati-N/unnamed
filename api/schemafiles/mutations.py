@@ -178,24 +178,31 @@ class UpdateUser(graphene.relay.ClientIDMutation):
         username = input["username"]
         newP = input["newP"]
         ok = False
+        message = None
         user_instance = info.context.user
 
-        if user_instance:
-            if not user_instance.check_password(password):
-                return UpdateUser(ok=ok, user=user_instance, message="Password is incorrect")
+        if not user_instance.check_password(password):
+            return UpdateUser(ok=ok, user=user_instance, message="Password is invalid")
 
-            if username is not None:
-                if (User.objects.filter(username=username).count() > 0):
-                    return UpdateUser(ok=ok, user=user_instance, message="Username is already in use")
-                user_instance.username = username
 
-            ok = True
-            if newP is not None:
-                user_instance.set_password(newP)
+        if newP is not None:
+            if len(newP) < 8:
+                return UpdateUser(ok=ok, user=user_instance, message="Password is too short")
+            user_instance.set_password(newP)
+            message = "Password Changed"
 
-            user_instance.save()
+        if username is not None:
+            if (User.objects.filter(username=username).count() > 0):
+                return UpdateUser(ok=ok, user=user_instance, message="Username is already in use")
+            user_instance.username = username
+            message = "Username Changed"
 
-            return UpdateUser(ok=ok, user=user_instance)
+        ok = True
+
+        if newP is not None and username is not None:
+            message == "Account Updated"
+
+        user_instance.save()
+
+        return UpdateUser(ok=ok, user=user_instance, message=message)
                 
-
-        return UpdateUser(ok=ok, user=user_instance, message="Successful")

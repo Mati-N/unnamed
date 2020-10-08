@@ -1,15 +1,15 @@
 import React, { lazy } from "react";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+import NoData from "../SVG/NoData.svg";
 const PostItem = lazy(() => import("./PostItem"));
-const Box = lazy(() => import("../SVG/Box.svg"));
 
 const Posts = ({ posts, self, username, id, more, spin, refetch }) => {
   return (
     <div className="posts">
       {posts.length == 0 && (
-        <div className="empty-box-holder">
-          <Box />
+        <div className="w-75 m-auto d-flex align-items-center justify-center">
+          <NoData />
         </div>
       )}
       {posts.map(({ node }) => (

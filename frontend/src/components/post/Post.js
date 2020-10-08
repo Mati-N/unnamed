@@ -48,7 +48,11 @@ const Post = ({
   };
 
   if (loading && !data) {
-    return <Spinner size={40} />;
+    return (
+      <div className="spinner">
+        <Spinner size={40} />
+      </div>
+    );
   }
   const { node } = data.posts.edges[0];
 

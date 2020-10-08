@@ -10,10 +10,11 @@ module.exports = (env, argv) => {
         "@apollo/client",
         "graphql",
         "react-spring",
-      ]
+      ],
     },
     module: {
-      rules: [{
+      rules: [
+        {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
@@ -27,10 +28,13 @@ module.exports = (env, argv) => {
           test: /\.svg$/,
           use: ["@svgr/webpack"],
         },
+        {
+          test: /\.css$/i,
+          use: ["css-loader"],
+        },
       ],
     },
-    devtool: ((argv.mode == 'development') ?
-      'source-map' : false),
+    devtool: argv.mode == "development" ? "source-map" : false,
     output: {
       publicPath: "/static/frontend/",
     },
@@ -40,8 +44,8 @@ module.exports = (env, argv) => {
     },
     optimization: {
       minimize: true,
-    }
-  }
+    },
+  };
 
   return config;
 };

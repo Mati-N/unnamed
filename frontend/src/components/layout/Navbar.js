@@ -1,108 +1,130 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
-import AuthenticatedNav from "./AuthenticatedNav";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Badge,
+  makeStyles,
+} from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
+import NotificationIcon from "@material-ui/icons/Notifications";
+import HomeIcon from "@material-ui/icons/Home";
+import SettingsIcon from "@material-ui/icons/Settings";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { useQuery } from "@apollo/client";
+import { NOTIFICATION_NUMBER } from "../../Queries";
+import grey from "@material-ui/core/colors/grey";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "&$selected": {
+      color: "#3d9970",
+    },
+  },
+  selected: {},
+  mainRoot: {
+    backgroundColor: grey[280],
+  },
+}));
 
 function Navbar() {
-  const { isAuthenticated, loading } = useContext(AuthContext);
-  const navItems = useRef(null);
+  const { isAuthenticated, loading: auth_loading } = useContext(AuthContext);
   const location = useLocation();
-  const [state, setState] = useState({ displayed: false });
+  const classes = useStyles();
 
-  if (loading || isAuthenticated == null) return "";
-
-  const showMenu = () => {
-    setState({ displayed: !state.displayed });
-  };
-
-  const hide = () => {
-    if (state.displayed) {
-      showMenu();
+  const { loading, data, startPolling, stopPolling } = useQuery(
+    NOTIFICATION_NUMBER,
+    {
+      pollInterval: 600,
     }
-  };
+  );
+
+  if (auth_loading || isAuthenticated == null) return "";
+
+  if (isAuthenticated) {
+    startPolling();
+  } else {
+    stopPolling();
+  }
 
   return (
-    <nav
-      className="main=nav nav"
-      style={{
-        position: "fixed",
-        top: 0,
-        width: "100%",
-      }}
+    <BottomNavigation
+      value={location.pathname.replace("/", "").replace("all", "")}
+      showLabels
+      className="bottom-nav w-100"
+      classes={{ root: classes.mainRoot }}
     >
-      <div className="nav-top">
-        <Link to="/" className="navbar-brand">
-          UNNAMED
-        </Link>
-        <svg
-          viewBox="0 0 100 80"
-          width="40"
-          height="40"
-          className="fa fa-bars"
-          id={state.displayed ? "fa" : ""}
-          onClick={showMenu}
-        >
-          <rect
-            className="line0"
-            fill="white"
-            width="100"
-            height="17"
-            id={state.displayed ? "line0" : " "}
-            rx="0.25em"
-          ></rect>
-          <rect
-            className="line1"
-            fill="white"
-            y="30"
-            width="100"
-            height="17"
-            id={state.displayed ? "line1" : " "}
-            rx="0.25em"
-          ></rect>
-          <rect
-            className="line2"
-            fill="white"
-            y="60"
-            width="100"
-            height="17"
-            id={state.displayed ? "line2" : " "}
-            rx="0.25em"
-          ></rect>
-        </svg>
-      </div>
-
-      <ul
-        className={"navbar-items"}
-        id={state.displayed ? "navitems-block" : "navitems-none"}
-        ref={navItems}
-      >
-        {!isAuthenticated && (
-          <li className="right" id="right">
-            <span
-              className={`navItem ${
-                location.pathname == "/login" ? "active-navItem" : ""
-              }`}
+      {!isAuthenticated && (
+        <BottomNavigationAction
+          component={Link}
+          to="/login"
+          label="Login"
+          icon={<LockOpenIcon />}
+          value="login"
+          classes={{ root: classes.root, selected: classes.selected }}
+        />
+      )}
+      {!isAuthenticated && (
+        <BottomNavigationAction
+          component={Link}
+          to="/register"
+          label="Register"
+          value="register"
+          icon={<ExitToAppIcon />}
+          classes={{ root: classes.root, selected: classes.selected }}
+        />
+      )}
+      {isAuthenticated && (
+        <BottomNavigationAction
+          component={Link}
+          to="/"
+          label="Home"
+          value=""
+          icon={<HomeIcon />}
+          classes={{ root: classes.root, selected: classes.selected }}
+        />
+      )}
+      {isAuthenticated && (
+        <BottomNavigationAction
+          label="Notifications"
+          component={Link}
+          to="/notifications"
+          value="notifications"
+          icon={
+            <Badge
+              badgeContent={!loading && data ? data.notificationNumber : 0}
+              color="secondary"
+              max={1000}
             >
-              <Link to="/login" className="nav-link" onClick={hide}>
-                Login
-              </Link>
-            </span>
-            <span
-              className={`navItem ${
-                location.pathname == "/register" ? "active-navItem" : ""
-              }`}
-            >
-              <Link className="nav-link" to="/register" onClick={hide}>
-                Register
-              </Link>
-            </span>
-          </li>
-        )}
-        {isAuthenticated && (
-          <AuthenticatedNav location={location} hide={hide} />
-        )}
-      </ul>
-    </nav>
+              <NotificationIcon />
+            </Badge>
+          }
+          classes={{ root: classes.root, selected: classes.selected }}
+        />
+      )}
+      {isAuthenticated && (
+        <BottomNavigationAction
+          component={Link}
+          to="/add-post"
+          label="New Post"
+          value="add-post"
+          icon={<AddIcon />}
+          classes={{ root: classes.root, selected: classes.selected }}
+        />
+      )}
+      {isAuthenticated && (
+        <BottomNavigationAction
+          component={Link}
+          to="/account"
+          label="Settings"
+          value="account"
+          icon={<SettingsIcon />}
+          classes={{ root: classes.root, selected: classes.selected }}
+        />
+      )}
+    </BottomNavigation>
   );
 }
 
