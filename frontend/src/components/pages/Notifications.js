@@ -70,7 +70,7 @@ const Notifications = () => {
 
   return (
     <>
-      <Button className="btn read-all" onClick={() => readNotif()}>
+      <Button className="mx-auto w-25" onClick={() => readNotif()}>
         Read All
       </Button>
       {data.selfNotification.edges.length == 0 && (
