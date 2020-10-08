@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
 const Offline = lazy(() => import("./Offline"));
 const Box = lazy(() => import("../SVG/Box.svg"));
@@ -69,9 +70,9 @@ const Notifications = () => {
 
   return (
     <>
-      <button className="btn read-all" onClick={() => readNotif()}>
+      <Button className="btn read-all" onClick={() => readNotif()}>
         Read All
-      </button>
+      </Button>
       {data.selfNotification.edges.length == 0 && (
         <div className="empty-box-holder">
           <Box />
