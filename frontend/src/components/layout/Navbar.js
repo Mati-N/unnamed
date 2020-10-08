@@ -43,12 +43,6 @@ function Navbar() {
 
   if (auth_loading || isAuthenticated == null) return "";
 
-  if (isAuthenticated) {
-    startPolling();
-  } else {
-    stopPolling();
-  }
-
   return (
     <BottomNavigation
       value={location.pathname.replace("/", "").replace("all", "")}
