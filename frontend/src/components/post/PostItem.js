@@ -3,6 +3,8 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { LIKED, LIKE, CREATE_COMMENT, GET_POST } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
+import Avatar from "@material-ui/core/Avatar";
+import { AvatarGroup } from "@material-ui/lab";
 
 const Liked = lazy(() => import("../SVG/Like.svg"));
 const Heart = lazy(() => import("../SVG/Heart.svg"));
@@ -18,6 +20,7 @@ const PostItem = ({
   user_id,
   commentCount,
   show_comment,
+  imagePath,
 }) => {
   const initialState = {
     done: false,
@@ -153,7 +156,14 @@ const PostItem = ({
       <div className="post-top card-top">
         <div className="post-info-top">
           <Link to={`/user/${user_id}`} className="post-user">
-            {" "}
+            <Avatar
+              alt={username}
+              src={imagePath}
+              variant="circle"
+              style={{
+                margin: "0.4em",
+              }}
+            />{" "}
             {username}{" "}
           </Link>
           <small className="post-time">

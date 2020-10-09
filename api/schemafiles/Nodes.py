@@ -23,6 +23,7 @@ class UserNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
     follower_count = graphene.Int(source="follower_count")
     post_count = graphene.Int(source="post_count")
+    image_path = graphene.String(source="image_path")
 
     class Meta:
         model = User

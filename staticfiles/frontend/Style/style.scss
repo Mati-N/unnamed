@@ -196,10 +196,13 @@ footer {
       overflow: auto;
       font-size: 0.85em;
       border-radius: 0.5em;
-      height: fit-content;
+      height: auto;
+      min-height: 3vh;
 
       .post-user {
-        display: inline;
+        display: inline-flex;
+        align-items: center;
+        min-height: 3vh;
         color: #39cccc;
       }
 
@@ -355,6 +358,9 @@ footer {
   .account-info-top {
     margin-bottom: 0.45em;
     border-bottom: 0.1em solid rgba(82, 82, 82, 0.5);
+    min-height: 3vh;
+    display: flex;
+    align-items: center;
 
     .username {
       font-size: 1.7em;

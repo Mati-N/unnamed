@@ -4,17 +4,19 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_USER } from "../../Queries";
 import AlertContext from "../../context/alert/AlertContext";
 import { Formik, Field, ErrorMessage, Form } from "formik";
+import Button from "@material-ui/core/Button";
 import {
   TextField,
   FormControl,
   makeStyles,
   FormHelperText,
 } from "@material-ui/core";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    marginTop: theme.spacing(14),
+    marginTop: theme.spacing(4),
     width: "80%", // Fix IE 11 issue.
     margin: "auto",
     [theme.breakpoints.up("sm")]: {
@@ -36,11 +38,20 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+
+  input: {
+    display: "none",
+  },
+  button: {
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 const Edit = () => {
   const { removeAlert, setAlert } = useContext(AlertContext);
   const [updateUser] = useMutation(UPDATE_USER);
+  const [imageUrl, setImageUrl] = useState(null);
   const classes = useStyles();
   const history = useHistory();
   useEffect(() => {
@@ -50,13 +61,23 @@ const Edit = () => {
   return (
     <>
       <Formik
-        initialValues={{ username: "", newPassword: "", password: "" }}
+        initialValues={{
+          username: "",
+          newPassword: "",
+          password: "",
+          image: null,
+        }}
         validationSchema={Yup.object({
           username: Yup.string().max(30, "Must be 30 characters or less"),
           password: Yup.string()
             .min(8, "Must be 8 characters or more")
             .required("Required"),
-          newPassword: Yup.string().min(8, "Must be 8 characters or more"),
+          newPassword: Yup.string()
+            .min(8, "Must be 8 characters or more")
+            .matches(
+              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+              "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+            ),
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
@@ -68,6 +89,7 @@ const Edit = () => {
                 username: values.username.length > 0 ? values.username : null,
                 newPassword:
                   values.newPassword.length > 0 ? values.newPassword : null,
+                image: values.image,
               },
             }).then((d) => {
               if (d) {
@@ -83,11 +105,46 @@ const Edit = () => {
           setSubmitting(false);
         }}
       >
-        {({ isSubmitting, isValid, dirty }) => (
+        {({ isSubmitting, isValid, dirty, setFieldValue }) => (
           <>
+            {imageUrl && (
+              <img
+                alt="profile picture"
+                className="mx-auto d-block w-25 h-25"
+                src={imageUrl}
+              />
+            )}
             <Form className={classes.form}>
               <p className={classes.formLabel}>Edit Account</p>
 
+              <FormControl className={classes.formControl} fullWidth>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="icon-button-file"
+                  type="file"
+                  onChange={(e) => {
+                    let reader = new FileReader();
+                    let file = e.target.files[0];
+                    reader.onloadend = () => {
+                      setFieldValue("image", file);
+                      setImageUrl(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                  }}
+                />
+                <label htmlFor="icon-button-file">
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    startIcon={<PhotoCamera />}
+                    component="span"
+                  >
+                    Profile Pic
+                  </Button>
+                </label>
+              </FormControl>
               <FormControl className={classes.formControl} fullWidth>
                 <Field
                   type="text"

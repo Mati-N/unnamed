@@ -2,12 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import LogoutSVG from "../SVG/Logout.svg";
 import Edit from "../SVG/Edit.svg";
+import Avatar from "@material-ui/core/Avatar";
 
-const AccountInfo = ({ user_data, Logout }) => {
+const AccountInfo = ({ user_data, Logout, disable_logout }) => {
   return (
     <div className="account-info">
       <div className="account-info-top">
-        <span className="username" style={{ display: "block" }}>
+        <Avatar
+          alt={user_data.selfUser.username}
+          src={user_data.selfUser.imagePath}
+          variant="circle"
+          style={{
+            margin: "0.4em",
+          }}
+        />
+        <span className="username d-inline-block">
           {user_data.selfUser.username}
         </span>
       </div>
@@ -18,7 +27,7 @@ const AccountInfo = ({ user_data, Logout }) => {
         </span>
       </div>
       <ul className="options">
-        <li className="option" onClick={Logout}>
+        <li className="option" onClick={Logout} disabled={disable_logout}>
           <LogoutSVG className="svg" /> <a>Logout</a>
         </li>
         <li className="option">

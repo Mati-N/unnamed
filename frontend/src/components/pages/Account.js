@@ -16,7 +16,7 @@ const Account = () => {
     pollInterval: 3000,
   });
   const { loading, data, error, fetchMore, refetch } = useQuery(SELF_POSTS);
-  const { doLogout: Logout, user } = useContext(AuthContext);
+  const { doLogout: Logout, user, disable_logout } = useContext(AuthContext);
   const { removeAlert } = useContext(AlertContext);
   const [spin, setSpin] = useState(false);
 
@@ -77,6 +77,8 @@ const Account = () => {
         more={more}
         spin={spin}
         refetch={refetch}
+        imagePath={user_data.selfUser.imagePath}
+        disable_logout={disable_logout}
       />
     </>
   );

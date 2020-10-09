@@ -1,6 +1,7 @@
 import graphene
 import graphql_jwt
 from graphql_jwt.decorators import login_required
+from graphene_file_upload.scalars import Upload
 from ..models import *
 from .Nodes import *
 
@@ -110,6 +111,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
     class Input:
         username = graphene.String()
         password = graphene.String()
+        image = Upload()
 
     ok = graphene.Boolean()
     user = graphene.Field(UserNode)
@@ -121,6 +123,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
         ok = False
         username = input["username"]
         password = input["password"]
+        image = input["image"]
         if info.context.user.is_authenticated:
             return CreateUser(ok=ok, user=info.context.user, message="Already logged in")
 
@@ -130,6 +133,8 @@ class CreateUser(graphene.relay.ClientIDMutation):
         ok = True
         user_instance = User(username=username)
         user_instance.set_password(password)
+        if image is not None:
+            user_instance.image = image
         user_instance.save()
 
         return CreateUser(ok=ok, user=user_instance)
@@ -149,7 +154,10 @@ class ReadNotification(graphene.relay.ClientIDMutation):
         if id is not None:
             try:
                 notif = Notification.objects.get(pk=id, recipient=info.context.user)
-                notif.read = True
+                if notif.read == True:
+                    notif.read = False
+                else:
+                    notif.read = True
                 notif.save()
             except Notification.DoesNotExist:
                 ok = False
@@ -166,6 +174,7 @@ class UpdateUser(graphene.relay.ClientIDMutation):
         username = graphene.String()
         password = graphene.String()
         newP = graphene.String()
+        image = Upload()
 
     ok = graphene.Boolean()
     user = graphene.Field(UserNode)
@@ -177,6 +186,7 @@ class UpdateUser(graphene.relay.ClientIDMutation):
         password = input["password"]
         username = input["username"]
         newP = input["newP"]
+        image = input["image"]
         ok = False
         message = None
         user_instance = info.context.user
@@ -197,9 +207,18 @@ class UpdateUser(graphene.relay.ClientIDMutation):
             user_instance.username = username
             message = "Username Changed"
 
+        if image is not None:
+            user_instance.image = image
+            message = "Profile Pic Changed"
+
         ok = True
 
-        if newP is not None and username is not None:
+        num = 0
+        for el in [newP, username, image]:
+            if el is not None:
+                num += 1
+
+        if num > 1:
             message == "Account Updated"
 
         user_instance.save()

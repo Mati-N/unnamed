@@ -11,10 +11,18 @@ __all__ = ['User', 'Post', 'Comment', 'Like', 'Following', 'Notification']
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True, null=True)
+    image = models.ImageField(blank=True, null=True, upload_to="user_pic")
 
     @property
     def follower_count(self):
         return self.followers.count()
+
+    @property
+    def image_path(self):
+        if (self.image == None):
+            return None
+
+        return self.image.url
 
     @property
     def post_count(self):

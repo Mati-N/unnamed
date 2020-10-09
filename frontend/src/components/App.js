@@ -5,6 +5,7 @@ import AlertState from "../context/alert/AlertState";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import Cookies from "js-cookie";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
 const Navbar = lazy(() => import("./layout/Navbar"));
 const Alert = lazy(() => import("./layout/Alert"));
 const Routes = lazy(() => import("./Routing/Routes"));
@@ -15,6 +16,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   connectToDevTools: true,
   credentials: "same-origin",
+  link: createUploadLink({ uri: "/api/" }),
   headers: {
     "X-CSRFToken": Cookies.get("csrftoken"),
   },

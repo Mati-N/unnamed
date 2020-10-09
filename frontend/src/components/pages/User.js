@@ -5,6 +5,8 @@ import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import { Redirect } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
+
 const Offline = lazy(() => import("./Offline"));
 const Posts = lazy(() => import("../post/Posts"));
 
@@ -113,7 +115,15 @@ const User = ({ match }) => {
     <>
       <div className="account-info">
         <div className="account-info-top">
-          <span className="username" style={{ display: "block" }}>
+          <Avatar
+            alt="profile picture"
+            src={user_data.userGet.imagePath}
+            variant="circle"
+            style={{
+              margin: "0.4em",
+            }}
+          />
+          <span className="username inline-block">
             {user_data.userGet.username}
           </span>
         </div>
@@ -179,6 +189,7 @@ const User = ({ match }) => {
         more={more}
         spin={spin}
         refetch={refetch}
+        imagePath={user_data.userGet.imagePath}
       />
     </>
   );

@@ -8,21 +8,9 @@ const Posts = lazy(() => import("../post/Posts"));
 
 function Home() {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS, {
-    pollInterval: 100000,
+    pollInterval: 1000000,
   });
   const [spin, setSpin] = useState(true);
-
-  if (loading || !data)
-    return (
-      <div className="spinner">
-        <Spinner
-          size={50}
-          style={{
-            margin: "auto",
-          }}
-        />
-      </div>
-    );
 
   if (error) {
     return (
@@ -73,14 +61,26 @@ function Home() {
           </Link>
         </li>
       </ul>
-      <Posts
-        posts={data.posts.edges}
-        self={false}
-        id={null}
-        more={more}
-        spin={spin}
-        refetch={refetch}
-      />
+      {(loading || !data) && (
+        <div className="spinner">
+          <Spinner
+            size={50}
+            style={{
+              margin: "auto",
+            }}
+          />
+        </div>
+      )}
+      {(!loading || data) && (
+        <Posts
+          posts={data.posts.edges}
+          self={false}
+          id={null}
+          more={more}
+          spin={spin}
+          refetch={refetch}
+        />
+      )}
     </>
   );
 }

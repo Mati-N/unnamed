@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext } from "react";
+import React, { useReducer, useEffect, useContext, useState } from "react";
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
 import { LOGIN, LOGOUT, SET_LOADING } from "../types";
@@ -23,6 +23,7 @@ const AuthState = (props) => {
     refreshToken: Cookies.get("refresh-token"),
     user: Cookies.get("USER-ID"),
   };
+  const [disable_logout, setDisableLogout] = useState(false);
 
   const { setAlert, removeAlert } = useContext(AlertContext);
   const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -38,7 +39,6 @@ const AuthState = (props) => {
       dispatch({
         type: LOGOUT,
       });
-      logoutLoggedOut();
       dispatch({
         type: SET_LOADING,
       });
@@ -51,7 +51,7 @@ const AuthState = (props) => {
         },
       })
         .catch((error) => {
-          doLogout();
+          logoutLoggedOut();
         })
         .then((d) => {
           if (d) {
@@ -62,33 +62,39 @@ const AuthState = (props) => {
                   variables: {
                     token: state.refreshToken,
                   },
-                }).then((d) => {
-                  if (d.data.refreshToken !== null) {
-                    dispatch({
-                      type: LOGIN,
-                      payload: d.data.refreshToken,
-                      refresh: true,
-                    });
-                  } else {
+                })
+                  .catch((e) => {
                     dispatch({
                       type: LOGOUT,
                     });
-                  }
-                });
-              } else {
-                dispatch({
-                  type: LOGOUT,
-                });
+                    logoutLoggedOut();
+                  })
+
+                  .then((d) => {
+                    if (d) {
+                      if (d.data.refreshToken !== null) {
+                        dispatch({
+                          type: LOGIN,
+                          payload: d.data.refreshToken,
+                          refresh: true,
+                        });
+                      } else {
+                        dispatch({
+                          type: LOGOUT,
+                        });
+                        logoutLoggedOut();
+                      }
+                    }
+                  });
               }
             }
           }
         });
+
       dispatch({
         type: SET_LOADING,
       });
-    } catch {
-      logoutLoggedOut();
-    }
+    } catch {}
   };
 
   useEffect(() => {
@@ -117,12 +123,13 @@ const AuthState = (props) => {
       });
   };
 
-  const doRegister = (username, password) => {
+  const doRegister = (username, password, image) => {
     removeAlert();
     addUser({
       variables: {
         username,
         password,
+        image,
       },
     })
       .catch((error) => `${error}`)
@@ -140,23 +147,25 @@ const AuthState = (props) => {
   };
 
   const doLogout = () => {
-    try {
-      if (state.refreshToken != null) {
-        setAlert("Logged out!", "info");
-      }
+    setDisableLogout(true);
+    const interval = setInterval(() => {
       logout({
         variables: {
           token: state.refreshToken,
         },
+      }).then((d) => {
+        if (d.data.revokeToken.revoked) {
+          console.log(d);
+          logoutLoggedOut();
+          dispatch({
+            type: LOGOUT,
+          });
+          props.client.clearStore();
+          setDisableLogout(false);
+          clearInterval(interval);
+        }
       });
-
-      dispatch({
-        type: LOGOUT,
-      });
-    } catch {
-      dispatch({ type: LOGOUT });
-    }
-    props.client.clearStore();
+    }, 5000);
   };
 
   return (
@@ -169,6 +178,7 @@ const AuthState = (props) => {
         doLogout,
         loggedIn,
         user: state.user,
+        disable_logout,
       }}
     >
       {props.children}
