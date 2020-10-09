@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { Link } from "react-router-dom";
+import MarkunreadMailboxTwoToneIcon from "@material-ui/icons/MarkunreadMailboxTwoTone";
 import Button from "@material-ui/core/Button";
 
 const Offline = lazy(() => import("./Offline"));
@@ -70,12 +71,18 @@ const Notifications = () => {
 
   return (
     <>
-      <Button className="mx-auto w-25" onClick={() => readNotif()}>
+      <Button
+        className="mx-auto w-25"
+        variant="outlined"
+        color="secondary"
+        startIcon={<MarkunreadMailboxTwoToneIcon />}
+        onClick={() => readNotif()}
+      >
         Read All
       </Button>
       {data.selfNotification.edges.length == 0 && (
-        <div className="empty-box-holder">
-          <Box />
+        <div className="w-75 h-75 m-auto d-flex align-items-center justify-content-center flex-column">
+          <NoData width="90%" height="90%" preserveAspectRatio />
         </div>
       )}
       {data.selfNotification.edges.map(({ node }) => {

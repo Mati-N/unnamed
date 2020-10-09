@@ -8,8 +8,8 @@ const Posts = ({ posts, self, username, id, more, spin, refetch }) => {
   return (
     <div className="posts">
       {posts.length == 0 && (
-        <div className="w-75 m-auto d-flex align-items-center justify-center">
-          <NoData />
+        <div className="w-75 h-75 m-auto d-flex align-items-center justify-content-center flex-column">
+          <NoData width="90%" height="90%" preserveAspectRatio />
         </div>
       )}
       {posts.map(({ node }) => (
