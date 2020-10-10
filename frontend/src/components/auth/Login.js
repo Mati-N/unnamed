@@ -105,7 +105,7 @@ function Login() {
                 <button
                   type="submit"
                   className="btn btn-teal"
-                  disabled={isSubmitting || !isValid || !dirty}
+                  disabled={isSubmitting || !(isValid && dirty)}
                 >
                   Login
                 </button>

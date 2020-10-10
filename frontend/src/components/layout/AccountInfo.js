@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutSVG from "../SVG/Logout.svg";
 import Edit from "../SVG/Edit.svg";
 import Avatar from "@material-ui/core/Avatar";
 
-const AccountInfo = ({ user_data, Logout, disable_logout }) => {
+const AccountInfo = ({ user_data, Logout }) => {
+  const [disabled, setDisabled] = useState(false);
   return (
     <div className="account-info">
       <div className="account-info-top">
@@ -15,7 +16,9 @@ const AccountInfo = ({ user_data, Logout, disable_logout }) => {
           style={{
             margin: "0.4em",
           }}
-        />
+        >
+          {user_data.selfUser.username.substring(0, 1)}
+        </Avatar>
         <span className="username d-inline-block">
           {user_data.selfUser.username}
         </span>
@@ -27,7 +30,17 @@ const AccountInfo = ({ user_data, Logout, disable_logout }) => {
         </span>
       </div>
       <ul className="options">
-        <li className="option" onClick={Logout} disabled={disable_logout}>
+        <li
+          className="option"
+          onClick={() => {
+            if (!disabled) {
+              setDisabled(true);
+              Logout();
+              setDisabled(false);
+            }
+          }}
+          disabled={disabled}
+        >
           <LogoutSVG className="svg" /> <a>Logout</a>
         </li>
         <li className="option">

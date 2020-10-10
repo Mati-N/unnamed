@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext, useState } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
 import { LOGIN, LOGOUT, SET_LOADING } from "../types";
@@ -23,7 +23,6 @@ const AuthState = (props) => {
     refreshToken: Cookies.get("refresh-token"),
     user: Cookies.get("USER-ID"),
   };
-  const [disable_logout, setDisableLogout] = useState(false);
 
   const { setAlert, removeAlert } = useContext(AlertContext);
   const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -147,7 +146,6 @@ const AuthState = (props) => {
   };
 
   const doLogout = () => {
-    setDisableLogout(true);
     const interval = setInterval(() => {
       logout({
         variables: {
@@ -161,7 +159,6 @@ const AuthState = (props) => {
             type: LOGOUT,
           });
           props.client.clearStore();
-          setDisableLogout(false);
           clearInterval(interval);
         }
       });
@@ -178,7 +175,6 @@ const AuthState = (props) => {
         doLogout,
         loggedIn,
         user: state.user,
-        disable_logout,
       }}
     >
       {props.children}

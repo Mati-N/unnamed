@@ -46,6 +46,16 @@ class PostNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
     like_count = graphene.Int(source="like_count")
     comment_count = graphene.Int(source="comment_count")
+    liked = graphene.Boolean()
+
+    def resolve_liked(self, info):
+        is_liked = False
+        try:
+            Like.objects.get(user=info.context.user, post=self)
+            is_liked = True
+        except Like.DoesNotExist:
+            pass
+        return is_liked
 
     class Meta:
         model = Post

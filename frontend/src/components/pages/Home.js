@@ -3,6 +3,7 @@ import { GET_POSTS } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
+import Error from "../layout/Error";
 const Offline = lazy(() => import("./Offline"));
 const Posts = lazy(() => import("../post/Posts"));
 
@@ -11,17 +12,6 @@ function Home() {
     pollInterval: 1000000,
   });
   const [spin, setSpin] = useState(true);
-
-  if (error) {
-    return (
-      <>
-        <Offline />
-        <button className="btn btn-teal" onClick={refetch}>
-          Refresh
-        </button>
-      </>
-    );
-  }
 
   const more = () => {
     fetchMore({
@@ -61,6 +51,7 @@ function Home() {
           </Link>
         </li>
       </ul>
+      {error && <Error />}
       {(loading || !data) && (
         <div className="spinner">
           <Spinner

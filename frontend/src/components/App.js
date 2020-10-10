@@ -17,6 +17,7 @@ const client = new ApolloClient({
   connectToDevTools: true,
   credentials: "same-origin",
   link: createUploadLink({ uri: "/api/" }),
+  dataIdFromObject: (object) => object.id,
   headers: {
     "X-CSRFToken": Cookies.get("csrftoken"),
   },

@@ -12,6 +12,7 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import CloseIcon from "@material-ui/icons/Close";
 import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +46,13 @@ const useStyles = makeStyles((theme) => ({
   button: {
     padding: theme.spacing(1),
     marginBottom: theme.spacing(1),
+  },
+  imageButtons: {
+    padding: theme.spacing(2),
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+    justifyContent: "space-evenly",
   },
 }));
 
@@ -81,27 +89,41 @@ const Edit = () => {
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-
-          if (values.password != "") {
-            updateUser({
-              variables: {
-                password: values.password,
-                username: values.username.length > 0 ? values.username : null,
-                newPassword:
-                  values.newPassword.length > 0 ? values.newPassword : null,
-                image: values.image,
-              },
-            }).then((d) => {
-              if (d) {
-                if (!d.data.updateUser.ok) {
-                  setAlert(d.data.updateUser.message, "warning");
-                } else {
-                  setAlert(d.data.updateUser.message, "success");
-                  history.push("/");
-                }
+          updateUser({
+            variables: {
+              password: values.password,
+              username: values.username.length > 0 ? values.username : null,
+              newPassword:
+                values.newPassword.length > 0 ? values.newPassword : null,
+              image: values.image,
+            },
+            update: (cache, { data }) => {
+              if (cache && data.ok) {
+                cache.writeFragment({
+                  id: `UserNode:${data.updateUser.user.id}`,
+                  fragment: gql`
+                    fragment User on UserNode {
+                      username
+                      imagePath
+                    }
+                  `,
+                  data: {
+                    username: data.updateUser.user.username,
+                    imagePath: data.updateUser.user.imagePath,
+                  },
+                });
               }
-            });
-          }
+            },
+          }).then((d) => {
+            if (d) {
+              if (!d.data.updateUser.ok) {
+                setAlert(d.data.updateUser.message, "warning");
+              } else {
+                setAlert(d.data.updateUser.message, "success");
+                history.push("/");
+              }
+            }
+          });
           setSubmitting(false);
         }}
       >
@@ -133,7 +155,10 @@ const Edit = () => {
                     reader.readAsDataURL(file);
                   }}
                 />
-                <label htmlFor="icon-button-file">
+                <label
+                  htmlFor="icon-button-file"
+                  className={classes.imageButtons}
+                >
                   <Button
                     variant="contained"
                     color="secondary"
@@ -143,6 +168,22 @@ const Edit = () => {
                   >
                     Profile Pic
                   </Button>
+                  {imageUrl && (
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      className={classes.button}
+                      startIcon={<CloseIcon />}
+                      component="span"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setImageUrl(null);
+                        setFieldValue("image", null);
+                      }}
+                    >
+                      Unload Picture
+                    </Button>
+                  )}
                 </label>
               </FormControl>
               <FormControl className={classes.formControl} fullWidth>
@@ -194,7 +235,7 @@ const Edit = () => {
                 <button
                   type="submit"
                   className="btn btn-teal"
-                  disabled={isSubmitting || !isValid || !dirty}
+                  disabled={isSubmitting || !(isValid && dirty)}
                 >
                   Change
                 </button>

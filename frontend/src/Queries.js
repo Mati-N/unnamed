@@ -1,6 +1,8 @@
-import { gql } from "@apollo/client";
+import {
+  gql
+} from "@apollo/client";
 
-export const ADD_USER = gql`
+export const ADD_USER = gql `
   mutation createUser($username: String!, $password: String!, $image: Upload) {
     createUser(
       input: { username: $username, password: $password, image: $image }
@@ -16,7 +18,7 @@ export const ADD_USER = gql`
   }
 `;
 
-export const LOGIN_USER = gql`
+export const LOGIN_USER = gql `
   mutation tokenAuth($username: String!, $password: String!) {
     tokenAuth(input: { username: $username, password: $password }) {
       payload
@@ -29,7 +31,7 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export const GET_POSTS = gql`
+export const GET_POSTS = gql `
   query posts($cursor: String) {
     posts(first: 45, after: $cursor, orderBy: "created_at") {
       pageInfo {
@@ -49,13 +51,14 @@ export const GET_POSTS = gql`
             id
             imagePath
           }
+          liked
         }
       }
     }
   }
 `;
 
-export const FOLLOWING_POSTS = gql`
+export const FOLLOWING_POSTS = gql `
   query followingPosts($cursor: String) {
     followingPosts(first: 45, after: $cursor, orderBy: "created_at") {
       pageInfo {
@@ -75,13 +78,14 @@ export const FOLLOWING_POSTS = gql`
             id
             imagePath
           }
+          liked
         }
       }
     }
   }
 `;
 
-export const GET_POST = gql`
+export const GET_POST = gql `
   query post($id: ID!, $cursor: String) {
     posts(id: $id) {
       edges {
@@ -97,6 +101,7 @@ export const GET_POST = gql`
             id
             imagePath
           }
+          liked
         }
       }
     }
@@ -119,13 +124,7 @@ export const GET_POST = gql`
   }
 `;
 
-export const LIKED = gql`
-  query liked($post_id: ID!) {
-    liked(id: $post_id)
-  }
-`;
-
-export const VERIFY_TOKEN = gql`
+export const VERIFY_TOKEN = gql `
   mutation verifyToken($token: String!) {
     verifyToken(input: { token: $token }) {
       payload
@@ -133,7 +132,7 @@ export const VERIFY_TOKEN = gql`
   }
 `;
 
-export const LOGOUT_USER = gql`
+export const LOGOUT_USER = gql `
   mutation($token: String!) {
     revokeToken(input: { refreshToken: $token }) {
       revoked
@@ -141,7 +140,7 @@ export const LOGOUT_USER = gql`
   }
 `;
 
-export const LOGOUT_LOGGED_OUT = gql`
+export const LOGOUT_LOGGED_OUT = gql `
   mutation logoutLoggedOut {
     deleteTokenCookie(input: {}) {
       deleted
@@ -152,18 +151,19 @@ export const LOGOUT_LOGGED_OUT = gql`
   }
 `;
 
-export const LIKE = gql`
+export const LIKE = gql `
   mutation like($post_id: ID!) {
     likePost(input: { postId: $post_id }) {
       ok
       post {
         likeCount
+        liked
       }
     }
   }
 `;
 
-export const CREATE_POST = gql`
+export const CREATE_POST = gql `
   mutation createPost($text: String!, $title: String!) {
     createPost(input: { text: $text, title: $title }) {
       ok
@@ -174,6 +174,7 @@ export const CREATE_POST = gql`
         likeCount
         commentCount
         createdAt
+        liked
         user {
           username
           id
@@ -184,7 +185,7 @@ export const CREATE_POST = gql`
   }
 `;
 
-export const REFRESH_TOKEN = gql`
+export const REFRESH_TOKEN = gql `
   mutation refreshToken($token: String!) {
     refreshToken(input: { refreshToken: $token }) {
       token
@@ -193,7 +194,7 @@ export const REFRESH_TOKEN = gql`
   }
 `;
 
-export const SELF_USER = gql`
+export const SELF_USER = gql `
   query self_user {
     selfUser {
       id
@@ -205,7 +206,7 @@ export const SELF_USER = gql`
   }
 `;
 
-export const SELF_POSTS = gql`
+export const SELF_POSTS = gql `
   query self_posts($cursor: String) {
     selfPost(first: 20, orderBy: "created_at", after: $cursor) {
       edges {
@@ -216,6 +217,7 @@ export const SELF_POSTS = gql`
           text
           title
           createdAt
+          liked
         }
       }
       pageInfo {
@@ -226,7 +228,7 @@ export const SELF_POSTS = gql`
   }
 `;
 
-export const GET_USER = gql`
+export const GET_USER = gql `
   query get_user($id: ID!) {
     userGet(id: $id) {
       username
@@ -239,7 +241,7 @@ export const GET_USER = gql`
   }
 `;
 
-export const USER_POSTS = gql`
+export const USER_POSTS = gql `
   query user_posts($cursor: String, $id: ID!) {
     userPost(first: 10, orderBy: "created_at", after: $cursor, id: $id) {
       edges {
@@ -250,6 +252,7 @@ export const USER_POSTS = gql`
           text
           title
           createdAt
+          liked
         }
       }
       pageInfo {
@@ -260,7 +263,7 @@ export const USER_POSTS = gql`
   }
 `;
 
-export const FOLLOW = gql`
+export const FOLLOW = gql `
   mutation followUser($id: ID!) {
     followUser(input: { id: $id }) {
       ok
@@ -273,7 +276,7 @@ export const FOLLOW = gql`
   }
 `;
 
-export const UPDATE_USER = gql`
+export const UPDATE_USER = gql `
   mutation updateUser(
     $password: String!
     $username: String
@@ -290,11 +293,16 @@ export const UPDATE_USER = gql`
     ) {
       ok
       message
+      user {
+        username
+        imagePath
+        id
+      }
     }
   }
 `;
 
-export const CREATE_COMMENT = gql`
+export const CREATE_COMMENT = gql `
   mutation createComment($id: ID!, $comment: String!) {
     createComment(input: { post: $id, content: $comment }) {
       ok
@@ -306,19 +314,22 @@ export const CREATE_COMMENT = gql`
         }
         content
         createdAt
+        post {
+          commentCount
+        }
       }
       __typename
     }
   }
 `;
 
-export const NOTIFICATION_NUMBER = gql`
+export const NOTIFICATION_NUMBER = gql `
   query noftificationNumber {
     notificationNumber
   }
 `;
 
-export const GET_NOTIFICATIONS = gql`
+export const GET_NOTIFICATIONS = gql `
   query($cursor: String) {
     selfNotification(orderBy: "-created_at", after: $cursor, first: 18) {
       pageInfo {
@@ -355,7 +366,7 @@ export const GET_NOTIFICATIONS = gql`
   }
 `;
 
-export const READ_NOTIFICATION = gql`
+export const READ_NOTIFICATION = gql `
   mutation readNotification($id: ID) {
     readNotification(input: { id: $id }) {
       ok

@@ -23,6 +23,10 @@ class User(AbstractUser):
             return None
 
         return self.image.url
+    
+    @property
+    def following_count(self):
+        return self.targets.count()
 
     @property
     def post_count(self):
@@ -55,13 +59,18 @@ class Comment(AutoTimeStamped):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likers")
     post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="likes")
 
+    class Meta:
+        unique_together = ["user", "post"]
 
 class Following(models.Model):
     target = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE)
     follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='targets', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["target", "follower"]
 
 
 class Notification(AutoTimeStamped):
@@ -71,3 +80,7 @@ class Notification(AutoTimeStamped):
     post = models.ForeignKey('api.Post', on_delete=models.CASCADE, null=True, blank=True)
     comment = models.ForeignKey('api.Comment', on_delete=models.CASCADE, null=True, blank=True)
     read = models.BooleanField(default=False)
+
+    
+    class Meta:
+        unique_together = ["recipient", "sender" ,"category"]

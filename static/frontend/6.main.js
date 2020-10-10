@@ -6,7 +6,11 @@
 /*!**********************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
   \**********************************************************************/
-/*! no static exports found */function(e,t){e.exports=function(e){return e&&e.__esModule?e:{default:e}}},"./node_modules/@material-ui/icons/PhotoCamera.js":
+/*! no static exports found */function(e,t){e.exports=function(e){return e&&e.__esModule?e:{default:e}}},"./node_modules/@material-ui/icons/Close.js":
+/*!**************************************************!*\
+  !*** ./node_modules/@material-ui/icons/Close.js ***!
+  \**************************************************/
+/*! no static exports found */function(e,t,n){"use strict";var r=n(/*! @babel/runtime/helpers/interopRequireDefault */"./node_modules/@babel/runtime/helpers/interopRequireDefault.js");Object.defineProperty(t,"__esModule",{value:!0}),t.default=void 0;var s=r(n(/*! react */"./node_modules/react/index.js")),o=(0,r(n(/*! ./utils/createSvgIcon */"./node_modules/@material-ui/icons/utils/createSvgIcon.js")).default)(s.default.createElement("path",{d:"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"}),"Close");t.default=o},"./node_modules/@material-ui/icons/PhotoCamera.js":
 /*!********************************************************!*\
   !*** ./node_modules/@material-ui/icons/PhotoCamera.js ***!
   \********************************************************/

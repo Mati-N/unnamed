@@ -27,16 +27,17 @@ const Routes = () => {
   const transitions = useTransition(location, (location) => location.pathname, {
     from: {
       opacity: 0,
-      transform: "scale(0.6) translateX(-100%)",
+      transform: "translateX(100%)",
     },
     enter: {
       opacity: 1,
-      transform: "scale(1) translateX(0%)",
+      transform: "translateX(0%)",
     },
     leave: {
       opacity: 0,
-      transform: "scale(0.6) translateX(70%)",
+      transform: "translateX(-70%)",
     },
+    duration: "0.1s",
     config: config.stiff,
   });
 

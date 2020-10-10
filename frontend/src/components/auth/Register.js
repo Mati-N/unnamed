@@ -9,7 +9,7 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import * as Yup from "yup";
-
+import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import SignUp from "../SVG/Signup.svg";
@@ -42,6 +42,18 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  button: {
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+
+  imageButtons: {
+    padding: theme.spacing(1.5),
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+    justifyContent: "start",
   },
 }));
 
@@ -106,7 +118,10 @@ function Register() {
                   reader.readAsDataURL(file);
                 }}
               />
-              <label htmlFor="icon-button-file">
+              <label
+                htmlFor="icon-button-file"
+                className={classes.imageButtons}
+              >
                 <Button
                   variant="contained"
                   color="secondary"
@@ -116,6 +131,23 @@ function Register() {
                 >
                   Profile Pic
                 </Button>
+
+                {imageUrl && (
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    className={classes.button}
+                    startIcon={<CloseIcon />}
+                    component="span"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setImageUrl(null);
+                      setFieldValue("image", null);
+                    }}
+                  >
+                    Unload Picture
+                  </Button>
+                )}
               </label>
             </FormControl>
             <FormControl className={classes.formControl} fullWidth>
@@ -153,7 +185,7 @@ function Register() {
               <button
                 type="submit"
                 className="btn btn-teal"
-                disabled={isSubmitting || !isValid || !dirty}
+                disabled={isSubmitting || !(isValid && dirty)}
               >
                 Register
               </button>

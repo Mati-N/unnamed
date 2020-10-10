@@ -122,7 +122,9 @@ const User = ({ match }) => {
             style={{
               margin: "0.4em",
             }}
-          />
+          >
+            {user_data.userGet.username.substring(0, 1)}
+          </Avatar>
           <span className="username inline-block">
             {user_data.userGet.username}
           </span>

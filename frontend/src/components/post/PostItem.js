@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef, lazy } from "react";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import React, { useState, useEffect, useRef } from "react";
+import { gql, useMutation } from "@apollo/client";
 import { LIKED, LIKE, CREATE_COMMENT, GET_POST } from "../../Queries";
+import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import Avatar from "@material-ui/core/Avatar";
@@ -8,6 +9,12 @@ import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
 import CommentTwoToneIcon from "@material-ui/icons/CommentTwoTone";
 import Button from "@material-ui/core/Button";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1.1),
+  },
+}));
 
 const PostItem = ({
   text,
@@ -20,25 +27,17 @@ const PostItem = ({
   commentCount,
   show_comment,
   imagePath,
+  liked,
 }) => {
   const initialState = {
     done: false,
-    likes: likeCount,
     hasMore: false,
     height: "32vh",
     loading: true,
-    comments: commentCount,
     expand: false,
   };
-  const [liked] = useLazyQuery(LIKED, {
-    variables: { post_id: id },
-    onCompleted: (data) => {
-      setState({ ...state, liked: data.liked });
-    },
-    pollInterval: 2000,
-  });
 
-  const [hovered, setHovered] = useState(false);
+  const classes = useStyles();
   const [comment, setComment] = useState("");
   const self = useRef(null);
 
@@ -57,7 +56,6 @@ const PostItem = ({
   });
 
   useEffect(() => {
-    liked();
     const hasMore = self.current.scrollHeight > self.current.clientHeight;
     if (hasMore) {
       self.current.style.maxHeight = "none";
@@ -106,22 +104,45 @@ const PostItem = ({
   };
 
   const like = () => {
-    likePost({ variables: { post_id: id } })
-      .catch((error) => console.log(error))
-      .then(({ data: { likePost } }) => {
-        setState({
-          ...state,
-          liked: !state.liked,
-          likes: likePost.post.likeCount,
-        });
-      });
+    likePost({
+      variables: { post_id: id },
+      update: (cache, { data: { likePost } }) => {
+        if (cache) {
+          cache.writeFragment({
+            id: `PostNode:${id}`,
+            fragment: gql`
+              fragment Post on PostNode {
+                liked
+                likeCount
+              }
+            `,
+            data: {
+              likeCount: likePost.post.likeCount,
+              liked: likePost.post.liked,
+            },
+          });
+        }
+      },
+    }).catch((error) => console.log(error));
   };
+
   const add_comment = (e) => {
     e.preventDefault();
     addComment({
       variables: { id, comment },
       update: (cache, { data }) => {
         if (cache) {
+          cache.writeFragment({
+            id: `PostNode:${id}`,
+            fragment: gql`
+              fragment Post on PostNode {
+                commentCount
+              }
+            `,
+            data: {
+              commentCount: data.createComment.comment.post.commentCount,
+            },
+          });
           let { postComments } = cache.readQuery({
             query: GET_POST,
             variables: { id },
@@ -162,7 +183,9 @@ const PostItem = ({
               style={{
                 margin: "0.4em",
               }}
-            />{" "}
+            >
+              {username.substring(0, 1)}
+            </Avatar>{" "}
             {username}{" "}
           </Link>
           <small className="post-time">
@@ -191,42 +214,34 @@ const PostItem = ({
       {!state.loading && (
         <>
           <div className="info-bottom">
-            <span
-              className="like"
-              onClick={() => {
+            <Button
+              className={"w-auto d-block" + classes.button}
+              variant="outlined"
+              startIcon={
+                liked ? (
+                  <FavoriteIcon color="secondary" />
+                ) : (
+                  <FavoriteTwoToneIcon />
+                )
+              }
+              onClick={(e) => {
+                e.target.disabled = "true";
                 like();
+                e.target.disabled = "false";
               }}
             >
+              {likeCount > 0 && likeCount}
+            </Button>
+            <Link to={`/post/${id}`}>
               <Button
-                className="mx-auto d-block "
-                style={{ minWidth: "25%" }}
-                variant="contained"
+                className={"w-auto d-block" + classes.button}
+                variant="outlined"
                 color="primary"
-                startIcon={
-                  liked ? (
-                    <FavoriteIcon color="action" />
-                  ) : (
-                    <FavoriteTwoToneIcon />
-                  )
-                }
-                onClick={like}
+                startIcon={<CommentTwoToneIcon />}
               >
-                {state.likes > 0 && state.likes}
+                {commentCount > 0 && commentCount}
               </Button>
-            </span>
-            <span className="like">
-              <Link to={`/post/${id}`}>
-                <Button
-                  className="mx-auto d-block "
-                  style={{ minWidth: "25%" }}
-                  variant="contained"
-                  color="primary"
-                  startIcon={<CommentTwoToneIcon />}
-                >
-                  {state.comments > 0 && state.comments}
-                </Button>
-              </Link>
-            </span>
+            </Link>
           </div>
 
           {show_comment && (
@@ -239,6 +254,7 @@ const PostItem = ({
                   name="text"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
+                  required
                 />
                 <button className="btn btn-teal" type="submit" id="btn">
                   Comment
