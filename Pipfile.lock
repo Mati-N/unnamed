@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "48f61540fbfb74930602a594e664facc3fb2d12bc1123d611be6b11efd9fc4b7"
+            "sha256": "24c89529f1aa9d3a7b1a0b5763879e80edfba8dd15da25168d8c2cecc6fd887d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -150,6 +150,14 @@
             ],
             "index": "pypi",
             "version": "==0.4.9"
+        },
+        "graphene-file-upload": {
+            "hashes": [
+                "sha256:034ff72d2834b7aebd06fda412fa88a10aba34bac604317f7552457e47040654",
+                "sha256:b5f47a81f5614d1184ba9480a63835769b26303cb7759316122401784858e9c7"
+            ],
+            "index": "pypi",
+            "version": "==1.2.2"
         },
         "graphql-core": {
             "hashes": [

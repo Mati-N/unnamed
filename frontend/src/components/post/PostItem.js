@@ -204,9 +204,9 @@ const PostItem = ({
                 color="primary"
                 startIcon={
                   liked ? (
-                    <CommentIcon color="action" />
+                    <FavoriteIcon color="action" />
                   ) : (
-                    <CommentTwoToneIcon />
+                    <FavoriteTwoToneIcon />
                   )
                 }
                 onClick={like}
@@ -221,13 +221,7 @@ const PostItem = ({
                   style={{ minWidth: "25%" }}
                   variant="contained"
                   color="primary"
-                  startIcon={
-                    liked ? (
-                      <CommentIcon color="action" />
-                    ) : (
-                      <CommentTwoToneIcon />
-                    )
-                  }
+                  startIcon={<CommentTwoToneIcon />}
                 >
                   {state.comments > 0 && state.comments}
                 </Button>

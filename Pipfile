@@ -32,6 +32,7 @@ gunicorn = "*"
 django-heroku = "*"
 whitenoise = {extras = ["brotli"], version = "*"}
 django-notifications-hq = "*"
+graphene-file-upload = "*"
 
 [requires]
 python_version = "3.8"
