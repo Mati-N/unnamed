@@ -6,13 +6,18 @@ Django==3.1
 django-filter==2.3.0
 django-graphql-jwt==0.3.1
 django-heroku==0.3.1
+django-model-utils==4.0.0
+django-notifications-hq==1.6.0
 djangorestframework==3.11.0
 graphene==2.1.8
 graphene-django==2.12.1
 graphene-django-extras==0.4.9
+graphene-file-upload==1.2.2
 graphql-core==2.3.2
 graphql-relay==2.0.1
 gunicorn==20.0.4
+jsonfield==3.1.0
+Pillow==7.2.0
 promise==2.3
 psycopg2==2.8.5
 PyJWT==1.7.1
@@ -22,5 +27,6 @@ Rx==1.6.1
 singledispatch==3.4.0.3
 six==1.15.0
 sqlparse==0.3.1
+swapper==1.1.2.post1
 Unidecode==1.1.1
 whitenoise==5.2.0

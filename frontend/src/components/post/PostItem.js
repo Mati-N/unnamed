@@ -4,11 +4,10 @@ import { LIKED, LIKE, CREATE_COMMENT, GET_POST } from "../../Queries";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import Avatar from "@material-ui/core/Avatar";
-import { AvatarGroup } from "@material-ui/lab";
-
-const Liked = lazy(() => import("../SVG/Like.svg"));
-const Heart = lazy(() => import("../SVG/Heart.svg"));
-const Comments = lazy(() => import("../SVG/Comments.svg"));
+import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
+import CommentTwoToneIcon from "@material-ui/icons/CommentTwoTone";
+import Button from "@material-ui/core/Button";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const PostItem = ({
   text,
@@ -197,28 +196,42 @@ const PostItem = ({
               onClick={() => {
                 like();
               }}
-              onMouseOver={() => setHovered(true)}
-              onMouseOut={() => setHovered(false)}
-              onMouseLeave={() => setHovered(false)}
             >
-              {!hovered ? (
-                state.liked ? (
-                  <Liked className="like-icon" />
-                ) : (
-                  <Heart className="like-icon" />
-                )
-              ) : !state.liked ? (
-                <Liked className="like-icon" />
-              ) : (
-                <Heart className="like-icon" />
-              )}
-              {state.likes > 0 && state.likes}
+              <Button
+                className="mx-auto d-block "
+                style={{ minWidth: "25%" }}
+                variant="contained"
+                color="primary"
+                startIcon={
+                  liked ? (
+                    <CommentIcon color="action" />
+                  ) : (
+                    <CommentTwoToneIcon />
+                  )
+                }
+                onClick={like}
+              >
+                {state.likes > 0 && state.likes}
+              </Button>
             </span>
             <span className="like">
-              <Link to={`/post/${id}`} className="like-icon">
-                <Comments />
+              <Link to={`/post/${id}`}>
+                <Button
+                  className="mx-auto d-block "
+                  style={{ minWidth: "25%" }}
+                  variant="contained"
+                  color="primary"
+                  startIcon={
+                    liked ? (
+                      <CommentIcon color="action" />
+                    ) : (
+                      <CommentTwoToneIcon />
+                    )
+                  }
+                >
+                  {state.comments > 0 && state.comments}
+                </Button>
               </Link>
-              {state.comments > 0 && state.comments}
             </span>
           </div>
 
