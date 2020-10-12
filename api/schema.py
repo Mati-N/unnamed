@@ -8,7 +8,6 @@ from django_filters import OrderingFilter
 from django.db.models import Count, IntegerField
 from .schemafiles.Nodes import *
 from .schemafiles.mutations import *
-from .signals import *
 from .models import *
 from django.db.models import Q
 from graphene_django.types import DjangoObjectType

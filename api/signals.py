@@ -4,8 +4,12 @@ from django.dispatch import receiver
 from graphene_subscriptions.signals import post_save_subscription
 from .models import *
 
-post_save.connect(post_save_subscription, sender=Notification, dispatch_uid="notification_created")
 
+def trigger_graphene_subscriptions(sender, **kwargs):
+    print('signals are working')
+    post_save_subscription(sender, **kwargs)
+
+post_save.connect(trigger_graphene_subscriptions, sender=Notification, dispatch_uid="notification_post_save")
 
 @receiver(post_save, sender=Following)
 def follow_handler(sender, instance, **kwargs):
