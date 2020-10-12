@@ -38,6 +38,7 @@ cloudinary = "*"
 graphene-subscriptions = "*"
 channels = "*"
 pillow = "*"
+pyOpenSSL = "^19.1.0"
 
 [tool.poetry.dev-dependencies]
 
