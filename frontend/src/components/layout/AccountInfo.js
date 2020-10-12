@@ -3,9 +3,44 @@ import { Link } from "react-router-dom";
 import LogoutSVG from "../SVG/Logout.svg";
 import Edit from "../SVG/Edit.svg";
 import Avatar from "@material-ui/core/Avatar";
+import { authAtom } from "../../atoms";
+import { LOGOUT_USER, LOGOUT_LOGGED_OUT } from "../../Queries";
+import { useRecoilState } from "recoil";
+import { useMutation } from "@apollo/client";
 
-const AccountInfo = ({ user_data, Logout }) => {
+const AccountInfo = ({ user_data }) => {
   const [disabled, setDisabled] = useState(false);
+  const [logoutLoggedOut] = useMutation(LOGOUT_LOGGED_OUT);
+  const [logout] = useMutation(LOGOUT_USER);
+  const [auth, setAuth] = useRecoilState(authAtom);
+
+  const Logout = () => {
+    Cookies.remove("token");
+    Cookies.remove("refresh-token");
+    Cookies.remove("USER-ID");
+    logoutLoggedOut();
+    setAuth((oldAuth) => ({
+      ...oldAuth,
+      isAuthenticated: false,
+    }));
+  };
+
+  const doLogout = () => {
+    const interval = setInterval(() => {
+      logout({
+        variables: {
+          token: auth.refreshToken,
+        },
+      }).then((d) => {
+        if (d.data.revokeToken.revoked) {
+          Logout();
+          props.client.clearStore();
+          clearInterval(interval);
+        }
+      });
+    }, 5000);
+  };
+
   return (
     <div className="account-info">
       <div className="account-info-top">
@@ -35,7 +70,7 @@ const AccountInfo = ({ user_data, Logout }) => {
           onClick={() => {
             if (!disabled) {
               setDisabled(true);
-              Logout();
+              doLogout();
               setDisabled(false);
             }
           }}

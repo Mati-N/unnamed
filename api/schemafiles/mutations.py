@@ -144,12 +144,14 @@ class ReadNotification(graphene.relay.ClientIDMutation):
         id = graphene.ID()
 
     ok = graphene.Boolean()
+    notification = graphene.Field(NotificationNode)
 
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, root, info, **input):
         id = input["id"]
         ok = True
+        notif = None
         
         if id is not None:
             try:
@@ -165,7 +167,7 @@ class ReadNotification(graphene.relay.ClientIDMutation):
             notif = Notification.objects.filter(recipient=info.context.user)
             notif.update(read=True)
 
-        return ReadNotification(ok=ok)
+        return ReadNotification(ok=ok, notification=notif)
 
 
 # A mutation used to update a user's properties

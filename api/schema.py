@@ -11,6 +11,9 @@ from .schemafiles.mutations import *
 from .signals import *
 from .models import *
 from django.db.models import Q
+from graphene_django.types import DjangoObjectType
+from graphene_subscriptions.events import CREATED
+
 
 class Query(object):
     posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
@@ -36,10 +39,6 @@ class Query(object):
 
     def resolve_post_comments(self, info, id, **kwargs):
         return Comment.objects.filter(post=Post.objects.get(id=id))
-
-    @login_required
-    def resolve_is_following(self, info, id, **kwargs):
-        return len(Following.objects.filter(follower=info.context.user, target=User.objects.get(id=id))) > 0
 
     def resolve_user_get(self, info, id, **kwargs):
         try:
@@ -101,3 +100,15 @@ class Mutation(object):
     read_notification = ReadNotification.Field()
     delete_token_cookie = graphql_jwt.relay.DeleteJSONWebTokenCookie.Field()
     delete_refresh_token_cookie = graphql_jwt.relay.DeleteRefreshTokenCookie.Field()
+
+class Subscription(graphene.ObjectType):
+    notification_created = graphene.Field(NotificationNode)
+
+    def resolve_notification_created(root, info, **kwargs):
+        print(root, root.event)
+        return root.filter(
+            lambda event:
+                event.operation == CREATED and
+                isinstance(event.instance, Notification) and
+                event.instance.recipient == info.context.user
+        ).map(lambda event: event.instance)

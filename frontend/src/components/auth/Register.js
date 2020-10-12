@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
-import AuthContext from "../../context/auth/AuthContext";
-import AlertContext from "../../context/alert/AlertContext";
+import React, { useState, useEffect } from "react";
+import { useSetRecoilState, useResetRecoilState } from "recoil";
+import { authAtom, alertAtom } from "../../atoms";
+import { useMutation } from "@apollo/client";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import {
   TextField,
@@ -9,10 +10,12 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import * as Yup from "yup";
+import { ADD_USER, LOGIN_USER } from "../../Queries";
 import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import SignUp from "../SVG/Signup.svg";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -58,13 +61,70 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Register() {
-  const Auth = useContext(AuthContext);
-  const { removeAlert } = useContext(AlertContext);
+  const setAuth = useSetRecoilState(authAtom);
+  const setAlert = useSetRecoilState(alertAtom);
+  const removeAlert = useResetRecoilState(alertAtom);
   const [imageUrl, setImageUrl] = useState(null);
   const classes = useStyles();
+  const [addUser] = useMutation(ADD_USER);
+  const [login] = useMutation(LOGIN_USER);
   useEffect(() => {
     removeAlert();
   }, []);
+
+  const doRegister = (username, password, image) => {
+    removeAlert();
+    addUser({
+      variables: {
+        username,
+        password,
+        image,
+      },
+    })
+      .catch((error) => `${error}`)
+      .then((d) => {
+        if (d.data) {
+          if (d.data.createUser.ok) {
+            login({
+              variables: {
+                username,
+                password,
+              },
+            })
+              .catch((error) =>
+                setAlert({ message: error.message, type: "warning" })
+              )
+              .then((d) => {
+                if (d) {
+                  if (d.data.tokenAuth !== null) {
+                    removeAlert();
+                    dispatch({
+                      type: LOGIN,
+                      payload: d.data.tokenAuth,
+                      refresh: false,
+                    });
+
+                    Cookies.set("token", d.data.tokenAuth.token);
+                    Cookies.set("USER-ID", d.data.tokenAuth.user.id);
+                    Cookies.set("refresh-token", d.data.tokenAuth.refreshToken);
+                    setAuth((oldAuth) => ({
+                      ...oldAuth,
+                      token: d.data.tokenAuth.token,
+                      user: d.data.tokenAuth.user.id,
+                      refreshToken: d.data.tokenAuth.refreshToken,
+                      isAuthenticated: true,
+                    }));
+                  }
+                }
+              });
+            return true;
+          } else {
+            setAlert({ message: d.data.createUser.message, type: "warning" });
+            return false;
+          }
+        }
+      });
+  };
 
   return (
     <Formik
@@ -84,7 +144,7 @@ function Register() {
       })}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
-        Auth.doRegister(values.username, values.password, values.image);
+        doRegister(values.username, values.password, values.image);
         setSubmitting(false);
       }}
     >

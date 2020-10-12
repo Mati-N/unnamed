@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import AuthContext from "../../context/auth/AuthContext";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -15,6 +14,8 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useQuery } from "@apollo/client";
 import { NOTIFICATION_NUMBER } from "../../Queries";
+import { useRecoilValue } from "recoil";
+import { authAtom } from "../../atoms";
 import grey from "@material-ui/core/colors/grey";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,9 +31,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Navbar() {
-  const { isAuthenticated, loading: auth_loading } = useContext(AuthContext);
   const location = useLocation();
   const classes = useStyles();
+
+  const { isAuthenticated } = useRecoilValue(authAtom);
 
   const { loading, data, startPolling, stopPolling } = useQuery(
     NOTIFICATION_NUMBER,
@@ -41,7 +43,7 @@ function Navbar() {
     }
   );
 
-  if (auth_loading || isAuthenticated == null) return "";
+  if (isAuthenticated === null) return "";
 
   return (
     <BottomNavigation

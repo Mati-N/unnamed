@@ -1,13 +1,16 @@
-import React, { useContext } from "react";
-import AlertContext from "../../context/alert/AlertContext";
+import React from "react";
 import { Alert as AlertThing } from "@material-ui/lab";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { alertAtom } from "../../atoms";
 
 const Alert = () => {
-  const { alert_info, removeAlert } = useContext(AlertContext);
+  const alert = useRecoilValue(alertAtom);
+  const resetAlert = useResetRecoilState(alertAtom);
+
   return (
-    alert_info && (
-      <AlertThing onClose={removeAlert} severity={alert_info.alert_type}>
-        {alert_info && alert_info.msg}
+    alert.message && (
+      <AlertThing onClose={resetAlert} severity={alert.type}>
+        {alert.message}
       </AlertThing>
     )
   );

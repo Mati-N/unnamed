@@ -9,6 +9,7 @@ import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
 import CommentTwoToneIcon from "@material-ui/icons/CommentTwoTone";
 import Button from "@material-ui/core/Button";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import ReactTimeAgo from "react-time-ago";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -67,41 +68,6 @@ const PostItem = ({
       loading: false,
     });
   }, []);
-
-  const timeSince = (date) => {
-    let seconds = Math.floor((new Date() - date) / 1000);
-
-    let interval = seconds / 31536000;
-    if (interval > 1) {
-      const flr = Math.floor(interval);
-      return Math.floor(interval) + (flr === 1 ? " year" : " years");
-    }
-
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      const flr = Math.floor(interval);
-      return flr + (flr === 1 ? " month" : " months");
-    }
-
-    interval = seconds / 86400;
-    if (interval > 1) {
-      const flr = Math.floor(interval);
-      return Math.floor(flr) + (flr === 1 ? " day" : " days");
-    }
-
-    interval = seconds / 3600;
-    if (interval > 1) {
-      const flr = Math.floor(interval);
-      return flr + (flr === 1 ? " hour" : " hours");
-    }
-
-    interval = seconds / 60;
-    if (interval > 1) {
-      const flr = Math.floor(interval);
-      return flr + (flr == 1 ? " minute" : " minutes");
-    }
-    return "Seconds";
-  };
 
   const like = () => {
     likePost({
@@ -188,9 +154,11 @@ const PostItem = ({
             </Avatar>{" "}
             {username}{" "}
           </Link>
-          <small className="post-time">
-            {timeSince(new Date(createdAt))} ago{" "}
-          </small>
+          <ReactTimeAgo
+            date={new Date(createdAt)}
+            timeStyle="round"
+            className="post-time"
+          />
         </div>
         <h5 className="post-title">{title}</h5>
       </div>

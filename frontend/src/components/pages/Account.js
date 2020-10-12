@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect, lazy } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { SELF_POSTS, SELF_USER } from "../../Queries";
 import { useQuery } from "@apollo/client";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
-import AuthContext from "../../context/auth/AuthContext";
-import AlertContext from "../../context/alert/AlertContext";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { authAtom, alertAtom } from "../../atoms";
 const Posts = lazy(() => import("../post/Posts"));
 const AccountInfo = lazy(() => import("../layout/AccountInfo"));
 
@@ -16,8 +16,8 @@ const Account = () => {
     pollInterval: 3000,
   });
   const { loading, data, error, fetchMore, refetch } = useQuery(SELF_POSTS);
-  const { doLogout: Logout, user } = useContext(AuthContext);
-  const { removeAlert } = useContext(AlertContext);
+  const { user } = useRecoilValue(authAtom);
+  const removeAlert = useResetRecoilState(alertAtom);
   const [spin, setSpin] = useState(false);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const Account = () => {
   const { selfPost: post } = data;
   return (
     <>
-      <AccountInfo user_data={user_data} Logout={Logout} />
+      <AccountInfo user_data={user_data} />
       <Posts
         posts={post.edges}
         self={true}

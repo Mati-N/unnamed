@@ -1,7 +1,11 @@
 
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from graphene_subscriptions.signals import post_save_subscription
 from .models import *
+
+post_save.connect(post_save_subscription, sender=Notification, dispatch_uid="notification_created")
+
 
 @receiver(post_save, sender=Following)
 def follow_handler(sender, instance, **kwargs):

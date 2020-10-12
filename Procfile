@@ -1,1 +1,1 @@
-web: python manage.py migrate;  gunicorn feel.wsgi --log-file -
+web: daphne feel.asgi:application

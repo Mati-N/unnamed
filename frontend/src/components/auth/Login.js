@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from "react";
-import AuthContext from "../../context/auth/AuthContext";
-import AlertContext from "../../context/alert/AlertContext";
+import React, { useEffect } from "react";
+import { useSetRecoilState, useResetRecoilState } from "recoil";
+import { authAtom, alertAtom } from "../../atoms";
 import LoginSvg from "../SVG/Login.svg";
+import { useMutation } from "@apollo/client";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import {
   TextField,
@@ -10,6 +11,8 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import * as Yup from "yup";
+import { LOGIN_USER } from "../../Queries";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -38,12 +41,42 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login() {
-  const Auth = useContext(AuthContext);
-  const { removeAlert } = useContext(AlertContext);
+  const setAuth = useSetRecoilState(authAtom);
+  const setAlert = useSetRecoilState(alertAtom);
+  const removeAlert = useResetRecoilState(alertAtom);
   const classes = useStyles();
+  const [login] = useMutation(LOGIN_USER);
+
   useEffect(() => {
     removeAlert();
   }, []);
+
+  const doLogin = (username, password) => {
+    login({
+      variables: {
+        username,
+        password,
+      },
+    })
+      .catch((error) => setAlert({ message: error.message, type: "warning" }))
+      .then((d) => {
+        if (d) {
+          if (d.data.tokenAuth !== null) {
+            removeAlert();
+            Cookies.set("token", d.data.tokenAuth.token);
+            Cookies.set("USER-ID", d.data.tokenAuth.user.id);
+            Cookies.set("refresh-token", d.data.tokenAuth.refreshToken);
+            setAuth((oldAuth) => ({
+              ...oldAuth,
+              token: d.data.tokenAuth.token,
+              user: d.data.tokenAuth.user.id,
+              refreshToken: d.data.tokenAuth.refreshToken,
+              isAuthenticated: true,
+            }));
+          }
+        }
+      });
+  };
 
   return (
     <>
@@ -59,7 +92,7 @@ function Login() {
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          Auth.doLogin(values.username, values.password);
+          doLogin(values.username, values.password);
           setSubmitting(false);
         }}
       >

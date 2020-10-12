@@ -2,7 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { UPDATE_USER } from "../../Queries";
-import AlertContext from "../../context/alert/AlertContext";
+import { useSetRecoilState, useResetRecoilState } from "recoil";
+import { alertAtom } from "../../atoms";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import Button from "@material-ui/core/Button";
 import {
@@ -57,7 +58,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Edit = () => {
-  const { removeAlert, setAlert } = useContext(AlertContext);
+  const setAlert = useSetRecoilState(alertAtom);
+  const removeAlert = useResetRecoilState(alertAtom);
   const [updateUser] = useMutation(UPDATE_USER);
   const [imageUrl, setImageUrl] = useState(null);
   const classes = useStyles();
@@ -88,6 +90,13 @@ const Edit = () => {
             ),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          if (
+            values.username == null &&
+            image == null &&
+            values.newPassword == null
+          ) {
+            return;
+          }
           setSubmitting(true);
           updateUser({
             variables: {
@@ -117,9 +126,16 @@ const Edit = () => {
           }).then((d) => {
             if (d) {
               if (!d.data.updateUser.ok) {
-                setAlert(d.data.updateUser.message, "warning");
+                setAlert({
+                  message: d.data.updateUser.message,
+                  type: "warning",
+                });
               } else {
-                setAlert(d.data.updateUser.message, "success");
+                setAlert({
+                  message: d.data.updateUser.message,
+                  type: "warning",
+                });
+
                 history.push("/");
               }
             }

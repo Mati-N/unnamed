@@ -66,7 +66,6 @@ footer {
   }
 }
 
-
 .form-auth {
   padding: 3em;
   height: 100%;
@@ -295,7 +294,7 @@ footer {
   border: 0.03em solid $light-color !important;
   box-shadow: 0.01em 0 0.1em rgb(159, 158, 158);
   margin: 0.5em auto;
-  transition: all 0.1s;
+  transition: all 0.2s;
 
   .notification-post {
     width: 97%;
@@ -538,7 +537,8 @@ main {
   }
 }
 
-@media only screen and (max-width: 860) {}
+@media only screen and (max-width: 860) {
+}
 
 @media (hover: none) {
   .posts {

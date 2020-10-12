@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'graphene_django',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'cloudinary_storage',
+    'cloudinary',
+    'graphene_subscriptions',
+    'channels',
 ]
 
 
@@ -61,6 +65,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 ROOT_URLCONF = 'feel.urls'
 
@@ -87,6 +97,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 WSGI_APPLICATION = 'feel.wsgi.application'
+ASGI_APPLICATION = 'feel.routing.application'
 
 
 
@@ -157,6 +168,8 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 MEDIA_URL = '/media/'
+     
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (

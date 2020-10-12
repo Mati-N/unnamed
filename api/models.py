@@ -2,7 +2,6 @@ from django.db import models
 import pytz
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-
 from utils.models import AutoTimeStamped
 utc = pytz.UTC
 
@@ -83,4 +82,7 @@ class Notification(AutoTimeStamped):
 
     
     class Meta:
-        unique_together = ["recipient", "sender" ,"category"]
+        constraints = [
+            models.UniqueConstraint(fields=['sender', 'recipient'], condition=models.Q(category="new_follow"), name='unique_field_follow'),
+            models.UniqueConstraint(fields=['sender', 'recipient', 'post'], condition=models.Q(category="new_like"), name='unique_field_like')
+        ]

@@ -33,6 +33,10 @@ django-heroku = "*"
 whitenoise = {extras = ["brotli"], version = "*"}
 django-notifications-hq = "*"
 graphene-file-upload = "*"
+django-cloudinary-storage = "*"
+cloudinary = "*"
+graphene-subscriptions = "*"
+channels = "*"
 
 [requires]
 python_version = "3.8"

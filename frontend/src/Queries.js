@@ -235,9 +235,8 @@ export const GET_USER = gql `
       postCount
       followerCount
       imagePath
+      isFollowing
     }
-
-    isFollowing(id: $id)
   }
 `;
 
@@ -270,6 +269,7 @@ export const FOLLOW = gql `
       user {
         id
         followerCount
+        isFollowing
       }
       message
     }
@@ -359,7 +359,6 @@ export const GET_NOTIFICATIONS = gql `
           }
           read
           id
-          createdAt
         }
       }
     }
@@ -370,6 +369,36 @@ export const READ_NOTIFICATION = gql `
   mutation readNotification($id: ID) {
     readNotification(input: { id: $id }) {
       ok
+      notification {
+        read
+      }
+    }
+  }
+`;
+
+export const NOTIFICATION_SUB = gql `
+  subscription OnNotificationAdded {
+    notificationCreated {
+      createdAt
+      category
+      sender {
+        id
+        username
+      }
+      post {
+        id
+        title
+      }
+      comment {
+        id
+        content
+        post {
+          id
+          title
+        }
+      }
+      read
+      id
     }
   }
 `;

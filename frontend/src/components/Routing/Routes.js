@@ -3,12 +3,11 @@ import { Switch, useLocation, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import AuthenticationRoute from "./AuthenticationRoute";
 import { useTransition, animated, config } from "react-spring";
-import AuthContext from "../../context/auth/AuthContext";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import { ErrorBoundary } from "react-error-boundary";
-import Error from "../layout/Error";
-import Edit from "../pages/Edit";
 
+const Error = lazy(() => import("../layout/Error"));
+const Edit = lazy(() => import("../pages/Edit"));
 const Post = lazy(() => import("../post/Post"));
 const Home = lazy(() => import("../pages/Home"));
 const FollowingPosts = lazy(() => import("../pages/FollowingPosts"));
@@ -21,7 +20,6 @@ const User = lazy(() => import("../pages/User"));
 const Notifications = lazy(() => import("../pages/Notifications"));
 
 const Routes = () => {
-  const { loggedIn } = useContext(AuthContext);
   const location = useLocation();
 
   const transitions = useTransition(location, (location) => location.pathname, {

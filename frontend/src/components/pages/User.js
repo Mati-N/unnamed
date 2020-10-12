@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect, lazy } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { GET_USER, USER_POSTS, FOLLOW } from "../../Queries";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
-import AuthContext from "../../context/auth/AuthContext";
-import AlertContext from "../../context/alert/AlertContext";
 import { Redirect } from "react-router-dom";
+import { authAtom, alertAtom } from "../../atoms";
 import Avatar from "@material-ui/core/Avatar";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 
 const Offline = lazy(() => import("./Offline"));
 const Posts = lazy(() => import("../post/Posts"));
@@ -19,14 +19,9 @@ const User = ({ match }) => {
   const { loading, data, error, fetchMore, refetch } = useQuery(USER_POSTS, {
     variables: { id: match.params.id },
   });
-  const { Logout, user } = useContext(AuthContext);
-  const { removeAlert, setAlert } = useContext(AlertContext);
-  const [spin, setSpin] = useState(false);
-  const [following, setFollowing] = useState({
-    first: true,
-    following: null,
-    followers: "",
-  });
+  const { user } = useRecoilValue(authAtom);
+  const removeAlert = useResetRecoilState(alertAtom);
+  const [spin, setSpin] = useState(false)
   const [follow] = useMutation(FOLLOW);
 
   useEffect(() => {
@@ -88,26 +83,27 @@ const User = ({ match }) => {
   }
 
   const followIt = () => {
-    follow({ variables: { id: match.params.id } }).then(
-      ({ data: { followUser } }) => {
-        setFollowing({
-          ...following,
-          following: !following.following,
-          followers: followUser.user.followerCount,
-        });
+    follow({
+      variables: { id: match.params.id },
+      update: (cache, { data }) => {
+        if (cache) {
+          cache.writeFragment({
+            id: `UserNode:${match.params.id}`,
+            fragment: gql`
+              fragment User on UserNode {
+                isFollowing
+                followerCount
+              }
+            `,
+            data: {
+              followerCount: data.followUser.user.followerCount,
+              isFollowing: data.followUser.user.isFollowing,
+            },
+          });
+        }
       }
-    );
+    });
   };
-
-  if (!loading) {
-    if (following.first) {
-      setFollowing({
-        first: false,
-        following: user_data.isFollowing,
-        followers: user_data.userGet.followerCount,
-      });
-    }
-  }
 
   const { userPost } = data;
 
@@ -132,7 +128,7 @@ const User = ({ match }) => {
 
         <div className="info-mini">
           <button className="btn btn-teal" onClick={followIt}>
-            {!following.following ? (
+            {user_data.userGet.isFollowing ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="icon icon-tabler icon-tabler-user-plus"
@@ -169,7 +165,7 @@ const User = ({ match }) => {
                 <line x1="16" y1="11" x2="22" y2="11" />
               </svg>
             )}{" "}
-            {following.following ? "Unfollow" : "Follow"}
+            {user_data.userGet.isFollowing ? "Unfollow" : "Follow"}
           </button>
           <span className="info">
             {user_data.userGet.postCount > 0
@@ -178,8 +174,8 @@ const User = ({ match }) => {
             Post{user_data.userGet.postCount > 1 ? "s" : ""}
           </span>
           <span className="info">
-            {following.followers > 0 ? following.followers : "No"} Follower
-            {following.followers > 1 ? "s" : ""}
+            {user_data.userGet.followerCount > 0 ? user_data.userGet.followerCount : "No"} Follower
+            {user_data.userGet.followerCount > 1 ? "s" : ""}
           </span>
         </div>
       </div>

@@ -1,15 +1,16 @@
 import React, { useContext, Suspense } from "react";
 import { Route, Redirect } from "react-router-dom";
-import AuthContext from "../../context/auth/AuthContext";
+import { useRecoilValue } from "recoil";
+import { authAtom } from "../../atoms";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 
 const PrivateRoute = ({ component: Component, auth, ...rest }) => {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+  const { isAuthenticated } = useRecoilValue(authAtom);
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (loading || isAuthenticated == null)
+        if (isAuthenticated === null)
           return (
             <div className="spinner">
               <Spinner size={68} />

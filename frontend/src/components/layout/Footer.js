@@ -1,11 +1,11 @@
 import React, { useContext, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import AuthContext from "../../context/auth/AuthContext";
+import { useRecoilValue } from "recoil";
+import { authAtom } from "../../atoms";
 
 const Footer = () => {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+  const { isAuthenticated } = useRecoilValue(authAtom);
 
-  if (loading || isAuthenticated == null) return "";
+  if (isAuthenticated === null) return "";
   return (
     <footer>
       <span>A Social Media App.</span>

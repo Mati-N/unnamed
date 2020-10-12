@@ -24,6 +24,17 @@ class UserNode(DjangoObjectType):
     follower_count = graphene.Int(source="follower_count")
     post_count = graphene.Int(source="post_count")
     image_path = graphene.String(source="image_path")
+    is_following = graphene.Boolean()
+
+    def resolve_is_following(self, info):
+        following = False
+        try:
+            Following.objects.get(target=self, follower=info.context.user)
+            following = True
+        except Following.DoesNotExist:
+            pass
+
+        return following
 
     class Meta:
         model = User

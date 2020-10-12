@@ -6,7 +6,8 @@ import {
   FOLLOWING_POSTS,
   SELF_POSTS,
 } from "../../Queries";
-import AlertContext from "../../context/alert/AlertContext";
+import { useSetRecoilState, useResetRecoilState } from "recoil";
+import { alertAtom } from "../../atoms";
 import { useHistory } from "react-router-dom";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import {
@@ -47,7 +48,8 @@ const NewPost = () => {
   const classes = useStyles();
   const [addPost] = useMutation(CREATE_POST);
   const history = useHistory();
-  const { setAlert, removeAlert } = useContext(AlertContext);
+  const setAlert = useSetRecoilState(alertAtom);
+  const removeAlert = useResetRecoilState(alertAtom);
 
   useEffect(() => {
     removeAlert();
@@ -135,10 +137,10 @@ const NewPost = () => {
       .then((data) => {
         if (data) {
           if (data !== null && data.data.createPost.ok) {
-            setAlert("Post Sent", "success");
+            setAlert({ message: "Post Sent", type: "success" });
             history.push("/");
           } else {
-            setAlert("Something went wrong", "warning");
+            setAlert({ message: "Something went wrong", type: "warning" });
           }
         }
       });

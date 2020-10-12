@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { READ_NOTIFICATION } from "../../Queries";
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import MarkunreadMailboxTwoToneIcon from "@material-ui/icons/MarkunreadMailboxTwoTone";
+import MarkunreadIcon from "@material-ui/icons/Markunread";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -12,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    margin: theme.spacing(6),
+    marginBottom: theme.spacing(3),
   },
   title: {
     fontSize: 14,
@@ -26,6 +27,27 @@ const NotificationItem = ({ node }) => {
   const classes = useStyles();
 
   const [readNotif] = useMutation(READ_NOTIFICATION);
+
+  const readFunc = () => {
+    readNotif({
+      variables: { id: node.id },
+      update: (cache, { data: { readNotification } }) => {
+        if (readNotification.ok) {
+          cache.writeFragment({
+            id: `NotificationNode:${node.id}`,
+            fragment: gql`
+              fragment Notification on NotificationNode {
+                read
+              }
+            `,
+            data: {
+              read: readNotification.notification.read,
+            },
+          });
+        }
+      },
+    });
+  };
 
   const timeSince = (date) => {
     let seconds = Math.floor((new Date() - date) / 1000);
@@ -82,9 +104,9 @@ const NotificationItem = ({ node }) => {
             <Typography variant="h5" component="h2">
               <Link
                 to={`user/${node.sender.id}`}
-                onClick={() =>
-                  node.read ? false : readNotif({ variables: { id: node.id } })
-                }
+                onClick={() => {
+                  readFunc();
+                }}
               >
                 {node.sender.username}
               </Link>{" "}
@@ -97,12 +119,18 @@ const NotificationItem = ({ node }) => {
           <CardActions>
             <Button
               size="small"
-              onClick={() =>
-                node.read ? false : readNotif({ variables: { id: node.id } })
+              onClick={() => {
+                readFunc();
+              }}
+              startIcon={
+                !node.read ? (
+                  <MarkunreadMailboxTwoToneIcon />
+                ) : (
+                  <MarkunreadIcon />
+                )
               }
-              startIcon={<MarkunreadMailboxTwoToneIcon />}
             >
-              Mark Read
+              Mark {node.read && "Un"}Read
             </Button>
           </CardActions>
         </Card>
@@ -127,9 +155,9 @@ const NotificationItem = ({ node }) => {
             <Typography variant="h5" component="h2">
               <Link
                 to={`user/${node.sender.id}`}
-                onClick={() =>
-                  node.read ? false : readNotif({ variables: { id: node.id } })
-                }
+                onClick={() => {
+                  readFunc();
+                }}
               >
                 {node.sender.username}
               </Link>{" "}
@@ -141,9 +169,9 @@ const NotificationItem = ({ node }) => {
             <Typography variant="body2" component="p">
               <Link
                 to={`/post/${node.post.id}`}
-                onClick={() =>
-                  node.read ? false : readNotif({ variables: { id: node.id } })
-                }
+                onClick={() => {
+                  readFunc();
+                }}
               >
                 {node.post.title}
               </Link>
@@ -152,12 +180,18 @@ const NotificationItem = ({ node }) => {
           <CardActions>
             <Button
               size="small"
-              onClick={() =>
-                node.read ? false : readNotif({ variables: { id: node.id } })
+              onClick={() => {
+                readFunc();
+              }}
+              startIcon={
+                !node.read ? (
+                  <MarkunreadMailboxTwoToneIcon />
+                ) : (
+                  <MarkunreadIcon />
+                )
               }
-              startIcon={<MarkunreadMailboxTwoToneIcon />}
             >
-              Mark Read
+              Mark {node.read && "Un"}Read
             </Button>
           </CardActions>
         </Card>
@@ -181,9 +215,9 @@ const NotificationItem = ({ node }) => {
             <Typography variant="h5" component="h2">
               <Link
                 to={`user/${node.sender.id}`}
-                onClick={() =>
-                  node.read ? false : readNotif({ variables: { id: node.id } })
-                }
+                onClick={() => {
+                  readFunc();
+                }}
               >
                 {node.sender.username}
               </Link>{" "}
@@ -191,11 +225,9 @@ const NotificationItem = ({ node }) => {
               <Typography display="inline">
                 <Link
                   to={`/post/${node.comment.post.id}`}
-                  onClick={() =>
-                    node.read
-                      ? false
-                      : readNotif({ variables: { id: node.id } })
-                  }
+                  onClick={() => {
+                    readFunc();
+                  }}
                   size={30}
                 >
                   {node.comment.post.title}
@@ -213,9 +245,9 @@ const NotificationItem = ({ node }) => {
             <Typography paragraph>
               <Link
                 to={`/post/${node.comment.post.id}`}
-                onClick={() =>
-                  node.read ? false : readNotif({ variables: { id: node.id } })
-                }
+                onClick={() => {
+                  readFunc();
+                }}
                 color="grey"
                 style="color: grey !important;"
               >
@@ -226,12 +258,18 @@ const NotificationItem = ({ node }) => {
           <CardActions>
             <Button
               size="small"
-              onClick={() =>
-                node.read ? false : readNotif({ variables: { id: node.id } })
+              onClick={() => {
+                readFunc();
+              }}
+              startIcon={
+                !node.read ? (
+                  <MarkunreadMailboxTwoToneIcon />
+                ) : (
+                  <MarkunreadIcon />
+                )
               }
-              startIcon={<MarkunreadMailboxTwoToneIcon />}
             >
-              Mark Read
+              Mark {node.read && "Un"}Read
             </Button>
           </CardActions>
         </Card>
