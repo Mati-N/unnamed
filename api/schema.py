@@ -12,6 +12,7 @@ from .models import *
 from django.db.models import Q
 from graphene_django.types import DjangoObjectType
 from graphene_subscriptions.events import CREATED
+import logging
 
 
 class Query(object):
@@ -110,7 +111,7 @@ class Subscription(graphene.ObjectType):
     notification_created = graphene.Field(NotificationNode)
 
     def resolve_notification_created(root, info, **kwargs):
-        print(root, root.event)
+        logging.info(root, root.event)
         return root.filter(
             lambda event:
                 event.operation == CREATED and
