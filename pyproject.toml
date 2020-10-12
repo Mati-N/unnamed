@@ -5,7 +5,7 @@ description = "This a simple social media app I'm making to learn web developmen
 authors = ["Mati <mathiaskassaye8@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.2"
 django = "==3.1"
 graphene-django = "==2.12.1"
 psycopg2 = "==2.8.5"
