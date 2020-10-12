@@ -22,7 +22,7 @@ class User(AbstractUser):
             return None
 
         return self.image.url
-    
+
     @property
     def following_count(self):
         return self.targets.count()
@@ -31,8 +31,10 @@ class User(AbstractUser):
     def post_count(self):
         return self.posts.count()
 
+
 class Post(AutoTimeStamped):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=260)
     text = models.TextField()
 
@@ -49,8 +51,10 @@ class Post(AutoTimeStamped):
 
 
 class Comment(AutoTimeStamped):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments")
-    post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, related_name="comments")
+    post = models.ForeignKey(
+        'api.Post', on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()
 
     def __str__(self):
@@ -58,31 +62,41 @@ class Comment(AutoTimeStamped):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likers")
-    post = models.ForeignKey('api.Post', on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, related_name="likers")
+    post = models.ForeignKey(
+        'api.Post', on_delete=models.CASCADE, related_name="likes")
 
     class Meta:
         unique_together = ["user", "post"]
 
+
 class Following(models.Model):
-    target = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE)
-    follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='targets', on_delete=models.CASCADE)
+    target = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE)
+    follower = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='targets', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ["target", "follower"]
 
 
 class Notification(AutoTimeStamped):
-    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_notifications")
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_notifications")
     category = models.TextField()
-    post = models.ForeignKey('api.Post', on_delete=models.CASCADE, null=True, blank=True)
-    comment = models.ForeignKey('api.Comment', on_delete=models.CASCADE, null=True, blank=True)
+    post = models.ForeignKey(
+        'api.Post', on_delete=models.CASCADE, null=True, blank=True)
+    comment = models.ForeignKey(
+        'api.Comment', on_delete=models.CASCADE, null=True, blank=True)
     read = models.BooleanField(default=False)
 
-    
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['sender', 'recipient'], condition=models.Q(category="new_follow"), name='unique_field_follow'),
-            models.UniqueConstraint(fields=['sender', 'recipient', 'post'], condition=models.Q(category="new_like"), name='unique_field_like')
+            models.UniqueConstraint(fields=['sender', 'recipient'], condition=models.Q(
+                category="new_follow"), name='unique_field_follow'),
+            models.UniqueConstraint(fields=['sender', 'recipient', 'post'], condition=models.Q(
+                category="new_like"), name='unique_field_like')
         ]

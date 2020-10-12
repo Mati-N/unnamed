@@ -6,6 +6,8 @@ from ..models import *
 from .Nodes import *
 
 # JSON Web token generator which stores the user object
+
+
 class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
     user = graphene.Field(UserNode)
 
@@ -14,6 +16,8 @@ class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
         return cls(user=info.context.user)
 
 # The mutation which create a comment
+
+
 class CreateComment(graphene.relay.ClientIDMutation):
     class Input:
         post = graphene.ID()
@@ -26,12 +30,15 @@ class CreateComment(graphene.relay.ClientIDMutation):
     @login_required
     def mutate_and_get_payload(cls, root, info, **input):
         ok = True
-        comment_instance = Comment(user=info.context.user, post=Post.objects.get(pk=input["post"]), content=input["content"])
+        comment_instance = Comment(user=info.context.user, post=Post.objects.get(
+            pk=input["post"]), content=input["content"])
         comment_instance.save()
 
         return CreateComment(ok=ok, comment=comment_instance)
 
 # The mustation which creates a post
+
+
 class CreatePost(graphene.relay.ClientIDMutation):
     class Input:
         title = graphene.String()
@@ -70,12 +77,14 @@ class Follow(graphene.relay.ClientIDMutation):
         if (user_instance == info.context.user):
             return Follow(ok=ok, user=info.context.user, message="Can't follow your self")
         ok = True
-        follow_instance = Following.objects.filter(follower=info.context.user, target=user_instance)
+        follow_instance = Following.objects.filter(
+            follower=info.context.user, target=user_instance)
         if len(follow_instance) > 0:
             follow_instance[0].delete()
             return Follow(ok=ok, user=user_instance, message="Unfollowed")
 
-        follow_instance = Following(follower=info.context.user, target=User.objects.get(id=id))
+        follow_instance = Following(
+            follower=info.context.user, target=User.objects.get(id=id))
         follow_instance.save()
 
         return Follow(ok=ok, user=user_instance, message="Followed")
@@ -95,7 +104,8 @@ class LikePost(graphene.relay.ClientIDMutation):
         ok = True
         post_id = input["post_id"]
         post_instance = Post.objects.get(pk=post_id)
-        like_instance = Like.objects.filter(user=info.context.user, post=post_instance)
+        like_instance = Like.objects.filter(
+            user=info.context.user, post=post_instance)
         if len(like_instance) > 0:
             like_instance[0].delete()
             return LikePost(ok=ok, post=post_instance, like=None)
@@ -103,7 +113,7 @@ class LikePost(graphene.relay.ClientIDMutation):
         like_instance = Like(user=info.context.user, post=post_instance)
         like_instance.save()
 
-        return LikePost(ok=ok, post=post_instance,like=like_instance)
+        return LikePost(ok=ok, post=post_instance, like=like_instance)
 
 
 # A mutation used to create a user
@@ -116,7 +126,6 @@ class CreateUser(graphene.relay.ClientIDMutation):
     ok = graphene.Boolean()
     user = graphene.Field(UserNode)
     message = graphene.String()
-
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **input):
@@ -139,6 +148,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
 
         return CreateUser(ok=ok, user=user_instance)
 
+
 class ReadNotification(graphene.relay.ClientIDMutation):
     class Input:
         id = graphene.ID()
@@ -152,10 +162,11 @@ class ReadNotification(graphene.relay.ClientIDMutation):
         id = input["id"]
         ok = True
         notif = None
-        
+
         if id is not None:
             try:
-                notif = Notification.objects.get(pk=id, recipient=info.context.user)
+                notif = Notification.objects.get(
+                    pk=id, recipient=info.context.user)
                 if notif.read == True:
                     notif.read = False
                 else:
@@ -196,7 +207,6 @@ class UpdateUser(graphene.relay.ClientIDMutation):
         if not user_instance.check_password(password):
             return UpdateUser(ok=ok, user=user_instance, message="Password is invalid")
 
-
         if newP is not None:
             if len(newP) < 8:
                 return UpdateUser(ok=ok, user=user_instance, message="Password is too short")
@@ -226,4 +236,3 @@ class UpdateUser(graphene.relay.ClientIDMutation):
         user_instance.save()
 
         return UpdateUser(ok=ok, user=user_instance, message=message)
-                

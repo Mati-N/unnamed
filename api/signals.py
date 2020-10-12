@@ -9,27 +9,38 @@ def trigger_graphene_subscriptions(sender, **kwargs):
     print('signals are working')
     post_save_subscription(sender, **kwargs)
 
-post_save.connect(trigger_graphene_subscriptions, sender=Notification, dispatch_uid="notification_post_save")
+
+post_save.connect(trigger_graphene_subscriptions,
+                  sender=Notification, dispatch_uid="notification_post_save")
+
 
 @receiver(post_save, sender=Following)
 def follow_handler(sender, instance, **kwargs):
-    Notification.objects.create(sender=instance.follower, recipient=instance.target, category="new_follow")
+    Notification.objects.create(
+        sender=instance.follower, recipient=instance.target, category="new_follow")
+
 
 @receiver(pre_delete, sender=Following)
 def unfollow_handler(sender, instance, **kwargs):
-    Notification.objects.filter(recipient=instance.target, sender=instance.follower, category="new_follow").delete()
+    Notification.objects.filter(
+        recipient=instance.target, sender=instance.follower, category="new_follow").delete()
+
 
 @receiver(post_save, sender=Like)
 def like_handler(sender, instance, **kwargs):
     if (instance.post.user != instance.user):
-        Notification.objects.create(sender=instance.user, recipient=instance.post.user, post=instance.post, category="new_like",)
-    
+        Notification.objects.create(
+            sender=instance.user, recipient=instance.post.user, post=instance.post, category="new_like",)
+
+
 @receiver(pre_delete, sender=Like)
 def unlike_handler(sender, instance, **kwargs):
-    Notification.objects.filter(sender=instance.user, recipient=instance.post.user, post=instance.post, category="new_like",).delete()
+    Notification.objects.filter(sender=instance.user, recipient=instance.post.user,
+                                post=instance.post, category="new_like",).delete()
 
 
 @receiver(post_save, sender=Comment)
 def comment_handler(sender, instance, **kwargs):
     if (instance.post.user != instance.user):
-        Notification.objects.create(sender=instance.user, recipient=instance.post.user, category="new_comment", comment=instance)
+        Notification.objects.create(
+            sender=instance.user, recipient=instance.post.user, category="new_comment", comment=instance)

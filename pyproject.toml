@@ -1,11 +1,11 @@
-[[source]]
-name = "pypi"
-url = "https://pypi.org/simple"
-verify_ssl = true
+[tool.poetry]
+name = "feel"
+version = "0.1.0"
+description = "This a simple social media app I'm making to learn web development"
+authors = ["Mati <mathiaskassaye8@gmail.com>"]
 
-[dev-packages]
-
-[packages]
+[tool.poetry.dependencies]
+python = "^3.8"
 django = "==3.1"
 graphene-django = "==2.12.1"
 psycopg2 = "==2.8.5"
@@ -39,5 +39,8 @@ graphene-subscriptions = "*"
 channels = "*"
 pillow = "*"
 
-[requires]
-python_version = "3.8"
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

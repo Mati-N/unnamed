@@ -1,4 +1,4 @@
-import graphene 
+import graphene
 from graphene import InputObjectType
 import graphql_jwt
 from django.contrib.auth import authenticate
@@ -15,10 +15,14 @@ from graphene_subscriptions.events import CREATED
 
 
 class Query(object):
-    posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
-    following_posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
-    self_post = DjangoFilterConnectionField(PostNode, post_title=graphene.String(), post_text=graphene.String())
-    user_post = DjangoFilterConnectionField(PostNode, id=graphene.ID(), post_title=graphene.String(), post_text=graphene.String())
+    posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(
+    ), post_title=graphene.String(), post_text=graphene.String())
+    following_posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(
+    ), post_title=graphene.String(), post_text=graphene.String())
+    self_post = DjangoFilterConnectionField(
+        PostNode, post_title=graphene.String(), post_text=graphene.String())
+    user_post = DjangoFilterConnectionField(PostNode, id=graphene.ID(
+    ), post_title=graphene.String(), post_text=graphene.String())
     self_user = graphene.Field(UserNode)
     user_get = graphene.Field(UserNode, id=graphene.ID())
     comments = DjangoFilterConnectionField(CommentNode)
@@ -32,6 +36,7 @@ class Query(object):
     def resolve_notification_number(self, info):
         return Notification.objects.filter(read=False, recipient=info.context.user).distinct().count()
     # Get notifications for currently logged in user
+
     @login_required
     def resolve_self_notification(self, info, **kwargs):
         return Notification.objects.filter(recipient=info.context.user).distinct()
@@ -75,7 +80,6 @@ class Query(object):
         elif title is not None:
             return Post.objects.filter(title=title)
 
-
         return Post.objects.all()
 
     def reslove_comments(self, info,  **kwargs):
@@ -84,6 +88,7 @@ class Query(object):
     @login_required
     def resolve_liked(self, info, id, **kwargs):
         return len(Like.objects.filter(user=info.context.user, post=Post.objects.get(pk=id))) > 0
+
 
 class Mutation(object):
     create_user = CreateUser.Field()
@@ -99,6 +104,7 @@ class Mutation(object):
     read_notification = ReadNotification.Field()
     delete_token_cookie = graphql_jwt.relay.DeleteJSONWebTokenCookie.Field()
     delete_refresh_token_cookie = graphql_jwt.relay.DeleteRefreshTokenCookie.Field()
+
 
 class Subscription(graphene.ObjectType):
     notification_created = graphene.Field(NotificationNode)

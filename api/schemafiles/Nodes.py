@@ -4,13 +4,15 @@ from graphene_django.types import DjangoObjectType
 from django_filters import OrderingFilter
 from ..models import *
 
-__all__ = ['UserNode', 'PostNode', 'CommentNode', 'FollowNode', 'LikeNode', 'NotificationNode']
+__all__ = ['UserNode', 'PostNode', 'CommentNode',
+           'FollowNode', 'LikeNode', 'NotificationNode']
 
 
 class UserFilter(django_filters.FilterSet):
     class Meta:
         model = User
-        fields = {'username': ['exact', 'icontains', 'istartswith'], 'id': ['exact']}
+        fields = {'username': ['exact', 'icontains',
+                               'istartswith'], 'id': ['exact']}
 
     order_by = OrderingFilter(
         fields=(
@@ -19,6 +21,8 @@ class UserFilter(django_filters.FilterSet):
     )
 
 # The user model's type
+
+
 class UserNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
     follower_count = graphene.Int(source="follower_count")
@@ -41,11 +45,13 @@ class UserNode(DjangoObjectType):
         interfaces = (graphene.relay.Node,)
         filterset_class = UserFilter
 
+
 class PostFilter(django_filters.FilterSet):
     class Meta:
         model = Post
-        fields = {'title': ['exact', 'icontains', 'istartswith'], 'text': ['exact', 'icontains', 'istartswith'], 'user': ['exact']}
-        
+        fields = {'title': ['exact', 'icontains', 'istartswith'], 'text': [
+            'exact', 'icontains', 'istartswith'], 'user': ['exact']}
+
     order_by = OrderingFilter(
         fields=(
             ('-created_at', 'created_at'), ("like_count", "like_count")
@@ -53,6 +59,8 @@ class PostFilter(django_filters.FilterSet):
     )
 
 # The post model's type
+
+
 class PostNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)
     like_count = graphene.Int(source="like_count")
@@ -80,6 +88,8 @@ class CommentFilter(django_filters.FilterSet):
         fields = {'content': ['exact', 'icontains', 'istartswith']}
 
 # The comment model's type
+
+
 class CommentNode(DjangoObjectType):
     id = graphene.ID(source="pk", required=True)
 
@@ -88,26 +98,30 @@ class CommentNode(DjangoObjectType):
         interfaces = (graphene.relay.Node,)
         filterset_class = CommentFilter
 
+
 class FollowNode(DjangoObjectType):
     class Meta:
         model = Following
         interfaces = (graphene.relay.Node,)
+
 
 class LikeNode(DjangoObjectType):
     class Meta:
         model = Like
         interfaces = (graphene.relay.Node,)
 
+
 class NotificationFilter(django_filters.FilterSet):
     class Meta:
-       model = Notification
-       fields = {'id': ['exact']}
+        model = Notification
+        fields = {'id': ['exact']}
 
     order_by = OrderingFilter(
         fields=(
             ('-created_at', 'created_at')
         )
     )
+
 
 class NotificationNode(DjangoObjectType):
     id = graphene.ID(source='pk', required=True)

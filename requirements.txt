@@ -1,32 +1,18 @@
-aniso8601==7.0.0
-asgiref==3.2.10
-Brotli==1.0.9
-dj-database-url==0.5.0
-Django==3.1
-django-filter==2.3.0
-django-graphql-jwt==0.3.1
-django-heroku==0.3.1
-django-model-utils==4.0.0
-django-notifications-hq==1.6.0
-djangorestframework==3.11.0
-graphene==2.1.8
-graphene-django==2.12.1
-graphene-django-extras==0.4.9
-graphene-file-upload==1.2.2
-graphql-core==2.3.2
-graphql-relay==2.0.1
-gunicorn==20.0.4
-jsonfield==3.1.0
-Pillow==7.2.0
-promise==2.3
-psycopg2==2.8.5
-PyJWT==1.7.1
-python-dateutil==2.8.1
-pytz==2020.1
-Rx==1.6.1
-singledispatch==3.4.0.3
-six==1.15.0
-sqlparse==0.3.1
-swapper==1.1.2.post1
-Unidecode==1.1.1
-whitenoise==5.2.0
+The lock file does not exist. Locking.
+Updating dependencies
+Resolving dependencies...
+
+  FileNotFoundError
+
+  [Errno 2] No such file or directory: '/mnt/c/Users/Mimi/Desktop/Projects/feel/project/poetry.lock'
+
+  at ~/.local/lib/python3.8/site-packages/tomlkit/toml_file.py:19 in read
+      15│     def __init__(self, path):  # type: (str) -> None
+      16│         self._path = path
+      17│ 
+      18│     def read(self):  # type: () -> TOMLDocument
+    → 19│         with io.open(self._path, encoding="utf-8") as f:
+      20│             return loads(f.read())
+      21│ 
+      22│     def write(self, data):  # type: (TOMLDocument) -> None
+      23│         with io.open(self._path, "w", encoding="utf-8") as f:

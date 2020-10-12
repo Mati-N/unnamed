@@ -16,8 +16,6 @@ import dj_database_url
 import django_heroku
 
 
-
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,7 +29,6 @@ DEBUG = os.environ.get('LOCAL') == "LOCAL"
 SECURE_SSL_REDIRECT = not DEBUG
 
 ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
-
 
 
 # Application definition
@@ -100,7 +97,6 @@ WSGI_APPLICATION = 'feel.wsgi.application'
 ASGI_APPLICATION = 'feel.routing.application'
 
 
-
 AUTHENTICATION_BACKENDS = [
     'graphql_jwt.backends.JSONWebTokenBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -111,8 +107,7 @@ AUTHENTICATION_BACKENDS = [
 
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-    }
-
+}
 
 
 GRAPHQL_JWT = {
@@ -168,8 +163,8 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 MEDIA_URL = '/media/'
-     
-DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
