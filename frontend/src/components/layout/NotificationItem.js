@@ -88,7 +88,7 @@ const NotificationItem = ({ node }) => {
     case "new_follow":
       return (
         <Card
-          fullWidth
+          
           className={node.read ? "notification-read" : "None"}
           classes={{ root: classes.card }}
           variant="outlined"
@@ -139,7 +139,7 @@ const NotificationItem = ({ node }) => {
     case "new_like":
       return (
         <Card
-          fullWidth
+          
           className={node.read ? "notification-read" : "None"}
           classes={{ root: classes.card }}
           variant="outlined"
@@ -199,7 +199,7 @@ const NotificationItem = ({ node }) => {
     case "new_comment":
       return (
         <Card
-          fullWidth
+          
           className={node.read ? "notification-read" : "None"}
           classes={{ root: classes.card }}
           variant="outlined"
@@ -249,7 +249,7 @@ const NotificationItem = ({ node }) => {
                   readFunc();
                 }}
                 color="grey"
-                style="color: grey !important;"
+                style={{ color: "grey !important" }}
               >
                 {node.comment.content.substr(0, 60)}
               </Link>

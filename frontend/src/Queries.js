@@ -236,6 +236,7 @@ export const GET_USER = gql `
       followerCount
       imagePath
       isFollowing
+      id
     }
   }
 `;
@@ -324,7 +325,7 @@ export const CREATE_COMMENT = gql `
 `;
 
 export const NOTIFICATION_NUMBER = gql `
-  query noftificationNumber {
+  query notificationNumber {
     notificationNumber
   }
 `;

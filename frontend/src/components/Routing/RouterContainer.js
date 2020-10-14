@@ -57,9 +57,7 @@ const RouterContainer = () => {
   }
 
   const loggedIn = () => {
-    console.log(auth)
     if (auth.token == null) {
-      console.log("isNull")
       setAuth((oldAuth) => ({ ...oldAuth, isAuthenticated: false }));
       return;
     }

@@ -5,7 +5,7 @@ description = "This a simple social media app I'm making to learn web developmen
 authors = ["Mati <mathiaskassaye8@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.8.2"
+python = "3.8.6"
 django = "==3.1"
 graphene-django = "==2.12.1"
 psycopg2 = "==2.8.5"
@@ -14,7 +14,6 @@ graphene-django-extras = "==0.4.9"
 aniso8601 = "==7.0.0"
 asgiref = "==3.2.10"
 django-filter = "==2.3.0"
-djangorestframework = "==3.11.0"
 graphene = "==2.1.8"
 graphql-core = "==2.3.2"
 graphql-relay = "==2.0.1"
@@ -39,6 +38,8 @@ graphene-subscriptions = "*"
 channels = "*"
 pillow = "*"
 pyOpenSSL = "^19.1.0"
+wagtail = "^2.10.2"
+service_identity = "^18.1.0"
 
 [tool.poetry.dev-dependencies]
 

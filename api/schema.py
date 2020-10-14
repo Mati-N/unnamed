@@ -13,7 +13,9 @@ from django.db.models import Q
 from graphene_django.types import DjangoObjectType
 from graphene_subscriptions.events import CREATED
 import logging
+from rx import Observable
 
+logger = logging.getLogger(__name__)
 
 class Query(object):
     posts = DjangoFilterConnectionField(PostNode, id=graphene.ID(
@@ -48,7 +50,7 @@ class Query(object):
     def resolve_user_get(self, info, id, **kwargs):
         try:
             return User.objects.get(id=id)
-        except User.mode.DoesNotExist:
+        except User.DoesNotExist:
             return None
 
     @login_required
@@ -109,12 +111,18 @@ class Mutation(object):
 
 class Subscription(graphene.ObjectType):
     notification_created = graphene.Field(NotificationNode)
+    hello = graphene.String()
+
+    
+    def resolve_hello(root, info):
+        return Observable.interval(3000).map(lambda i: "hello world!")
 
     def resolve_notification_created(root, info, **kwargs):
-        logging.info(root, root.event)
+        logger.debug('Subscription signals works!')
+        print("JJJJjjf;dsfjKLJF:DSFJKLM dsfkl; :LKJfdsa")
         return root.filter(
             lambda event:
                 event.operation == CREATED and
-                isinstance(event.instance, Notification) and
-                event.instance.recipient == info.context.user
+                isinstance(event.instance, Notification)# and
+               # event.instance.recipient == info.context.user
         ).map(lambda event: event.instance)

@@ -1,6 +1,6 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[28],{"./src/components/layout/NotificationList.js":
-/*!***************************************************!*\
-  !*** ./src/components/layout/NotificationList.js ***!
-  \***************************************************/
-/*! exports provided: default */function(e,n,t){"use strict";t.r(n);var o=t(/*! react */"./node_modules/react/index.js"),i=t.n(o),c=Object(o.lazy)((function(){return Promise.all(/*! import() */[t.e(2),t.e(3),t.e(20)]).then(t.bind(null,/*! ../layout/NotificationItem */"./src/components/layout/NotificationItem.js"))}));n.default=function(e){var n=e.subscribeToNewNotifications,t=e.edges;return Object(o.useEffect)((function(){n()}),[]),i.a.createElement("div",{className:"notifications"},t.map((function(e){var n=e.node;return i.a.createElement(c,{node:n,key:n.id})})))}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[28],{"./src/components/layout/Footer.js":
+/*!*****************************************!*\
+  !*** ./src/components/layout/Footer.js ***!
+  \*****************************************/
+/*! exports provided: default */function(e,t,n){"use strict";n.r(t);var a=n(/*! react */"./node_modules/react/index.js"),o=n.n(a),l=n(/*! recoil */"./node_modules/recoil/es/recoil.js"),s=n(/*! ../../atoms */"./src/atoms.js");t.default=function(){return null===Object(l.useRecoilValue)(s.authAtom).isAuthenticated?"":o.a.createElement("footer",null,o.a.createElement("span",null,"A Social Media App."),o.a.createElement("span",null,"UNNAMED."),o.a.createElement("a",{href:"https://github.com/Mati-N/unnamed"},"GITHUB."))}}}]);
 //# sourceMappingURL=28.main.js.map

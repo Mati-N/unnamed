@@ -14,7 +14,7 @@ import { RecoilRoot } from "recoil";
 import RouterContainer from "./Routing/RouterContainer";
 
 const wsLink = new WebSocketLink({
-  uri: "wss://" + location.host + "/api/",
+  uri: "ws://" + location.host + "/api/",
   options: {
     reconnect: true,
   },

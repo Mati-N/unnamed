@@ -143,7 +143,7 @@ class CreateUser(graphene.relay.ClientIDMutation):
         user_instance = User(username=username)
         user_instance.set_password(password)
         if image is not None:
-            user_instance.image = image
+            user_instance.profile_image = image
         user_instance.save()
 
         return CreateUser(ok=ok, user=user_instance)
@@ -220,7 +220,7 @@ class UpdateUser(graphene.relay.ClientIDMutation):
             message = "Username Changed"
 
         if image is not None:
-            user_instance.image = image
+            user_instance.profile_image = image
             message = "Profile Pic Changed"
 
         ok = True

@@ -85,18 +85,23 @@ const Notifications = () => {
             ),
           );
         }
-        
-          console.log(graphQLErrors)
-          console.log(response)
         if (networkError) { console.log(`[Network error]: ${networkError}`) };
       },
       updateQuery: (prev, { subscriptionData }) => {
-        console.log(prev, subscriptionData);
         if (!subscriptionData.data) return prev;
-        /*const newNotificationItem = subscriptionData.data.notificationCreated;
+        const newNotificationItem = subscriptionData.data.notificationCreated;
         return Object.assign({}, prev, {
+          selfNotification: {
+            edges: [
+              ...prev.selfNotification.edges,
+              {
+                __typename: prev.selfNotification.edges[0].__typename,
+                node: newNotificationItem
+              }
 
-        })*/
+            ]
+          }
+        });
       },
       errorPolicy: 'all'
     });

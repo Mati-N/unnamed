@@ -98,11 +98,6 @@ function Register() {
                 if (d) {
                   if (d.data.tokenAuth !== null) {
                     removeAlert();
-                    dispatch({
-                      type: LOGIN,
-                      payload: d.data.tokenAuth,
-                      refresh: false,
-                    });
 
                     Cookies.set("token", d.data.tokenAuth.token);
                     Cookies.set("USER-ID", d.data.tokenAuth.user.id);

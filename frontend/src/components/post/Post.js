@@ -3,7 +3,7 @@ import { Waypoint } from "react-waypoint";
 import { useQuery } from "@apollo/client";
 import { GET_POST } from "../../Queries";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
-
+import {Redirect} from "react-router-dom"
 const PostItem = lazy(() => import("./PostItem"));
 const Comments = lazy(() => import("./Comments"));
 
@@ -55,7 +55,10 @@ const Post = ({
     );
   }
   const { node } = data.posts.edges[0];
-
+  
+  if (!data.posts.edges) {
+    return <Redirect to="/" />
+  }
   return (
     <>
       <PostItem

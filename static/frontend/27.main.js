@@ -1,6 +1,6 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[27],{"./src/components/layout/Footer.js":
-/*!*****************************************!*\
-  !*** ./src/components/layout/Footer.js ***!
-  \*****************************************/
-/*! exports provided: default */function(e,t,n){"use strict";n.r(t);var a=n(/*! react */"./node_modules/react/index.js"),o=n.n(a),l=n(/*! recoil */"./node_modules/recoil/es/recoil.js"),s=n(/*! ../../atoms */"./src/atoms.js");t.default=function(){return null===Object(l.useRecoilValue)(s.authAtom).isAuthenticated?"":o.a.createElement("footer",null,o.a.createElement("span",null,"A Social Media App."),o.a.createElement("span",null,"UNNAMED."),o.a.createElement("a",{href:"https://github.com/Mati-N/unnamed"},"GITHUB."))}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[27],{"./src/components/layout/Alert.js":
+/*!****************************************!*\
+  !*** ./src/components/layout/Alert.js ***!
+  \****************************************/
+/*! exports provided: default */function(e,s,t){"use strict";t.r(s);var o=t(/*! react */"./node_modules/react/index.js"),a=t.n(o),n=t(/*! @material-ui/lab */"./node_modules/@material-ui/lab/esm/index.js"),l=t(/*! recoil */"./node_modules/recoil/es/recoil.js"),r=t(/*! ../../atoms */"./src/atoms.js");s.default=function(){var e=Object(l.useRecoilValue)(r.alertAtom),s=Object(l.useResetRecoilState)(r.alertAtom);return e.message&&a.a.createElement(n.Alert,{onClose:s,severity:e.type},e.message)}}}]);
 //# sourceMappingURL=27.main.js.map

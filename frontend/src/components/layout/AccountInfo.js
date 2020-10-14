@@ -31,6 +31,8 @@ const AccountInfo = ({ user_data }) => {
         variables: {
           token: auth.refreshToken,
         },
+      }).error((e) => { 
+        Logout();
       }).then((d) => {
         if (d.data.revokeToken.revoked) {
           Logout();
