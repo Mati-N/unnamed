@@ -1,11 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import {
-  CREATE_POST,
-  GET_POSTS,
-  FOLLOWING_POSTS,
-  SELF_POSTS,
-} from "../../Queries";
+// Import CREATE_POST_MUTATION and GET_POSTS_SIMPLIFIED from the new PostQueries.js
+import { CREATE_POST_MUTATION, GET_POSTS_SIMPLIFIED } from "../../PostQueries"; 
 import { useSetRecoilState, useResetRecoilState } from "recoil";
 import { alertAtom } from "../../atoms";
 import { useHistory } from "react-router-dom";
@@ -20,8 +16,8 @@ import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    marginTop: theme.spacing(15),
-    width: "75%", // Fix IE 11 issue.
+    marginTop: theme.spacing(15), // Keep existing margin or adjust as needed
+    width: "75%", 
     margin: "auto",
     [theme.breakpoints.up("sm")]: {
       width: "90%",
@@ -46,104 +42,66 @@ const useStyles = makeStyles((theme) => ({
 
 const NewPost = () => {
   const classes = useStyles();
-  const [addPost] = useMutation(CREATE_POST);
   const history = useHistory();
   const setAlert = useSetRecoilState(alertAtom);
   const removeAlert = useResetRecoilState(alertAtom);
 
+  const [addPostMutation, { error: mutationError }] = useMutation(CREATE_POST_MUTATION, {
+    update(cache, { data: { createPost: newPost } }) {
+      try {
+        // Read the current posts from the cache
+        const existingPostsData = cache.readQuery({ query: GET_POSTS_SIMPLIFIED });
+
+        if (existingPostsData && newPost) {
+          cache.writeQuery({
+            query: GET_POSTS_SIMPLIFIED,
+            data: {
+              // Assuming GET_POSTS_SIMPLIFIED returns { posts: [...] }
+              posts: [newPost, ...existingPostsData.posts], 
+            },
+          });
+        }
+      } catch (e) {
+        // Cache for GET_POSTS_SIMPLIFIED might not exist yet if user hasn't visited home
+        // Or if the structure of newPost doesn't perfectly match what's expected.
+        console.error("Error updating cache after creating post:", e);
+        // Optionally, inform the user that they might need to refresh to see the new post.
+        // setAlert({ message: "Post created! You may need to refresh to see it in all lists.", type: "info" });
+      }
+    },
+    onCompleted: (data) => {
+      // The new mutation directly returns the post if successful.
+      // The 'ok' field is no longer used for success checking.
+      // If 'data.createPost' exists, it was successful.
+      if (data && data.createPost) {
+        setAlert({ message: "Post Created Successfully!", type: "success" });
+        history.push("/"); // Redirect to home page
+      } else {
+        // This case should ideally be caught by onError or if backend returns partial data without error.
+        setAlert({ message: "Something went wrong creating the post.", type: "warning" });
+      }
+    },
+    onError: (error) => {
+      console.error("Error creating post:", error);
+      const message = error.graphQLErrors && error.graphQLErrors.length > 0 
+                      ? error.graphQLErrors[0].message 
+                      : error.message || "An error occurred while creating the post.";
+      setAlert({ message, type: "error" });
+    }
+  });
+
   useEffect(() => {
     removeAlert();
-  }, []);
+  }, [removeAlert]); // Added removeAlert to dependency array
 
-  const onSubmit = (state) => {
-    addPost({
-      variables: { title: state.title, text: state.content },
-      update: (cache, { data }) => {
-        if (cache) {
-          try {
-            let { followingPosts } = cache.readQuery({
-              query: FOLLOWING_POSTS,
-            });
-            if (followingPosts) {
-              const newFollowingData = {
-                ...followingPosts,
-                edges: [
-                  {
-                    __typename: "PostNodeEdge",
-                    node: data.createPost.post,
-                  },
-                  ...followingPosts.edges,
-                ],
-              };
-
-              cache.writeQuery({
-                query: FOLLOWING_POSTS,
-                data: {
-                  followingPosts: newFollowingData,
-                },
-              });
-            }
-          } catch (e) {}
-
-          try {
-            let { posts: all_posts } = cache.readQuery({ query: GET_POSTS });
-
-            if (all_posts) {
-              const newPostsData = {
-                ...all_posts,
-                edges: [
-                  {
-                    __typename: "PostNodeEdge",
-                    node: data.createPost.post,
-                  },
-                  ...all_posts.edges,
-                ],
-              };
-              cache.writeQuery({
-                query: GET_POSTS,
-                data: {
-                  posts: newPostsData,
-                },
-              });
-            }
-          } catch (e) {}
-
-          try {
-            let { selfPost } = cache.readQuery({ query: SELF_POSTS });
-
-            if (selfPost) {
-              const newSelfData = {
-                ...selfPost,
-                edges: [
-                  {
-                    __typename: "PostNodeEdge",
-                    node: data.createPost.post,
-                  },
-                  ...selfPost.edges,
-                ],
-              };
-              cache.writeQuery({
-                query: SELF_POSTS,
-                data: {
-                  selfPost: newSelfData,
-                },
-              });
-            }
-          } catch (e) {}
-        }
+  // Renamed from onSubmit to avoid confusion with Formik's onSubmit
+  const handleCreatePost = (values) => { 
+    addPostMutation({
+      variables: { 
+        title: values.title,
+        text: values.content, // Map form field 'content' to mutation variable 'text'
       },
-    })
-      .catch((e) => console.log(e))
-      .then((data) => {
-        if (data) {
-          if (data !== null && data.data.createPost.ok) {
-            setAlert({ message: "Post Sent", type: "success" });
-            history.push("/");
-          } else {
-            setAlert({ message: "Something went wrong", type: "warning" });
-          }
-        }
-      });
+    });
   };
 
   return (
@@ -151,16 +109,18 @@ const NewPost = () => {
       initialValues={{ title: "", content: "" }}
       validationSchema={Yup.object({
         title: Yup.string()
-          .max(30, "Must be 30 characters or less")
+          .max(100, "Title must be 100 characters or less") // Adjusted max length
           .required("Required"),
         content: Yup.string()
-          .min(20, "Must be 20 characters or more")
+          .min(10, "Content must be 10 characters or more") // Adjusted min length
           .required("Required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
-        onSubmit(values);
-        setSubmitting(false);
+        handleCreatePost(values);
+        setSubmitting(false); 
+        // setSubmitting(false) might be called too soon if handleCreatePost is async
+        // and doesn't await. However, useMutation handles its own loading state.
       }}
     >
       {({ isSubmitting, isValid, dirty }) => (
@@ -184,7 +144,7 @@ const NewPost = () => {
           <FormControl className={classes.formControl} fullWidth>
             <Field
               type="text"
-              name="content"
+              name="content" // This field will be mapped to 'text' in the mutation variables
               as={TextField}
               label="Content"
               className={classes.formField}
@@ -204,7 +164,7 @@ const NewPost = () => {
             <button
               type="submit"
               className="btn btn-teal"
-              disabled={isSubmitting || !isValid || !dirty}
+              disabled={isSubmitting || !isValid || !dirty || !!mutationError} // Disable if mutation is in error state or form invalid
             >
               Submit
             </button>

@@ -11,8 +11,9 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import * as Yup from "yup";
-import { LOGIN_USER } from "../../Queries";
-import Cookies from "js-cookie";
+// Import LOGIN_USER from the new AuthQueries.js
+import { LOGIN_USER } from "../../AuthQueries"; 
+// import Cookies from "js-cookie"; // Cookies are no longer used for auth
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -40,59 +41,74 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login() {
+function Login(props) { // Added props for history
   const setAuth = useSetRecoilState(authAtom);
   const setAlert = useSetRecoilState(alertAtom);
   const removeAlert = useResetRecoilState(alertAtom);
   const classes = useStyles();
-  const [login] = useMutation(LOGIN_USER);
+  // Ensure this uses LOGIN_USER from AuthQueries.js
+  const [loginMutation] = useMutation(LOGIN_USER); 
 
   useEffect(() => {
     removeAlert();
-  }, []);
+  }, [removeAlert]); // Added removeAlert to dependency array
 
-  const doLogin = (username, password) => {
-    login({
+  // Updated doLogin function
+  const doLogin = (email, password) => {
+    removeAlert();
+    loginMutation({ // Use the new mutation hook
       variables: {
-        username,
+        // Variables structure based on AuthQueries.js LOGIN_USER
+        email,
         password,
       },
     })
-      .catch((error) => setAlert({ message: error.message, type: "warning" }))
-      .then((d) => {
-        if (d) {
-          if (d.data.tokenAuth !== null) {
-            removeAlert();
-            Cookies.set("token", d.data.tokenAuth.token);
-            Cookies.set("USER-ID", d.data.tokenAuth.user.id);
-            Cookies.set("refresh-token", d.data.tokenAuth.refreshToken);
-            setAuth((oldAuth) => ({
-              ...oldAuth,
-              token: d.data.tokenAuth.token,
-              user: d.data.tokenAuth.user.id,
-              refreshToken: d.data.tokenAuth.refreshToken,
-              isAuthenticated: true,
-            }));
-          }
+    .then(({ data }) => {
+      if (data && data.login && data.login.token) {
+        removeAlert();
+        localStorage.setItem("token", data.login.token);
+        // Optionally store user details if needed globally beyond authAtom
+        // localStorage.setItem("user", JSON.stringify(data.login.user));
+        setAuth({ // Updated Recoil state
+          token: data.login.token,
+          user: data.login.user, 
+          isAuthenticated: true,
+        });
+        // Redirect to home page after successful login
+        if (props.history) {
+            props.history.push("/");
+        } else {
+            console.warn("props.history not available for redirection.");
+            // window.location.href = "/"; // Fallback redirection
         }
-      });
+      } else {
+        setAlert({ message: "Login failed. Please check your credentials.", type: "warning" });
+      }
+    })
+    .catch((error) => {
+      console.error("Login error:", error);
+      const message = error.graphQLErrors && error.graphQLErrors.length > 0 
+                      ? error.graphQLErrors[0].message 
+                      : error.message || "An error occurred during login.";
+      setAlert({ message, type: "error" });
+    });
   };
 
   return (
     <>
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ email: "", password: "" }} // Changed username to email
         validationSchema={Yup.object({
-          username: Yup.string()
-            .max(30, "Must be 30 characters or less")
+          email: Yup.string() // Changed username to email
+            .email("Invalid email address") // Added email validation
             .required("Required"),
           password: Yup.string()
-            .min(8, "Must be 8 characters or more")
+            .min(8, "Password must be at least 8 characters long.")
             .required("Required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          doLogin(values.username, values.password);
+          doLogin(values.email, values.password); // Pass email instead of username
           setSubmitting(false);
         }}
       >
@@ -100,20 +116,19 @@ function Login() {
           <>
             <Form className={classes.form}>
               <LoginSvg className="w-50 h-50 mx-auto d-block" />
-
               <p className={classes.formLabel}>Login</p>
 
               <FormControl className={classes.formControl} fullWidth>
                 <Field
-                  type="text"
-                  name="username"
+                  type="email" // Changed type to email
+                  name="email" // Changed name to email
                   as={TextField}
-                  label="Username"
+                  label="Email" // Changed label to Email
                   className={classes.formField}
                   fullWidth
                 />
                 <ErrorMessage
-                  name="username"
+                  name="email" // Changed name to email
                   component={FormHelperText}
                   error={true}
                 />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react"; // Removed useState as imageUrl is gone
 import { useSetRecoilState, useResetRecoilState } from "recoil";
 import { authAtom, alertAtom } from "../../atoms";
 import { useMutation } from "@apollo/client";
@@ -10,12 +10,10 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import * as Yup from "yup";
-import { ADD_USER, LOGIN_USER } from "../../Queries";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
-import PhotoCamera from "@material-ui/icons/PhotoCamera";
+// Import SIGNUP_USER from the new AuthQueries.js
+import { SIGNUP_USER } from "../../AuthQueries"; 
 import SignUp from "../SVG/Signup.svg";
-import Cookies from "js-cookie";
+// Cookies are no longer used for auth
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -40,171 +38,114 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "2.5em",
   },
 
-  input: {
-    display: "none",
-  },
+  // input: { // No longer needed for image upload
+  //   display: "none",
+  // },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  button: {
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
+  // button: { // No longer needed for image upload
+  //   padding: theme.spacing(1),
+  //   marginBottom: theme.spacing(1),
+  // },
 
-  imageButtons: {
-    padding: theme.spacing(1.5),
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
-    justifyContent: "start",
-  },
+  // imageButtons: { // No longer needed for image upload
+  //   padding: theme.spacing(1.5),
+  //   display: "flex",
+  //   alignItems: "center",
+  //   gap: "15px",
+  //   justifyContent: "start",
+  // },
 }));
 
-function Register() {
+function Register(props) { // Added props for history.push
   const setAuth = useSetRecoilState(authAtom);
   const setAlert = useSetRecoilState(alertAtom);
   const removeAlert = useResetRecoilState(alertAtom);
-  const [imageUrl, setImageUrl] = useState(null);
+  // const [imageUrl, setImageUrl] = useState(null); // Image upload removed
   const classes = useStyles();
-  const [addUser] = useMutation(ADD_USER);
-  const [login] = useMutation(LOGIN_USER);
+  // Use SIGNUP_USER mutation
+  const [signupUserMutation] = useMutation(SIGNUP_USER); 
+
   useEffect(() => {
     removeAlert();
-  }, []);
+  }, [removeAlert]); // Added removeAlert to dependency array
 
-  const doRegister = (username, password, image) => {
+  // Updated doRegister function
+  const doRegister = (username, email, password) => {
     removeAlert();
-    addUser({
+    signupUserMutation({ 
       variables: {
+        // Variables structure based on AuthQueries.js SIGNUP_USER
         username,
+        email,
         password,
-        image,
       },
     })
-      .catch((error) => `${error}`)
-      .then((d) => {
-        if (d.data) {
-          if (d.data.createUser.ok) {
-            login({
-              variables: {
-                username,
-                password,
-              },
-            })
-              .catch((error) =>
-                setAlert({ message: error.message, type: "warning" })
-              )
-              .then((d) => {
-                if (d) {
-                  if (d.data.tokenAuth !== null) {
-                    removeAlert();
-
-                    Cookies.set("token", d.data.tokenAuth.token);
-                    Cookies.set("USER-ID", d.data.tokenAuth.user.id);
-                    Cookies.set("refresh-token", d.data.tokenAuth.refreshToken);
-                    setAuth((oldAuth) => ({
-                      ...oldAuth,
-                      token: d.data.tokenAuth.token,
-                      user: d.data.tokenAuth.user.id,
-                      refreshToken: d.data.tokenAuth.refreshToken,
-                      isAuthenticated: true,
-                    }));
-                  }
-                }
-              });
-            return true;
-          } else {
-            setAlert({ message: d.data.createUser.message, type: "warning" });
-            return false;
-          }
+    .then(({ data }) => {
+      if (data && data.signup && data.signup.token) {
+        removeAlert();
+        localStorage.setItem("token", data.signup.token);
+        // Optionally store user details if needed globally beyond authAtom
+        // localStorage.setItem("user", JSON.stringify(data.signup.user)); 
+        setAuth({ // Updated Recoil state
+          token: data.signup.token,
+          user: data.signup.user, 
+          isAuthenticated: true,
+        });
+        // Redirect to home page after successful registration
+        if (props.history) {
+            props.history.push("/"); 
+        } else {
+            // Fallback or error if history is not available
+            console.warn("props.history not available for redirection.");
+            // As a fallback, could try window.location.href, but history is preferred in React Router apps
+            // window.location.href = "/"; 
         }
-      });
+      } else {
+        // Handle cases where signup might not return data as expected but doesn't throw GraphQL error
+        setAlert({ message: "Registration failed. Please try again.", type: "warning" });
+      }
+    })
+    .catch((error) => {
+      console.error("Registration error:", error);
+      const message = error.graphQLErrors && error.graphQLErrors.length > 0 
+                      ? error.graphQLErrors[0].message 
+                      : error.message || "An error occurred during registration.";
+      setAlert({ message, type: "error" });
+    });
   };
 
   return (
     <Formik
-      initialValues={{ username: "", password: "", image: null }}
+      initialValues={{ username: "", email: "", password: "" }} 
       validationSchema={Yup.object({
         username: Yup.string()
           .max(30, "Must be 30 characters or less")
-
+          .required("Required"),
+        email: Yup.string() 
+          .email("Invalid email address")
           .required("Required"),
         password: Yup.string()
-          .min(8, "Must be 8 characters or more")
+          .min(8, "Password must be at least 8 characters long.")
           .required("Required")
           .matches(
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/, 
+            "Password must contain at least 8 chars, one letter, one number."
           ),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
-        doRegister(values.username, values.password, values.image);
+        doRegister(values.username, values.email, values.password); 
         setSubmitting(false);
       }}
     >
-      {({ isSubmitting, isValid, dirty, setFieldValue }) => (
+      {({ isSubmitting, isValid, dirty }) => ( 
         <>
           <Form className={classes.form}>
-            {imageUrl ? (
-              <img
-                alt="profile picture"
-                className="mx-auto d-block w-25 h-25"
-                src={imageUrl}
-              />
-            ) : (
-              <SignUp className="w-50 h-50 mx-auto d-block" />
-            )}
-
+            <SignUp className="w-50 h-50 mx-auto d-block" />
             <p className={classes.formLabel}>Register</p>
-            <FormControl className={classes.formControl} fullWidth>
-              <input
-                accept="image/*"
-                className={classes.input}
-                id="icon-button-file"
-                type="file"
-                onChange={(e) => {
-                  let reader = new FileReader();
-                  let file = e.target.files[0];
-                  reader.onloadend = () => {
-                    setFieldValue("image", file);
-                    setImageUrl(reader.result);
-                  };
-                  reader.readAsDataURL(file);
-                }}
-              />
-              <label
-                htmlFor="icon-button-file"
-                className={classes.imageButtons}
-              >
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  className={classes.button}
-                  startIcon={<PhotoCamera />}
-                  component="span"
-                >
-                  Profile Pic
-                </Button>
-
-                {imageUrl && (
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    className={classes.button}
-                    startIcon={<CloseIcon />}
-                    component="span"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setImageUrl(null);
-                      setFieldValue("image", null);
-                    }}
-                  >
-                    Unload Picture
-                  </Button>
-                )}
-              </label>
-            </FormControl>
+            
             <FormControl className={classes.formControl} fullWidth>
               <Field
                 type="text"
@@ -220,6 +161,23 @@ function Register() {
                 error={true}
               />
             </FormControl>
+
+            <FormControl className={classes.formControl} fullWidth>
+              <Field
+                type="email"
+                name="email"
+                as={TextField}
+                label="Email"
+                fullWidth
+                className={classes.formField}
+              />
+              <ErrorMessage
+                name="email"
+                component={FormHelperText}
+                error={true}
+              />
+            </FormControl>
+
             <FormControl className={classes.formControl} fullWidth>
               <Field
                 type="password"
