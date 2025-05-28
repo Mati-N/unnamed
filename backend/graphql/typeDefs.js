@@ -13,6 +13,10 @@ const typeDefs = gql\`
     # Post and Comment Queries
     allPosts(first: Int, after: String, last: Int, before: String): PostConnection
     post(id: ID!): Post
+
+    # Notification Queries
+    selfNotifications(first: Int, after: String, last: Int, before: String): NotificationConnection
+    unreadNotificationCount: Int!
   }
 
   # Payload Types for Mutations
@@ -55,6 +59,31 @@ const typeDefs = gql\`
       # post: Post # Could return the parent post if useful, e.g., for commentCount update
   }
 
+  type LikePayload {
+    ok: Boolean!
+    message: String
+    post: Post # Return the post to update its likeCount and liked status
+  }
+
+  type FollowPayload {
+    ok: Boolean!
+    message: String
+    user: User # Return the target user to update their followerCount and isFollowing status
+  }
+
+  type NotificationPayload { # For single read
+    ok: Boolean!
+    message: String
+    notification: Notification
+  }
+   
+  type BatchReadNotificationPayload { # For readAll
+    ok: Boolean!
+    message: String
+    notifications: [Notification] # Optional: return updated notifications
+    count: Int # Number of notifications marked as read
+  }
+
   type Mutation {
     _empty: String # Placeholder, real mutations will be added later
     
@@ -73,8 +102,23 @@ const typeDefs = gql\`
     # Comment Mutations
     createComment(postId: ID!, content: String!): CommentPayload!
 
+    # Like Mutations
+    likePost(postId: ID!): LikePayload!
+
+    # Follow Mutations
+    followUser(userId: ID!): FollowPayload! # userId is the ID of the user to follow/unfollow
+
+    # Notification Mutations
+    readNotification(notificationId: ID!): NotificationPayload! # Mark a single notification as read
+    readAllNotifications: BatchReadNotificationPayload! # Mark all unread notifications as read for the user
+
     # Conceptual example of a mutation that might use file upload:
     # updateUserProfile(username: String, profileImage: Upload): User
+  }
+
+  type Subscription {
+    notificationCreated: Notification
+    # hello: String # Example
   }
 
   type PageInfo {
