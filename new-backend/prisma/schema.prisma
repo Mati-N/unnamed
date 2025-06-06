@@ -1,0 +1,97 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  username      String    @unique
+  email         String?   @unique // Django User has email, making it optional here for now
+  password      String    // Will be hashed by Keystone auth
+  bio           String?
+  profile_image String?   // URL from Cloudinary
+  date_joined   DateTime  @default(now()) // AbstractUser has date_joined
+
+  posts         Post[]
+  comments      Comment[]
+  likers        Like[]    @relation("UserLikes")
+  sent_notifications Notification[] @relation("SenderNotifications")
+  notifications Notification[] @relation("RecipientNotifications")
+
+  // For Following model
+  targets       Following[] @relation("FollowerUsers") // Users this user is following
+  followers     Following[] @relation("TargetUsers")   // Users following this user
+}
+
+model Post {
+  id            String    @id @default(cuid())
+  title         String
+  text          String
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    @map("user_id")
+
+  comments      Comment[]
+  likes         Like[]
+  notifications Notification[]
+}
+
+model Comment {
+  id            String    @id @default(cuid())
+  content       String
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    @map("user_id")
+
+  post          Post      @relation(fields: [postId], references: [id])
+  postId        String    @map("post_id")
+
+  notifications Notification[]
+}
+
+model Like {
+  id            String    @id @default(cuid()) // Added ID for Keystone
+  user          User      @relation("UserLikes", fields: [userId], references: [id])
+  userId        String    @map("user_id")
+  post          Post      @relation(fields: [postId], references: [id])
+  postId        String    @map("post_id")
+
+  @@unique([userId, postId])
+}
+
+model Following {
+  id            String    @id @default(cuid()) // Added ID for Keystone
+  target        User      @relation("TargetUsers", fields: [targetId], references: [id]) // The user being followed
+  targetId      String    @map("target_id")
+  follower      User      @relation("FollowerUsers", fields: [followerId], references: [id]) // The user who is following
+  followerId    String    @map("follower_id")
+
+  @@unique([targetId, followerId])
+}
+
+model Notification {
+  id            String    @id @default(cuid())
+  category      String
+  read          Boolean   @default(false)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  recipient     User      @relation("RecipientNotifications", fields: [recipientId], references: [id])
+  recipientId   String    @map("recipient_id")
+  sender        User      @relation("SenderNotifications", fields: [senderId], references: [id])
+  senderId      String    @map("sender_id")
+
+  post          Post?     @relation(fields: [postId], references: [id])
+  postId        String?   @map("post_id")
+  comment       Comment?  @relation(fields: [commentId], references: [id])
+  commentId     String?   @map("comment_id")
+
+}
