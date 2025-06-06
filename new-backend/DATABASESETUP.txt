@@ -1,0 +1,28 @@
+Instructions for setting up the SQLite database for the new-backend:
+
+**IMPORTANT NOTE:** The following commands (`keystone dev`, `prisma migrate dev`, `prisma db push`) have been observed to time out in some environments, potentially due to resource constraints. If you encounter timeouts, you may need to run these commands in an environment with more resources or investigate alternative ways to initialize the database schema.
+
+1. Navigate to the `new-backend` directory:
+   cd new-backend
+
+2. Ensure all dependencies are installed:
+   npm install
+
+3. (Recommended) Generate Prisma client (though this should run automatically after `npm install` due to a `postinstall` script):
+   npx prisma generate
+
+4. Apply schema and create/update the database:
+   It's recommended to use `prisma migrate dev` for development as it tracks schema changes.
+   npx prisma migrate dev --name init
+
+   Alternatively, if you want to push the schema directly without creating a migration history (useful for initial setup or if migrations are problematic):
+   npx prisma db push --accept-data-loss
+   (Warning: `--accept-data-loss` can delete data if used on an existing database with a different schema.)
+
+5. Verify database creation:
+   After running the migrate or push command, a `keystone.db` file (or the name specified in your DATABASE_URL in .env) should be created in the `new-backend` directory.
+
+6. Start the development server:
+   npx keystone dev
+
+   If `keystone dev` also times out or fails to start, the database might not be fully initialized or there might be other configuration issues (such as the `componentBlocks` definitions in `schema.ts` if they cause errors).

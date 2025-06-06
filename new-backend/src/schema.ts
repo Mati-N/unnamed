@@ -169,9 +169,9 @@ const PageListConfig = list({
       links: true,
       dividers: true,
       componentBlocks: {
-        imageBlock: { label: 'Image', schema: { image: cloudinaryImage({ cloudinary: cloudinaryConfig, }), altText: text({ label: 'Alt Text' }), caption: text({ label: 'Caption' }), }, preview: (props: any) => null },
-        callToActionBlock: { label: 'Call to Action', schema: { heading: text({ validation: { isRequired: true } }), text: text({ ui: { displayMode: 'textarea' } }), buttonText: text({ validation: { isRequired: true }, label: 'Button Text' }), buttonLink: text({ validation: { isRequired: true }, label: 'Button Link (URL)' }), alignment: text({ label: 'Alignment (left/center)' }), }, preview: (props: any) => null },
-        quoteBlock: { label: 'Quote', schema: { quote: text({ validation: { isRequired: true }, ui: { displayMode: 'textarea' } }), attribution: text(), }, preview: (props: any) => null }
+        imageBlock: { label: 'Image', schema: { image: cloudinaryImage({ cloudinary: cloudinaryConfig, }), altText: text({ label: 'Alt Text' }), caption: text({ label: 'Caption' }), } },
+        callToActionBlock: { label: 'Call to Action', schema: { heading: text({ validation: { isRequired: true } }), text: text({ ui: { displayMode: 'textarea' } }), buttonText: text({ validation: { isRequired: true }, label: 'Button Text' }), buttonLink: text({ validation: { isRequired: true }, label: 'Button Link (URL)' }), alignment: text({ label: 'Alignment (left/center)' }), } },
+        quoteBlock: { label: 'Quote', schema: { quote: text({ validation: { isRequired: true }, ui: { displayMode: 'textarea' } }), attribution: text(), } }
       },
     }),
     author: relationship({ ref: 'User', ui: { createView: { fieldMode: 'hidden' }, itemView: { fieldMode: 'read' } } }),
@@ -208,18 +208,26 @@ export const extendGraphqlSchema = keystoneGraphql.extend(base => {
       category: keystoneGraphql.field({ type: keystoneGraphql.String }),
       read: keystoneGraphql.field({ type: keystoneGraphql.Boolean }),
       createdAt: keystoneGraphql.field({ type: keystoneGraphql.String }), // Using String for DateTime
-      // Using keystoneGraphql.JSON as a placeholder for related object types due to .keystone/types issues
       recipient: keystoneGraphql.field({
-        type: keystoneGraphql.JSON,
-        resolve: async (item: any, args: any, context: Context) => item.recipientId ? context.db.User.findOne({ where: { id: item.recipientId }}) : null
+        type: 'User', // Changed from keystoneGraphql.JSON
+        resolve: async (item: any, args: any, context: Context) => {
+          // item already contains recipientId from the subscription resolver
+          return item.recipientId ? context.db.User.findOne({ where: { id: item.recipientId } }) : null;
+        }
       }),
       sender: keystoneGraphql.field({
-        type: keystoneGraphql.JSON,
-        resolve: async (item: any, args: any, context: Context) => item.senderId ? context.db.User.findOne({ where: { id: item.senderId }}) : null
+        type: 'User', // Changed from keystoneGraphql.JSON
+        resolve: async (item: any, args: any, context: Context) => {
+          // item already contains senderId from the subscription resolver
+          return item.senderId ? context.db.User.findOne({ where: { id: item.senderId } }) : null;
+        }
       }),
       post: keystoneGraphql.field({
-        type: keystoneGraphql.JSON,
-        resolve: async (item: any, args: any, context: Context) => item.postId ? context.db.Post.findOne({ where: { id: item.postId }}) : null
+        type: 'Post', // Changed from keystoneGraphql.JSON
+        resolve: async (item: any, args: any, context: Context) => {
+          // item already contains postId from the subscription resolver
+          return item.postId ? context.db.Post.findOne({ where: { id: item.postId } }) : null;
+        }
       }),
       // Note: Comment field on Notification is not included in this simplified example payload.
     }

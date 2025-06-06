@@ -3,29 +3,23 @@ import {
 } from "@apollo/client";
 
 export const ADD_USER = gql `
-  mutation createUser($username: String!, $password: String!, $image: Upload) {
-    createUser(
-      input: { username: $username, password: $password, image: $image }
-    ) {
-      ok
-      message
-      user {
-        username
-        id
-        password
-      }
+  mutation createUser($username: String!, $email: String!, $password: String!) {
+    createUser(data: { username: $username, email: $email, password: $password }) {
+      id
+      username
+      email
     }
   }
 `;
 
 export const LOGIN_USER = gql `
-  mutation tokenAuth($username: String!, $password: String!) {
-    tokenAuth(input: { username: $username, password: $password }) {
-      payload
+  mutation authenticateUserWithPassword($username: String!, $password: String!) {
+    authenticateUserWithPassword(username: $username, password: $password) {
       token
-      refreshToken
-      user {
+      item {
         id
+        username
+        email
       }
     }
   }
@@ -124,32 +118,8 @@ export const GET_POST = gql `
   }
 `;
 
-export const VERIFY_TOKEN = gql `
-  mutation verifyToken($token: String!) {
-    verifyToken(input: { token: $token }) {
-      payload
-    }
-  }
-`;
 
-export const LOGOUT_USER = gql `
-  mutation($token: String!) {
-    revokeToken(input: { refreshToken: $token }) {
-      revoked
-    }
-  }
-`;
 
-export const LOGOUT_LOGGED_OUT = gql `
-  mutation logoutLoggedOut {
-    deleteTokenCookie(input: {}) {
-      deleted
-    }
-    deleteRefreshTokenCookie(input: {}) {
-      deleted
-    }
-  }
-`;
 
 export const LIKE = gql `
   mutation like($post_id: ID!) {
@@ -185,14 +155,6 @@ export const CREATE_POST = gql `
   }
 `;
 
-export const REFRESH_TOKEN = gql `
-  mutation refreshToken($token: String!) {
-    refreshToken(input: { refreshToken: $token }) {
-      token
-      refreshToken
-    }
-  }
-`;
 
 export const SELF_USER = gql `
   query self_user {

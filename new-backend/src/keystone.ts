@@ -5,13 +5,13 @@ import { withAuth, session } from './auth';
 // import { createServer } from 'node:http';
 import { PubSub } from 'graphql-subscriptions'; // Simple in-memory PubSub
 
-const dbUrl = process.env.DATABASE_URL || 'postgresql://user:password@localhost:5432/keystone-db';
+const dbUrl = process.env.DATABASE_URL || 'file:./keystone.db';
 const pubsub = new PubSub(); // Initialize PubSub
 
 export default withAuth(
   config({
     db: {
-      provider: 'postgresql',
+      provider: 'sqlite',
       url: dbUrl,
       async onConnect(context) { console.log('Connected to the database!'); },
     },
