@@ -1,0 +1,73 @@
+Local Setup Instructions for Node.js KeystoneJS Backend
+
+**Prerequisites:**
+- Node.js (v18+ recommended)
+- npm or yarn
+- PostgreSQL server (running and accessible)
+- Cloudinary account (for profile image uploads)
+
+**Steps:**
+
+1.  **Navigate to Project Directory:**
+    Open your terminal and navigate to the `new-backend` directory of this project.
+
+2.  **Install Dependencies:**
+    Run one of the following commands:
+    `npm install`
+    or
+    `yarn install`
+
+3.  **Configure Environment Variables:**
+    a. Create a `.env` file in the `new-backend` root directory (you can copy `.env.example` if one exists in the future).
+    b. Add and customize the following variables:
+
+    ```
+    # Main Database Connection (PostgreSQL)
+    DATABASE_URL="postgresql://YOUR_DB_USER:YOUR_DB_PASSWORD@YOUR_DB_HOST:YOUR_DB_PORT/YOUR_DB_NAME"
+
+    # KeystoneJS Session Secret (make this a long, random string)
+    SESSION_SECRET="replace_this_with_a_very_strong_secret_key"
+
+    # Cloudinary Credentials (for user profile image uploads)
+    CLOUDINARY_CLOUD_NAME="your_cloudinary_cloud_name"
+    CLOUDINARY_API_KEY="your_cloudinary_api_key"
+    CLOUDINARY_API_SECRET="your_cloudinary_api_secret"
+
+    # Optional: Server Port (Keystone defaults to 3000 if not set)
+    # PORT=3000
+    ```
+    Replace placeholder values (like `YOUR_DB_USER`, etc.) with your actual credentials.
+
+4.  **Database Migration & Prisma Client Generation:**
+    This command will set up your database tables based on the schema and generate the Prisma Client.
+    `npx prisma migrate dev --name initial_schema`
+    (If you encounter issues or need to reset, you might sometimes use `npx prisma migrate reset` first, but be cautious as this deletes data.)
+
+5.  **Generate KeystoneJS System & GraphQL Types:**
+    This step is critical for TypeScript and for Keystone to function correctly.
+    `npx keystone postinstall --fix`
+    (This command may also be run as `npx keystone postinstall`.)
+    *Note: If you encounter errors here during local setup, ensure your `keystone.ts` and `schema.ts` files are correctly structured and all dependencies are installed.*
+
+6.  **Start the Development Server:**
+    `npm run dev`
+    (This script should be configured in `package.json` to run `keystone dev`.)
+
+    After the server starts (usually on port 3000 if not otherwise specified):
+    - **Admin UI:** Open your browser to `http://localhost:3000`
+    - **GraphQL API:** Access it at `http://localhost:3000/api/graphql`
+
+**Troubleshooting Common Issues:**
+
+*   **`keystone postinstall` errors:**
+    *   Ensure `keystone.ts` and `src/schema.ts` are correctly defined and exporting the necessary configurations.
+    *   Make sure all dependencies, especially `@keystone-6/core`, are properly installed.
+    *   Delete `node_modules` and `package-lock.json` (or `yarn.lock`) and reinstall if persistent issues occur.
+*   **Database connection errors:**
+    *   Double-check your `DATABASE_URL` in the `.env` file.
+    *   Ensure your PostgreSQL server is running and accessible with the provided credentials.
+*   **TypeScript errors during `keystone dev` or `build`:**
+    *   These often stem from issues with the Keystone type generation (`keystone postinstall`). Ensure that step completes successfully.
+    *   Check your custom code in `src/schema.ts` or other `.ts` files for any TypeScript errors indicated by the compiler.
+
+This project uses KeystoneJS 6. Refer to the official KeystoneJS documentation for more detailed information: https://keystonejs.com/docs

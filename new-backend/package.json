@@ -11,12 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "@keystone-6/auth": "^8.1.0",
+    "@keystone-6/cloudinary": "^8.0.0",
     "@keystone-6/core": "^6.5.1",
     "@keystone-6/fields-document": "^9.1.1",
     "@prisma/client": "^6.9.0",
+    "cloudinary": "^2.6.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "graphql": "^15.10.1",
+    "graphql-subscriptions": "^3.0.0",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
