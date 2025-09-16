@@ -1,6 +1,6 @@
-import React, { useState, lazy } from "react";
-import { GET_NOTIFICATIONS, NOTIFICATION_SUB } from "../../Queries";
-import { useQuery, useSubscription } from "@apollo/client";
+import React, { useEffect, useState, lazy } from "react";
+import { GET_NOTIFICATIONS, READ_NOTIFICATION } from "../../Queries";
+import { useMutation, useQuery } from "@apollo/client";
 import { Waypoint } from "react-waypoint";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import NoData from "../SVG/NoData.svg";
@@ -17,13 +17,21 @@ const Notifications = () => {
     error,
     fetchMore,
     refetch,
-    subscribeToMore,
   } = useQuery(GET_NOTIFICATIONS, {
     onError: (err) => console.log(err),
     errorPolicy: 'all'
   });
 
+  const [readAllNotifications] = useMutation(READ_NOTIFICATION);
   const [spin, setSpin] = useState(true);
+
+  useEffect(() => {
+    const poller = setInterval(() => {
+      refetch();
+    }, 15000);
+
+    return () => clearInterval(poller);
+  }, [refetch]);
 
   if (loading || !data)
     return (
@@ -49,61 +57,43 @@ const Notifications = () => {
   }
 
   const more = () => {
+    if (!data?.selfNotification?.pageInfo?.hasNextPage) {
+      setSpin(false);
+      return;
+    }
+
     fetchMore({
       query: GET_NOTIFICATIONS,
       variables: { cursor: data.selfNotification.pageInfo.endCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         setSpin(true);
-        if (!previousResult.selfNotification.pageInfo.hasNextPage) {
+        if (!fetchMoreResult) {
+          return previousResult;
+        }
+        const newEdges = fetchMoreResult.selfNotification.edges || [];
+        const pageInfo = fetchMoreResult.selfNotification.pageInfo;
+
+        if (!newEdges.length) {
           setSpin(false);
           return previousResult;
         }
-        const newEdges = fetchMoreResult.selfNotification.edges;
-        const pageInfo = fetchMoreResult.selfNotification.pageInfo;
 
-        return newEdges.length
-          ? {
-              selfNotification: {
-                __typename: previousResult.selfNotification.__typename,
-                edges: [...previousResult.selfNotification.edges, ...newEdges],
-                pageInfo,
-              },
-            }
-          : previousResult;
+        return {
+          selfNotification: {
+            __typename: previousResult.selfNotification.__typename,
+            edges: [...previousResult.selfNotification.edges, ...newEdges],
+            pageInfo,
+          },
+        };
       },
     });
   };
 
-  const subscribeToNewNotifications = () => {
-    subscribeToMore({
-      document: NOTIFICATION_SUB,
-      onError: ({ response, graphQLErrors, networkError }) => {
-        if (graphQLErrors) {
-          graphQLErrors.map(({ message, locations, path }) =>
-            console.log(
-              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-            ),
-          );
-        }
-        if (networkError) { console.log(`[Network error]: ${networkError}`) };
-      },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const newNotificationItem = subscriptionData.data.notificationCreated;
-        return Object.assign({}, prev, {
-          selfNotification: {
-            edges: [
-              ...prev.selfNotification.edges,
-              {
-                __typename: prev.selfNotification.edges[0].__typename,
-                node: newNotificationItem
-              }
-
-            ]
-          }
-        });
-      },
-      errorPolicy: 'all'
+  const readAll = () => {
+    readAllNotifications({
+      variables: { id: null },
+    }).finally(() => {
+      refetch();
     });
   };
 
@@ -115,7 +105,7 @@ const Notifications = () => {
         variant="contained"
         color="primary"
         startIcon={<MarkunreadMailboxTwoToneIcon />}
-        onClick={() => readNotif()}
+        onClick={readAll}
       >
         Read All
       </Button>
@@ -124,10 +114,7 @@ const Notifications = () => {
           <NoData className="w-50 h-50" />
         </div>
       )}
-      <NotificationList
-        subscribeToNewNotifications={subscribeToNewNotifications}
-        edges={data.selfNotification.edges}
-      />
+      <NotificationList edges={data.selfNotification.edges} />
       <Waypoint onEnter={more}>
         <div className="refetch-and-spinner">
           <button className="btn btn-teal" onClick={() => refetch()}>

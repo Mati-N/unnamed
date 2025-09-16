@@ -1,6 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[27],{"./src/components/layout/Alert.js":
-/*!****************************************!*\
-  !*** ./src/components/layout/Alert.js ***!
-  \****************************************/
-/*! exports provided: default */function(e,s,t){"use strict";t.r(s);var o=t(/*! react */"./node_modules/react/index.js"),a=t.n(o),n=t(/*! @material-ui/lab */"./node_modules/@material-ui/lab/esm/index.js"),l=t(/*! recoil */"./node_modules/recoil/es/recoil.js"),r=t(/*! ../../atoms */"./src/atoms.js");s.default=function(){var e=Object(l.useRecoilValue)(r.alertAtom),s=Object(l.useResetRecoilState)(r.alertAtom);return e.message&&a.a.createElement(n.Alert,{onClose:s,severity:e.type},e.message)}}}]);
-//# sourceMappingURL=27.main.js.map
+(window.webpackJsonp=window.webpackJsonp||[]).push([[27],{867:function(n,e,t){"use strict";t.r(e);var a=t(3),i=t.n(a),r=Object(a.lazy)((function(){return t.e(16).then(t.bind(null,869))}));e.default=function(n){var e=n.edges;return i.a.createElement("div",{className:"notifications"},e.map((function(n){var e=n.node;return i.a.createElement(r,{node:e,key:e.id})})))}}}]);

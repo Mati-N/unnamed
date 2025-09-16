@@ -1,19 +1,14 @@
+import logging
+
 import graphene
-from graphene import InputObjectType
 import graphql_jwt
-from django.contrib.auth import authenticate
+from django.db.models import Q
 from graphql_jwt.decorators import login_required
 from graphene_django.filter import DjangoFilterConnectionField
-from django_filters import OrderingFilter
-from django.db.models import Count, IntegerField
+
+from .models import *
 from .schemafiles.Nodes import *
 from .schemafiles.mutations import *
-from .models import *
-from django.db.models import Q
-from graphene_django.types import DjangoObjectType
-from graphene_subscriptions.events import CREATED
-import logging
-from rx import Observable
 
 logger = logging.getLogger(__name__)
 
@@ -109,20 +104,3 @@ class Mutation(object):
     delete_refresh_token_cookie = graphql_jwt.relay.DeleteRefreshTokenCookie.Field()
 
 
-class Subscription(graphene.ObjectType):
-    notification_created = graphene.Field(NotificationNode)
-    hello = graphene.String()
-
-    
-    def resolve_hello(root, info):
-        return Observable.interval(3000).map(lambda i: "hello world!")
-
-    def resolve_notification_created(root, info, **kwargs):
-        logger.debug('Subscription signals works!')
-        print("JJJJjjf;dsfjKLJF:DSFJKLM dsfkl; :LKJfdsa")
-        return root.filter(
-            lambda event:
-                event.operation == CREATED and
-                isinstance(event.instance, Notification)# and
-               # event.instance.recipient == info.context.user
-        ).map(lambda event: event.instance)

@@ -1,11 +1,7 @@
-import React, { useEffect, lazy } from "react";
+import React, { lazy } from "react";
 const NotificationItem = lazy(() => import("../layout/NotificationItem"));
 
-const NotificationList = ({ subscribeToNewNotifications, edges }) => {
-  useEffect(() => {
-    subscribeToNewNotifications();
-  }, []);
-
+const NotificationList = ({ edges }) => {
   return (
     <div className="notifications">
       {edges.map(({ node }) => {

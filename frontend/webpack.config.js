@@ -1,17 +1,14 @@
-module.exports = (env, argv) => {
-  let config = {
-    entry: {
-      main: ["core-js/stable", "regenerator-runtime/runtime", "src/main.js"],
+const path = require("path");
 
-      vendor: [
-        "react",
-        "react-router-dom",
-        "react-dom",
-        "@apollo/client",
-        "graphql",
-        "react-spring",
-      ],
-    },
+module.exports = (env, argv) => {
+  const isDevelopment = argv.mode === "development";
+
+  let config = {
+    entry: [
+      "core-js/stable",
+      "regenerator-runtime/runtime",
+      "./src/index.js",
+    ],
     module: {
       rules: [
         {
@@ -34,16 +31,18 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    devtool: argv.mode == "development" ? "source-map" : false,
+    devtool: isDevelopment ? "source-map" : false,
     output: {
+      path: path.resolve(__dirname, "../static/frontend"),
+      filename: "main.js",
       publicPath: "/static/frontend/",
     },
-    watch: true,
+    watch: isDevelopment,
     watchOptions: {
       ignored: /node_modules/,
     },
     optimization: {
-      minimize: true,
+      minimize: !isDevelopment,
     },
   };
 
