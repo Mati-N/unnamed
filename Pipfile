@@ -8,13 +8,13 @@ verify_ssl = true
 [packages]
 django = "==3.1"
 graphene-django = "==2.12.1"
-psycopg2 = "==2.8.5"
+psycopg2 = "==2.9.9"
 django-graphql-jwt = "==0.3.1"
 graphene-django-extras = "==0.4.9"
 aniso8601 = "==7.0.0"
 asgiref = "==3.2.10"
 django-filter = "==2.3.0"
-djangorestframework = "==3.11.0"
+djangorestframework = "==3.12.1"
 graphene = "==2.1.8"
 graphql-core = "==2.3.2"
 graphql-relay = "==2.0.1"
@@ -38,6 +38,7 @@ cloudinary = "*"
 graphene-subscriptions = "*"
 channels = "*"
 pillow = "*"
+pyopenssl = "==24.1.0"
 
 [requires]
 python_version = "3.8"
