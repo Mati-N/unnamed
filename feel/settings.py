@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from datetime import timedelta
+
 import dj_database_url
 import django_heroku
 
@@ -23,12 +24,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")
 
-DEBUG = os.environ.get('LOCAL') == "LOCAL"
+DEBUG = os.environ.get('LOCAL', 'LOCAL') == "LOCAL"
 SECURE_SSL_REDIRECT = not DEBUG
 
-ALLOWED_HOSTS = ['selamselam.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = [
+    'selamselam.herokuapp.com',
+    'localhost',
+    '127.0.0.1',
+    'testserver',
+]
 
 
 # Application definition
@@ -122,7 +128,11 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(ssl_require=True)
+    'default': dj_database_url.config(
+        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
+        conn_max_age=600,
+        ssl_require=not DEBUG,
+    )
 }
 
 
@@ -133,7 +143,8 @@ GRAPHQL_JWT = {
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=20),
 }
 
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
 # Password validation
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -180,7 +191,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 MEDIA_URL = '/media/'
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+if os.environ.get('CLOUDINARY_URL'):
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
@@ -200,8 +214,8 @@ LOGGING = {
     },
     'handlers': {
         'null': {
-            'level':'DEBUG',
-            'class':'django.utils.log.NullHandler',
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
         },
         'logfile': {
             'level':'DEBUG',
@@ -219,9 +233,9 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers':['console'],
+            'handlers': ['console'],
             'propagate': True,
-            'level':'WARN',
+            'level': 'WARN',
         },
         'django.db.backends': {
             'handlers': ['console'],
@@ -233,5 +247,7 @@ LOGGING = {
             'level': 'DEBUG',
         },
     }
-    }
-django_heroku.settings(locals())
+}
+
+if not DEBUG:
+    django_heroku.settings(locals())
