@@ -376,30 +376,4 @@ export const READ_NOTIFICATION = gql `
     }
   }
 `;
-
-export const NOTIFICATION_SUB = gql `
-  subscription OnNotificationAdded {
-    notificationCreated {
-      createdAt
-      category
-      sender {
-        id
-        username
-      }
-      post {
-        id
-        title
-      }
-      comment {
-        id
-        content
-        post {
-          id
-          title
-        }
-      }
-      read
-      id
-    }
-  }
-`;
+

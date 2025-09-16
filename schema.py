@@ -4,16 +4,11 @@ import api.schema
 
 
 class Query(api.schema.Query, graphene.ObjectType):
-    pass
+    """Aggregate GraphQL queries."""
 
 
 class Mutation(api.schema.Mutation, graphene.ObjectType):
-    pass
+    """Aggregate GraphQL mutations."""
 
 
-class Subscription(api.schema.Subscription):
-    pass
-
-
-schema = graphene.Schema(query=Query, mutation=Mutation,
-                         subscription=Subscription)
+schema = graphene.Schema(query=Query, mutation=Mutation)

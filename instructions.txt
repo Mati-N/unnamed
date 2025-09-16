@@ -1,0 +1,47 @@
+# Setup Instructions
+
+## Requirements
+- Python 3.11+
+- Node.js 18+ (tested with Node 22)
+- npm 9+
+- Recommended: virtual environment for Python dependencies
+
+## Backend Setup
+1. Create and activate a Python virtual environment.
+2. Install backend dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Apply database migrations (SQLite database at `db.sqlite3` is used by default):
+   ```bash
+   python manage.py migrate
+   ```
+4. (Optional) Load or create data, e.g. create a superuser:
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+## Frontend Setup
+1. Install JavaScript dependencies:
+   ```bash
+   cd frontend
+   npm install
+   ```
+2. Build the production bundle:
+   ```bash
+   npm run build
+   ```
+   The compiled assets are emitted to `static/frontend/`.
+
+## Running the App Locally
+1. Ensure the virtual environment is active and the frontend bundle is built.
+2. Start the Django development server from the repository root:
+   ```bash
+   python manage.py runserver
+   ```
+3. Visit http://127.0.0.1:8000/ in your browser.
+
+## Optional Notes
+- Static assets and uploaded files are served locally from `static/` and `mediafiles/` respectively.
+- To integrate Cloudinary storage, set the `CLOUDINARY_URL` environment variable before running the server.
+- For development convenience, rerun `npm run build` after frontend changes or run `npm run dev` for a watch build.
