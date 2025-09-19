@@ -1,105 +1,125 @@
-import React from 'react'
-import { useMutation, gql } from "@apollo/client";
-import { FOLLOW } from "../../Queries";
+import React, { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
+import { FOLLOW } from "../../Queries";
+
+const useStyles = makeStyles((theme) => ({
+  card: {
+    padding: theme.spacing(3),
+    borderRadius: theme.spacing(1.5),
+    marginBottom: theme.spacing(3),
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(2),
+    flexWrap: "wrap",
+  },
+  avatar: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+    fontSize: "1.5rem",
+  },
+  stats: {
+    display: "flex",
+    gap: theme.spacing(1),
+    flexWrap: "wrap",
+    marginTop: theme.spacing(2),
+  },
+  bio: {
+    marginTop: theme.spacing(2),
+    maxWidth: "65ch",
+    color: theme.palette.text.secondary,
+  },
+  actions: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 const UserInfo = ({ user }) => {
+  const classes = useStyles();
   const [follow] = useMutation(FOLLOW);
+  const [isWorking, setIsWorking] = useState(false);
 
-    const followIt = () => {
+  const toggleFollow = () => {
+    if (isWorking) {
+      return;
+    }
+
+    setIsWorking(true);
     follow({
       variables: { id: user.id },
       update: (cache, { data }) => {
-        if (cache) {
-          cache.writeFragment({
-            id: `UserNode:${data.followUser.user.id}`,
-            fragment: gql`
-              fragment User on UserNode {
-                followerCount
-                isFollowing
-              }
-            `,
-            data: {
-              followerCount: data.followUser.user.followerCount,
-              isFollowing: data.followUser.user.isFollowing,
-            },
-          });
+        const updatedUser = data?.followUser?.user;
+        if (!updatedUser) {
+          return;
         }
-      }
-    });
-  };
-    return (
-         <div className="account-info">
-        <div className="account-info-top">
-          <Avatar
-            alt="profile picture"
-            src={user.imagePath}
-            variant="circle"
-            style={{
-              margin: "0.4em",
-            }}
-          >
-            {user.username.substring(0, 1)}
-          </Avatar>
-          <span className="username inline-block">
-            {user.username}
-          </span>
-        </div>
 
-        <div className="info-mini">
-          <button className="btn btn-teal" onClick={followIt}>
-            {user.isFollowing ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-user-plus"
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="rgb(248, 248, 248)"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                <path d="M16 11h6m-3 -3v6" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-user-minus"
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="rgb(248, 248, 248)"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                <line x1="16" y1="11" x2="22" y2="11" />
-              </svg>
-            )}{" "}
-            {user.isFollowing ? "Unfollow" : "Follow"}
-          </button>
-          <span className="info">
-            {user.postCount > 0
-              ? user.postCount
-              : "No"}{" "}
-            Post{user.postCount > 1 ? "s" : ""}
-          </span>
-          <span className="info">
-            {user.followerCount > 0 ? user.followerCount : "No"} Follower
-            {user.followerCount > 1 ? "s" : ""}
-          </span>
+        cache.writeFragment({
+          id: `UserNode:${updatedUser.id}`,
+          fragment: gql`
+            fragment FollowableUser on UserNode {
+              followerCount
+              isFollowing
+            }
+          `,
+          data: {
+            followerCount: updatedUser.followerCount,
+            isFollowing: updatedUser.isFollowing,
+          },
+        });
+      },
+    }).finally(() => setIsWorking(false));
+  };
+
+  const followerLabel = `${user.followerCount} follower${user.followerCount === 1 ? "" : "s"}`;
+  const postLabel = `${user.postCount} post${user.postCount === 1 ? "" : "s"}`;
+
+  return (
+    <Paper elevation={0} className={classes.card}>
+      <div className={classes.header}>
+        <Avatar src={user.imagePath || undefined} alt={user.username} className={classes.avatar}>
+          {user.username.substring(0, 1).toUpperCase()}
+        </Avatar>
+        <div>
+          <Typography variant="h5">{user.username}</Typography>
+          <Typography variant="body2" color="textSecondary">
+            {user.bio || "This creator hasn't added a bio yet."}
+          </Typography>
         </div>
       </div>
-    )
-}
 
-export default UserInfo
+      <div className={classes.stats}>
+        <Chip icon={<PostAddIcon />} label={postLabel} variant="outlined" />
+        <Chip icon={<PeopleAltIcon />} label={followerLabel} variant="outlined" />
+      </div>
+
+      <Typography variant="body2" className={classes.bio}>
+        {user.bio || "Follow them to stay in the loop when they post something new."}
+      </Typography>
+
+      <div className={classes.actions}>
+        <Button
+          variant={user.isFollowing ? "outlined" : "contained"}
+          color="primary"
+          startIcon={user.isFollowing ? <PersonAddDisabledIcon /> : <PersonAddIcon />}
+          onClick={toggleFollow}
+          disabled={isWorking}
+        >
+          {user.isFollowing ? "Unfollow" : "Follow"}
+        </Button>
+      </div>
+    </Paper>
+  );
+};
+
+export default UserInfo;

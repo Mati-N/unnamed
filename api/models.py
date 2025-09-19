@@ -16,10 +16,14 @@ class User(AbstractUser):
 
     @property
     def image_path(self):
-        if (self.image == None):
+        if not self.profile_image:
             return None
 
-        return self.profile_image.url
+        try:
+            return self.profile_image.url
+        except ValueError:
+            # During development a missing file should not break the API.
+            return None
 
     @property
     def following_count(self):

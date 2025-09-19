@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { LIKED, LIKE, CREATE_COMMENT, GET_POST } from "../../Queries";
+import { LIKE, CREATE_COMMENT, GET_POST } from "../../Queries";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";

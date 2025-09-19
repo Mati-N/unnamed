@@ -72,13 +72,14 @@ function Register() {
     removeAlert();
   }, []);
 
-  const doRegister = (username, password, image) => {
+  const doRegister = (username, password, image, bio) => {
     removeAlert();
     addUser({
       variables: {
         username,
         password,
         image,
+        bio,
       },
     })
       .catch((error) => `${error}`)
@@ -123,7 +124,7 @@ function Register() {
 
   return (
     <Formik
-      initialValues={{ username: "", password: "", image: null }}
+      initialValues={{ username: "", password: "", image: null, bio: "" }}
       validationSchema={Yup.object({
         username: Yup.string()
           .max(30, "Must be 30 characters or less")
@@ -136,10 +137,11 @@ function Register() {
             /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
           ),
+        bio: Yup.string().max(500, "Must be 500 characters or less"),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
-        doRegister(values.username, values.password, values.image);
+        doRegister(values.username, values.password, values.image, values.bio.trim());
         setSubmitting(false);
       }}
     >
@@ -235,6 +237,20 @@ function Register() {
                 error={true}
                 htmlFor="password"
               />
+            </FormControl>
+            <FormControl className={classes.formControl} fullWidth>
+              <Field
+                type="text"
+                name="bio"
+                as={TextField}
+                label="Bio"
+                className={classes.formField}
+                fullWidth
+                multiline
+                rows={4}
+                variant="outlined"
+              />
+              <ErrorMessage name="bio" component={FormHelperText} error={true} />
             </FormControl>
             <FormControl className={classes.formControl} fullWidth>
               <button

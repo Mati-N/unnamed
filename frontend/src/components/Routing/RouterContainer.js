@@ -21,11 +21,8 @@ const RouterContainer = () => {
     Cookies.remove("token");
     Cookies.remove("refresh-token");
     Cookies.remove("USER-ID");
-    logoutLoggedOut();
-    setAuth((oldAuth) => ({
-      ...oldAuth,
-      isAuthenticated: false,
-    }));
+    logoutLoggedOut().catch(() => undefined);
+    setAuth({ isAuthenticated: false, token: null, refreshToken: null, user: null });
   };
 
   const doRefresh= () => {
@@ -58,7 +55,7 @@ const RouterContainer = () => {
 
   const loggedIn = () => {
     if (auth.token == null) {
-      setAuth((oldAuth) => ({ ...oldAuth, isAuthenticated: false }));
+      setAuth({ isAuthenticated: false, token: null, refreshToken: null, user: null });
       return;
     }
       verify({

@@ -2,17 +2,28 @@ import {
   gql
 } from "@apollo/client";
 
-export const ADD_USER = gql `
-  mutation createUser($username: String!, $password: String!, $image: Upload) {
+export const ADD_USER = gql`
+  mutation createUser(
+    $username: String!
+    $password: String!
+    $image: Upload
+    $bio: String
+  ) {
     createUser(
-      input: { username: $username, password: $password, image: $image }
+      input: {
+        username: $username
+        password: $password
+        image: $image
+        bio: $bio
+      }
     ) {
       ok
       message
       user {
         username
         id
-        password
+        bio
+        imagePath
       }
     }
   }
@@ -58,7 +69,7 @@ export const GET_POSTS = gql `
   }
 `;
 
-export const FOLLOWING_POSTS = gql `
+export const FOLLOWING_POSTS = gql`
   query followingPosts($cursor: String) {
     followingPosts(first: 45, after: $cursor, orderBy: "created_at") {
       pageInfo {
@@ -80,6 +91,134 @@ export const FOLLOWING_POSTS = gql `
           }
           liked
         }
+      }
+    }
+  }
+`;
+
+export const HOME_HIGHLIGHTS = gql`
+  query homeHighlights(
+    $trendingLimit: Int
+    $suggestedLimit: Int
+    $hashtagLimit: Int
+    $spotlightLimit: Int
+    $momentumSupporterLimit: Int
+    $momentumBreakoutLimit: Int
+  ) {
+    platformInsights {
+      totalUsers
+      totalPosts
+      totalComments
+      totalLikes
+      postsToday
+      activeThisWeek
+      newUsersThisWeek
+      averageLikesPerPost
+      averageCommentsPerPost
+      engagementRate
+      activePercentage
+    }
+    trendingPosts(limit: $trendingLimit) {
+      id
+      title
+      createdAt
+      likeCount
+      commentCount
+      user {
+        id
+        username
+      }
+    }
+    trendingHashtags(limit: $hashtagLimit) {
+      tag
+      mentionCount
+      postCount
+    }
+    creatorSpotlight(limit: $spotlightLimit) {
+      postsThisWeek
+      recentLikeCount
+      latestPostId
+      latestPostTitle
+      latestPostExcerpt
+      latestPostCreatedAt
+      user {
+        id
+        username
+        bio
+        followerCount
+        postCount
+        imagePath
+        isFollowing
+      }
+    }
+    suggestedUsers(limit: $suggestedLimit) {
+      id
+      username
+      bio
+      followerCount
+      postCount
+      imagePath
+      isFollowing
+    }
+    personalMomentum(
+      supporterLimit: $momentumSupporterLimit
+      breakoutLimit: $momentumBreakoutLimit
+    ) {
+      postingStreak
+      lastPostCreatedAt
+      postsLastWeek
+      postsLastMonth
+      likesOnRecentPosts
+      commentsLastWeek
+      momentumScore
+      highlight
+      supporterTotal
+      milestone {
+        label
+        target
+        remaining
+        achieved
+        progressRatio
+      }
+      supporterSpotlight {
+        cheerScore
+        commentCount
+        likeCount
+        user {
+          id
+          username
+          imagePath
+        }
+      }
+      breakoutPosts {
+        id
+        title
+        createdAt
+        likeCount
+        commentCount
+        user {
+          id
+          username
+        }
+      }
+      focusHashtags {
+        tag
+        useCount
+        lastUsedPostId
+        lastUsedAt
+      }
+      trend {
+        label
+        posts
+        comments
+        likes
+        interactions
+        momentumDelta
+      }
+      nextActions {
+        title
+        description
+        actionText
       }
     }
   }
@@ -194,7 +333,7 @@ export const REFRESH_TOKEN = gql `
   }
 `;
 
-export const SELF_USER = gql `
+export const SELF_USER = gql`
   query self_user {
     selfUser {
       id
@@ -202,6 +341,7 @@ export const SELF_USER = gql `
       postCount
       followerCount
       imagePath
+      bio
     }
   }
 `;
@@ -228,7 +368,7 @@ export const SELF_POSTS = gql `
   }
 `;
 
-export const GET_USER = gql `
+export const GET_USER = gql`
   query get_user($id: ID!) {
     userGet(id: $id) {
       username
@@ -237,6 +377,7 @@ export const GET_USER = gql `
       imagePath
       isFollowing
       id
+      bio
     }
   }
 `;
@@ -277,12 +418,13 @@ export const FOLLOW = gql `
   }
 `;
 
-export const UPDATE_USER = gql `
+export const UPDATE_USER = gql`
   mutation updateUser(
     $password: String!
     $username: String
     $newPassword: String
     $image: Upload
+    $bio: String
   ) {
     updateUser(
       input: {
@@ -290,6 +432,7 @@ export const UPDATE_USER = gql `
         username: $username
         newP: $newPassword
         image: $image
+        bio: $bio
       }
     ) {
       ok
@@ -298,6 +441,7 @@ export const UPDATE_USER = gql `
         username
         imagePath
         id
+        bio
       }
     }
   }
