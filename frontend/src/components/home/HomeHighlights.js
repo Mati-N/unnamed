@@ -35,6 +35,10 @@ import WbIncandescentIcon from "@material-ui/icons/WbIncandescent";
 import LaunchIcon from "@material-ui/icons/Launch";
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import FlagIcon from "@material-ui/icons/Flag";
+import TimerIcon from "@material-ui/icons/Timer";
 import { FOLLOW } from "../../Queries";
 
 const useStyles = makeStyles((theme) => ({
@@ -428,6 +432,134 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     fontWeight: 700,
   },
+  achievementGrid: {
+    display: "grid",
+    gap: theme.spacing(1.5),
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+  },
+  achievementCard: {
+    borderRadius: theme.spacing(1),
+    padding: theme.spacing(1.75),
+    backgroundColor:
+      theme.palette.type === "dark"
+        ? theme.palette.background.default
+        : theme.palette.grey[100],
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(0.75),
+    minHeight: theme.spacing(12),
+  },
+  achievementHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(1),
+  },
+  achievementTitle: {
+    fontWeight: 600,
+  },
+  achievementDescription: {
+    color: theme.palette.text.secondary,
+    fontSize: "0.9rem",
+    lineHeight: 1.4,
+  },
+  achievementStatus: {
+    fontSize: "0.75rem",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    fontWeight: 700,
+  },
+  achievementUnlocked: {
+    borderLeft: `4px solid ${theme.palette.success.main}`,
+  },
+  achievementLocked: {
+    borderLeft: `4px solid ${theme.palette.divider}`,
+  },
+  achievementIconUnlocked: {
+    color: theme.palette.success.main,
+  },
+  achievementIconLocked: {
+    color: theme.palette.text.disabled,
+  },
+  achievementEmpty: {
+    color: theme.palette.text.secondary,
+    fontSize: "0.9rem",
+  },
+  challengeList: {
+    display: "grid",
+    gap: theme.spacing(2),
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+  },
+  challengeCard: {
+    borderRadius: theme.spacing(1),
+    padding: theme.spacing(2),
+    backgroundColor:
+      theme.palette.type === "dark"
+        ? theme.palette.background.default
+        : theme.palette.grey[100],
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(1),
+  },
+  challengeHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: theme.spacing(1),
+  },
+  challengeHashtag: {
+    fontWeight: 600,
+  },
+  challengeStatus: {
+    fontWeight: 600,
+  },
+  challengeStatusActive: {
+    color: theme.palette.success.main,
+    borderColor: theme.palette.success.main,
+  },
+  challengeStatusDormant: {
+    color: theme.palette.text.secondary,
+    borderColor: theme.palette.divider,
+  },
+  challengeTitle: {
+    fontWeight: 600,
+  },
+  challengeDescription: {
+    color: theme.palette.text.secondary,
+    fontSize: "0.9rem",
+    lineHeight: 1.45,
+  },
+  challengeMeta: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: theme.spacing(1),
+  },
+  challengeMetaItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(0.5),
+    color: theme.palette.text.secondary,
+    fontSize: "0.8rem",
+  },
+  challengeFooter: {
+    marginTop: theme.spacing(1),
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(0.75),
+  },
+  challengeStats: {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: theme.spacing(1.25),
+  },
+  challengePostTitle: {
+    fontWeight: 600,
+  },
+  challengeLink: {
+    alignSelf: "flex-start",
+    textTransform: "none",
+  },
 }));
 
 const numberFormatter = new Intl.NumberFormat();
@@ -557,6 +689,7 @@ const HomeHighlights = ({
   trendingHashtags,
   creatorSpotlight,
   suggestedUsers,
+  communityChallenges,
   personalMomentum,
   onRefresh,
   loading,
@@ -776,10 +909,83 @@ const HomeHighlights = ({
       }));
   }, [momentum]);
 
+  const momentumAchievements = useMemo(() => {
+    const entries = (momentum?.achievements || [])
+      .filter((achievement) => achievement && achievement.title && achievement.description)
+      .map((achievement) => {
+        const earned = Boolean(achievement.earned);
+        const earnedAt = achievement.earnedAt;
+        const relative = formatRelativeToNow(earnedAt);
+        const shortDate = formatShortDate(earnedAt);
+        let statusText = earned ? "Unlocked" : "Locked — keep creating";
+
+        if (earned) {
+          if (relative) {
+            statusText = `Unlocked ${relative}`;
+          } else if (shortDate) {
+            statusText = `Unlocked on ${shortDate}`;
+          }
+        }
+
+        return {
+          key: `${achievement.title}-${achievement.description}`,
+          title: achievement.title,
+          description: achievement.description,
+          earned,
+          statusText,
+        };
+      });
+
+    return entries.sort((a, b) => Number(b.earned) - Number(a.earned));
+  }, [momentum]);
+
+  const challengeHighlights = useMemo(() => {
+    return (communityChallenges || [])
+      .filter((challenge) => challenge && (challenge.title || challenge.hashtag))
+      .slice(0, 4)
+      .map((challenge) => {
+        const participants = formatNumber(challenge.participants || 0);
+        const boostValue =
+          typeof challenge.momentumBoost === "number"
+            ? Math.max(0, Math.min(challenge.momentumBoost, 1))
+            : null;
+        const boostLabel =
+          boostValue !== null ? `${formatPercent(boostValue)} of recent buzz` : null;
+        const sample = challenge.samplePost || null;
+        const relative = sample ? formatRelativeToNow(sample.createdAt) : null;
+        const shortDate = sample ? formatShortDate(sample.createdAt) : null;
+        const latestShared = relative || (shortDate ? `on ${shortDate}` : null);
+
+        return {
+          id: challenge.id || challenge.hashtag || challenge.title,
+          title: challenge.title || challenge.hashtag || "Community challenge",
+          description:
+            challenge.description ||
+            `Join ${participants} creators rallying around ${challenge.hashtag || "this theme"}.`,
+          hashtag: challenge.hashtag,
+          participants,
+          momentumBoostLabel: boostLabel,
+          duration: challenge.duration,
+          isActive: Boolean(challenge.isActive),
+          samplePost: sample
+            ? {
+                id: sample.id,
+                title: sample.title,
+                likeCount: sample.likeCount || 0,
+                commentCount: sample.commentCount || 0,
+                userName: sample.user?.username,
+                latestShared,
+              }
+            : null,
+        };
+      });
+  }, [communityChallenges]);
+
   const hasMomentumEnhancements =
     timelineSeries.length > 0 ||
     focusHighlights.length > 0 ||
-    nextMoves.length > 0;
+    nextMoves.length > 0 ||
+    momentumAchievements.length > 0;
 
   const handleFollow = (user) => {
     if (!user) {
@@ -1060,7 +1266,167 @@ const HomeHighlights = ({
                 </div>
               </div>
             )}
+            <div className={classes.timelineSection}>
+              <Typography variant="subtitle2" className={classes.subsectionTitle}>
+                Momentum achievements
+              </Typography>
+              {momentumAchievements.length ? (
+                <div className={classes.achievementGrid}>
+                  {momentumAchievements.map((achievement) => (
+                    <div
+                      key={achievement.key}
+                      className={clsx(
+                        classes.achievementCard,
+                        achievement.earned
+                          ? classes.achievementUnlocked
+                          : classes.achievementLocked
+                      )}
+                    >
+                      <div className={classes.achievementHeader}>
+                        {achievement.earned ? (
+                          <CheckCircleIcon
+                            fontSize="small"
+                            className={classes.achievementIconUnlocked}
+                          />
+                        ) : (
+                          <LockOutlinedIcon
+                            fontSize="small"
+                            className={classes.achievementIconLocked}
+                          />
+                        )}
+                        <Typography variant="subtitle1" className={classes.achievementTitle}>
+                          {achievement.title}
+                        </Typography>
+                      </div>
+                      <Typography variant="body2" className={classes.achievementDescription}>
+                        {achievement.description}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        className={classes.achievementStatus}
+                        color={achievement.earned ? "primary" : "textSecondary"}
+                      >
+                        {achievement.statusText}
+                      </Typography>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <Typography variant="body2" className={classes.achievementEmpty}>
+                  Unlock your first badge by sharing consistently throughout the week.
+                </Typography>
+              )}
+            </div>
           </>
+        )}
+      </Paper>
+
+      <Paper elevation={0} className={classes.section}>
+        <div className={classes.sectionHeader}>
+          <div>
+            <Typography variant="h6" className={classes.sectionTitle}>
+              Community challenges
+            </Typography>
+            <Typography variant="body2" className={classes.sectionSubheader}>
+              Join collaborative themes creators are rallying around right now.
+            </Typography>
+          </div>
+        </div>
+        {loading && !challengeHighlights.length ? (
+          <div className={classes.loadingContainer}>
+            <CircularProgress size={32} />
+          </div>
+        ) : challengeHighlights.length ? (
+          <div className={classes.challengeList}>
+            {challengeHighlights.map((challenge) => (
+              <div key={challenge.id} className={classes.challengeCard}>
+                <div className={classes.challengeHeader}>
+                  <Chip
+                    icon={<FlagIcon style={{ fontSize: "1rem" }} />}
+                    label={challenge.hashtag || challenge.title}
+                    className={classes.challengeHashtag}
+                    color="primary"
+                  />
+                  <Chip
+                    size="small"
+                    variant="outlined"
+                    label={challenge.isActive ? "Active now" : "Heating up"}
+                    className={clsx(
+                      classes.challengeStatus,
+                      challenge.isActive
+                        ? classes.challengeStatusActive
+                        : classes.challengeStatusDormant
+                    )}
+                  />
+                </div>
+                <Typography variant="subtitle1" className={classes.challengeTitle}>
+                  {challenge.title}
+                </Typography>
+                <Typography variant="body2" className={classes.challengeDescription}>
+                  {challenge.description}
+                </Typography>
+                <div className={classes.challengeMeta}>
+                  <Chip
+                    size="small"
+                    icon={<EmojiPeopleIcon style={{ fontSize: "1rem" }} />}
+                    label={`${challenge.participants} creators`}
+                  />
+                  {challenge.momentumBoostLabel && (
+                    <Chip
+                      size="small"
+                      icon={<TrendingUpIcon style={{ fontSize: "1rem" }} />}
+                      label={`Momentum ${challenge.momentumBoostLabel}`}
+                    />
+                  )}
+                  {challenge.duration && (
+                    <Chip
+                      size="small"
+                      icon={<TimerIcon style={{ fontSize: "1rem" }} />}
+                      label={challenge.duration}
+                    />
+                  )}
+                </div>
+                {challenge.samplePost && (
+                  <div className={classes.challengeFooter}>
+                    <Typography variant="body2" className={classes.challengePostTitle}>
+                      Latest from {challenge.samplePost.userName || "the community"}
+                    </Typography>
+                    <div className={classes.challengeStats}>
+                      {challenge.samplePost.latestShared && (
+                        <Typography variant="caption" color="textSecondary">
+                          Shared {challenge.samplePost.latestShared}
+                        </Typography>
+                      )}
+                      <div className={classes.challengeMetaItem}>
+                        <FavoriteIcon style={{ fontSize: "1rem" }} />
+                        {formatNumber(challenge.samplePost.likeCount)}
+                      </div>
+                      <div className={classes.challengeMetaItem}>
+                        <ForumIcon style={{ fontSize: "1rem" }} />
+                        {formatNumber(challenge.samplePost.commentCount)}
+                      </div>
+                    </div>
+                    <Button
+                      size="small"
+                      color="primary"
+                      component={Link}
+                      to={`/post/${challenge.samplePost.id}`}
+                      className={classes.challengeLink}
+                      endIcon={<LaunchIcon fontSize="small" />}
+                    >
+                      View post
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={classes.emptyState}>
+            <Typography variant="body2">
+              Start a challenge with your next hashtag to see it light up here.
+            </Typography>
+          </div>
         )}
       </Paper>
 

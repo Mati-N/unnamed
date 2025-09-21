@@ -173,6 +173,13 @@ class MomentumRecommendationType(graphene.ObjectType):
     action_text = graphene.String()
 
 
+class MomentumAchievementType(graphene.ObjectType):
+    title = graphene.String()
+    description = graphene.String()
+    earned = graphene.Boolean()
+    earned_at = graphene.DateTime()
+
+
 class PersonalMomentumType(graphene.ObjectType):
     posting_streak = graphene.Int()
     last_post_created_at = graphene.DateTime()
@@ -189,6 +196,19 @@ class PersonalMomentumType(graphene.ObjectType):
     focus_hashtags = graphene.List(FocusHashtagType)
     trend = graphene.List(MomentumTrendPointType)
     next_actions = graphene.List(MomentumRecommendationType)
+    achievements = graphene.List(MomentumAchievementType)
+
+
+class CommunityChallengeType(graphene.ObjectType):
+    id = graphene.String()
+    title = graphene.String()
+    description = graphene.String()
+    hashtag = graphene.String()
+    participants = graphene.Int()
+    momentum_boost = graphene.Float()
+    duration = graphene.String()
+    is_active = graphene.Boolean()
+    sample_post = graphene.Field(PostNode)
 
 
 class Query(object):
@@ -217,6 +237,9 @@ class Query(object):
         PersonalMomentumType,
         supporter_limit=graphene.Int(default_value=4),
         breakout_limit=graphene.Int(default_value=3),
+    )
+    community_challenges = graphene.List(
+        CommunityChallengeType, limit=graphene.Int(default_value=3)
     )
 
     @login_required
@@ -584,6 +607,56 @@ class Query(object):
                 "Plan tomorrow’s update",
             )
 
+        achievements = []
+
+        def _add_achievement(title, description, earned, earned_at=None):
+            achievements.append(
+                MomentumAchievementType(
+                    title=title,
+                    description=description,
+                    earned=bool(earned),
+                    earned_at=earned_at if earned else None,
+                )
+            )
+
+        latest_post_at = last_post.created_at if last_post else None
+        _add_achievement(
+            "First spark",
+            "Publish your first story to light up your creator profile.",
+            bool(last_post),
+            latest_post_at,
+        )
+        _add_achievement(
+            "Weekly streak",
+            "Post on three different days this week to build a streak.",
+            posting_streak >= 3,
+            latest_post_at if posting_streak >= 3 else None,
+        )
+        _add_achievement(
+            "Collaboration champion",
+            "Gather cheers from three supporters in the last month.",
+            supporter_total >= 3,
+            latest_post_at if supporter_total >= 3 else None,
+        )
+        _add_achievement(
+            "Conversation catalyst",
+            "Spark at least five comments on your posts this week.",
+            comments_last_week >= 5,
+            latest_post_at if comments_last_week >= 5 else None,
+        )
+        _add_achievement(
+            "Fan favorite",
+            "Earn fifteen likes across your posts this week.",
+            likes_recent_week >= 15,
+            latest_post_at if likes_recent_week >= 15 else None,
+        )
+        _add_achievement(
+            "Publishing pro",
+            "Share eight updates this month to keep the feed thriving.",
+            posts_last_month >= 8,
+            latest_post_at if posts_last_month >= 8 else None,
+        )
+
         raw_score = (
             posts_last_week * 12
             + posts_last_month * 4
@@ -623,7 +696,155 @@ class Query(object):
             focus_hashtags=focus_hashtags,
             trend=trend_points,
             next_actions=next_actions,
+            achievements=achievements,
         )
+
+    def resolve_community_challenges(self, info, limit=3, **kwargs):
+        limit = max(1, limit or 3)
+        window_start = timezone.now() - timedelta(days=14)
+
+        posts = list(
+            Post.objects.filter(created_at__gte=window_start)
+            .annotate(
+                like_total=Count("likes", distinct=True),
+                comment_total=Count("comments", distinct=True),
+            )
+            .select_related("user")
+        )
+
+        if not posts:
+            return []
+
+        total_interactions = sum(
+            (getattr(post, "like_total", 0) or 0)
+            + (getattr(post, "comment_total", 0) or 0)
+            for post in posts
+        )
+        total_interactions = total_interactions or 1
+
+        challenge_map = {}
+        for post in posts:
+            hashtags = _extract_hashtags(post.text)
+            if not hashtags:
+                continue
+
+            interactions = (getattr(post, "like_total", 0) or 0) + (
+                getattr(post, "comment_total", 0) or 0
+            )
+            created_at = post.created_at
+
+            for raw_tag in hashtags:
+                normalized = raw_tag.lower()
+                entry = challenge_map.setdefault(
+                    normalized,
+                    {
+                        "display": raw_tag,
+                        "mention_count": 0,
+                        "user_ids": set(),
+                        "interactions": 0,
+                        "latest": None,
+                        "earliest": None,
+                        "sample_post": None,
+                    },
+                )
+
+                if not entry["display"]:
+                    entry["display"] = raw_tag
+                entry["mention_count"] += 1
+                entry["user_ids"].add(post.user_id)
+                entry["interactions"] += interactions
+
+                if created_at:
+                    if entry["latest"] is None or created_at > entry["latest"]:
+                        entry["latest"] = created_at
+                    if entry["earliest"] is None or created_at < entry["earliest"]:
+                        entry["earliest"] = created_at
+                    current_sample = entry.get("sample_post")
+                    if (
+                        current_sample is None
+                        or current_sample.created_at is None
+                        or (
+                            current_sample.created_at
+                            and created_at > current_sample.created_at
+                        )
+                    ):
+                        entry["sample_post"] = post
+
+        if not challenge_map:
+            return []
+
+        ranked_entries = []
+        now = timezone.now()
+        for normalized, entry in challenge_map.items():
+            latest_at = entry["latest"]
+            participants = len(entry["user_ids"])
+            mention_count = entry["mention_count"]
+            interactions = entry["interactions"] or 0
+
+            recency_bonus = 1.0
+            if latest_at and latest_at >= now - timedelta(days=2):
+                recency_bonus += 0.35
+            if mention_count >= 4:
+                recency_bonus += 0.25
+            if participants >= 5:
+                recency_bonus += 0.35
+
+            score = interactions * recency_bonus + participants * 3 + mention_count
+            ranked_entries.append((normalized, entry, score))
+
+        ranked_entries.sort(key=lambda item: item[2], reverse=True)
+
+        challenges = []
+        for normalized, entry, _ in ranked_entries[:limit]:
+            display_tag = entry["display"] or normalized
+            hashtag_label = f"#{display_tag}"
+            participants = len(entry["user_ids"])
+            mention_count = entry["mention_count"]
+            interactions = entry["interactions"] or 0
+            latest_at = entry["latest"]
+            earliest_at = entry["earliest"] or latest_at
+
+            if latest_at and earliest_at:
+                active_days = max(
+                    1, (timezone.localtime(latest_at).date() - timezone.localtime(earliest_at).date()).days + 1
+                )
+            else:
+                active_days = 1
+
+            if active_days <= 3:
+                duration = "Weekend dash"
+            elif active_days <= 7:
+                duration = "7-day sprint"
+            elif active_days <= 14:
+                duration = "Two-week wave"
+            else:
+                duration = "Season-long series"
+
+            participant_label = "creator" if participants == 1 else "creators"
+            post_label = "story" if mention_count == 1 else "stories"
+            description = (
+                f"{participants} {participant_label} have shared {mention_count} {post_label} with {hashtag_label} recently. "
+                "Add yours to amplify the momentum."
+            )
+
+            momentum_boost = interactions / float(total_interactions)
+            is_active = bool(latest_at and latest_at >= now - timedelta(days=3))
+
+            challenges.append(
+                CommunityChallengeType(
+                    id=f"challenge-{normalized}",
+                    title=f"{display_tag.title()} creator challenge",
+                    description=description,
+                    hashtag=hashtag_label,
+                    participants=participants,
+                    momentum_boost=momentum_boost,
+                    duration=duration,
+                    is_active=is_active,
+                    sample_post=entry.get("sample_post"),
+                )
+            )
+
+        return challenges
 
     @login_required
     def resolve_suggested_users(self, info, limit=5, **kwargs):

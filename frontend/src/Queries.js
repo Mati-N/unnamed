@@ -104,6 +104,7 @@ export const HOME_HIGHLIGHTS = gql`
     $spotlightLimit: Int
     $momentumSupporterLimit: Int
     $momentumBreakoutLimit: Int
+    $challengeLimit: Int
   ) {
     platformInsights {
       totalUsers
@@ -159,6 +160,27 @@ export const HOME_HIGHLIGHTS = gql`
       postCount
       imagePath
       isFollowing
+    }
+    communityChallenges(limit: $challengeLimit) {
+      id
+      title
+      description
+      hashtag
+      participants
+      momentumBoost
+      duration
+      isActive
+      samplePost {
+        id
+        title
+        likeCount
+        commentCount
+        createdAt
+        user {
+          id
+          username
+        }
+      }
     }
     personalMomentum(
       supporterLimit: $momentumSupporterLimit
@@ -219,6 +241,12 @@ export const HOME_HIGHLIGHTS = gql`
         title
         description
         actionText
+      }
+      achievements {
+        title
+        description
+        earned
+        earnedAt
       }
     }
   }

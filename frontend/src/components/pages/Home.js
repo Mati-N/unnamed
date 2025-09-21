@@ -24,6 +24,7 @@ function Home() {
       spotlightLimit: 4,
       momentumSupporterLimit: 4,
       momentumBreakoutLimit: 3,
+      challengeLimit: 4,
     },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "cache-and-network",
@@ -98,6 +99,7 @@ function Home() {
           trendingHashtags={highlightData?.trendingHashtags || []}
           creatorSpotlight={highlightData?.creatorSpotlight || []}
           suggestedUsers={highlightData?.suggestedUsers || []}
+          communityChallenges={highlightData?.communityChallenges || []}
           personalMomentum={highlightData?.personalMomentum}
           loading={highlightLoading && !highlightData}
           refreshing={refreshingHighlights}
