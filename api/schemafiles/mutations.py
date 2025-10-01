@@ -50,14 +50,16 @@ class CreatePost(graphene.relay.ClientIDMutation):
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, root, info, **input):
-        ጥሩ = False
-        title = input["title"]
-        text = input["text"]
+        title = (input.get("title") or "").strip()
+        text = (input.get("text") or "").strip()
+
+        if not title or not text:
+            return CreatePost(ok=False, post=None)
+
         post_instance = Post(user=info.context.user, title=title, text=text)
         post_instance.save()
-        ጥሩ = True
 
-        return CreatePost(ok=ጥሩ, post=post_instance)
+        return CreatePost(ok=True, post=post_instance)
 
 
 class Follow(graphene.relay.ClientIDMutation):
@@ -119,9 +121,10 @@ class LikePost(graphene.relay.ClientIDMutation):
 # A mutation used to create a user
 class CreateUser(graphene.relay.ClientIDMutation):
     class Input:
-        username = graphene.String()
-        password = graphene.String()
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
         image = Upload()
+        bio = graphene.String()
 
     ok = graphene.Boolean()
     user = graphene.Field(UserNode)
@@ -129,24 +132,29 @@ class CreateUser(graphene.relay.ClientIDMutation):
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **input):
-        ok = False
-        username = input["username"]
-        password = input["password"]
-        image = input["image"]
+        username = (input.get("username") or "").strip()
+        password = input.get("password") or ""
+        image = input.get("image")
+        bio = input.get("bio")
+
+        if not username or not password:
+            return CreateUser(ok=False, user=None, message="Username and password are required")
+
         if info.context.user.is_authenticated:
-            return CreateUser(ok=ok, user=info.context.user, message="Already logged in")
+            return CreateUser(ok=False, user=info.context.user, message="Already logged in")
 
-        if User.objects.filter(username=username):
-            return CreateUser(ok=ok, user=None, message="Username is already in use")
+        if User.objects.filter(username__iexact=username).exists():
+            return CreateUser(ok=False, user=None, message="Username is already in use")
 
-        ok = True
         user_instance = User(username=username)
         user_instance.set_password(password)
+        if bio is not None:
+            user_instance.bio = bio.strip()
         if image is not None:
             user_instance.profile_image = image
         user_instance.save()
 
-        return CreateUser(ok=ok, user=user_instance)
+        return CreateUser(ok=True, user=user_instance, message="Account created successfully")
 
 
 class ReadNotification(graphene.relay.ClientIDMutation):
@@ -185,9 +193,10 @@ class ReadNotification(graphene.relay.ClientIDMutation):
 class UpdateUser(graphene.relay.ClientIDMutation):
     class Input:
         username = graphene.String()
-        password = graphene.String()
+        password = graphene.String(required=True)
         newP = graphene.String()
         image = Upload()
+        bio = graphene.String()
 
     ok = graphene.Boolean()
     user = graphene.Field(UserNode)
@@ -196,43 +205,54 @@ class UpdateUser(graphene.relay.ClientIDMutation):
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, root, info, **input):
-        password = input["password"]
-        username = input["username"]
-        newP = input["newP"]
-        image = input["image"]
-        ok = False
-        message = None
+        password = input.get("password")
+        username = input.get("username")
+        new_password = input.get("newP")
+        image = input.get("image")
+        bio = input.get("bio")
         user_instance = info.context.user
 
         if not user_instance.check_password(password):
-            return UpdateUser(ok=ok, user=user_instance, message="Password is invalid")
+            return UpdateUser(ok=False, user=user_instance, message="Password is invalid")
 
-        if newP is not None:
-            if len(newP) < 8:
-                return UpdateUser(ok=ok, user=user_instance, message="Password is too short")
-            user_instance.set_password(newP)
-            message = "Password Changed"
+        updates = []
 
-        if username is not None:
-            if (User.objects.filter(username=username).count() > 0):
-                return UpdateUser(ok=ok, user=user_instance, message="Username is already in use")
-            user_instance.username = username
-            message = "Username Changed"
+        if new_password:
+            if len(new_password) < 8:
+                return UpdateUser(ok=False, user=user_instance, message="Password is too short")
+            user_instance.set_password(new_password)
+            updates.append("password")
+
+        if username is not None and username != user_instance.username:
+            if User.objects.filter(username__iexact=username).exclude(pk=user_instance.pk).exists():
+                return UpdateUser(ok=False, user=user_instance, message="Username is already in use")
+            user_instance.username = username.strip()
+            updates.append("username")
 
         if image is not None:
             user_instance.profile_image = image
-            message = "Profile Pic Changed"
+            updates.append("profile picture")
 
-        ok = True
+        if bio is not None:
+            user_instance.bio = bio.strip()
+            updates.append("bio")
 
-        num = 0
-        for el in [newP, username, image]:
-            if el is not None:
-                num += 1
-
-        if num > 1:
-            message == "Account Updated"
+        if not updates:
+            return UpdateUser(ok=False, user=user_instance, message="No updates were applied")
 
         user_instance.save()
 
-        return UpdateUser(ok=ok, user=user_instance, message=message)
+        friendly = {
+            "password": "Password",
+            "username": "Username",
+            "profile picture": "Profile picture",
+            "bio": "Bio",
+        }
+
+        nice_updates = [friendly[item] for item in updates]
+        if len(nice_updates) == 1:
+            message = f"{nice_updates[0]} updated"
+        else:
+            message = "Updated " + ", ".join(nice_updates[:-1]) + f" and {nice_updates[-1]}"
+
+        return UpdateUser(ok=True, user=user_instance, message=message)

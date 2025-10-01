@@ -29,6 +29,7 @@ class UserNode(DjangoObjectType):
     post_count = graphene.Int(source="post_count")
     image_path = graphene.String(source="image_path")
     is_following = graphene.Boolean()
+    bio = graphene.String()
 
     def resolve_is_following(self, info):
         following = False
@@ -44,6 +45,7 @@ class UserNode(DjangoObjectType):
         model = User
         interfaces = (graphene.relay.Node,)
         filterset_class = UserFilter
+        fields = ("id", "username", "bio", "profile_image")
 
 
 class PostFilter(django_filters.FilterSet):

@@ -1,56 +1,111 @@
-import React, { useState, lazy } from "react";
-import { GET_POSTS } from "../../Queries";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { GET_POSTS, HOME_HIGHLIGHTS } from "../../Queries";
+import { NavLink } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { ImpulseSpinner as Spinner } from "react-spinners-kit";
 import Error from "../layout/Error";
-const Offline = lazy(() => import("./Offline"));
-const Posts = lazy(() => import("../post/Posts"));
+import HomeHighlights from "../home/HomeHighlights";
+const Posts = React.lazy(() => import("../post/Posts"));
 
 function Home() {
   const { loading, data, error, fetchMore, refetch } = useQuery(GET_POSTS, {
     pollInterval: 1000000,
   });
-  const [spin, setSpin] = useState(true);
+  const {
+    loading: highlightLoading,
+    data: highlightData,
+    error: highlightError,
+    refetch: refetchHighlights,
+  } = useQuery(HOME_HIGHLIGHTS, {
+    variables: {
+      trendingLimit: 5,
+      suggestedLimit: 5,
+      hashtagLimit: 8,
+      spotlightLimit: 4,
+      momentumSupporterLimit: 4,
+      momentumBreakoutLimit: 3,
+      challengeLimit: 4,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "cache-and-network",
+  });
+
+  const [spin, setSpin] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+      setSpin(false);
+    }
+  }, [loading]);
 
   const more = () => {
+    if (!data?.posts?.pageInfo?.hasNextPage) {
+      setSpin(false);
+      return;
+    }
+
+    setSpin(true);
     fetchMore({
-      query: GET_POSTS,
       variables: { cursor: data.posts.pageInfo.endCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
-        setSpin(true);
-        if (!previousResult.posts.pageInfo.hasNextPage) {
-          setSpin(false);
+        if (!fetchMoreResult) {
           return previousResult;
         }
+
         const newEdges = fetchMoreResult.posts.edges;
         const pageInfo = fetchMoreResult.posts.pageInfo;
 
-        return newEdges.length
-          ? {
-              posts: {
-                __typename: previousResult.posts.__typename,
-                edges: [...previousResult.posts.edges, ...newEdges],
-                pageInfo,
-              },
-            }
-          : previousResult;
+        if (!newEdges.length) {
+          return previousResult;
+        }
+
+        return {
+          posts: {
+            __typename: previousResult.posts.__typename,
+            edges: [...previousResult.posts.edges, ...newEdges],
+            pageInfo,
+          },
+        };
       },
-    });
+    }).finally(() => setSpin(false));
   };
+
+  const refreshingHighlights = highlightLoading && !!highlightData;
+  const highlightsUnavailable = highlightError && !highlightData;
 
   return (
     <>
       <ul className="nav nav-pills nav-fill home-pages">
         <li className="nav-item">
-          <a className="nav-link active">All Posts</a>
+          <NavLink className="nav-link" activeClassName="active" exact to="/all">
+            All Posts
+          </NavLink>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/">
+          <NavLink className="nav-link" activeClassName="active" exact to="/">
             Following
-          </Link>
+          </NavLink>
         </li>
       </ul>
+      {highlightsUnavailable && (
+        <div className="alert alert-warning" role="alert">
+          We couldn't load today's community highlights. Try refreshing the page.
+        </div>
+      )}
+      {(highlightData || highlightLoading) && (
+        <HomeHighlights
+          insights={highlightData?.platformInsights}
+          trendingPosts={highlightData?.trendingPosts || []}
+          trendingHashtags={highlightData?.trendingHashtags || []}
+          creatorSpotlight={highlightData?.creatorSpotlight || []}
+          suggestedUsers={highlightData?.suggestedUsers || []}
+          communityChallenges={highlightData?.communityChallenges || []}
+          personalMomentum={highlightData?.personalMomentum}
+          loading={highlightLoading && !highlightData}
+          refreshing={refreshingHighlights}
+          onRefresh={() => refetchHighlights().catch(() => undefined)}
+        />
+      )}
       {error && <Error />}
       {(loading || !data) && (
         <div className="spinner">
